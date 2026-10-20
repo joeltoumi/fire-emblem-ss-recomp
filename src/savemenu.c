@@ -1218,7 +1218,7 @@ void sub_80A9E1C(struct SaveMenuProc * proc)
                 return;
             }
 
-            sub_80A9DFC(0x40, 0x30, 0x892, proc); // TODO: msgid "This data[.][NL]can't be used[.][NL]on a trial map.[.]"
+            sub_80A9DFC(0x40, 0x30, MSG_ID(0x892), proc); // TODO: msgid "This data[.][NL]can't be used[.][NL]on a trial map.[.]"
 
             return;
 
@@ -1237,7 +1237,7 @@ void sub_80A9E1C(struct SaveMenuProc * proc)
                 return;
             }
 
-            sub_80A9DFC(0x2e, 0x38, 0x891, proc); // TODO: msgid "Send data from[NL]Chapter 2+"
+            sub_80A9DFC(0x2e, 0x38, MSG_ID(0x891), proc); // TODO: msgid "Send data from[NL]Chapter 2+"
 
             return;
 
@@ -1255,7 +1255,7 @@ void sub_80A9E1C(struct SaveMenuProc * proc)
                 return;
             }
 
-            sub_80A9DFC(0x2e, 0x38, 0x895, proc); // TODO: msgid "Select cleared save data.[.]"
+            sub_80A9DFC(0x2e, 0x38, MSG_ID(0x895), proc); // TODO: msgid "Select cleared save data.[.]"
             return;
 
         default:

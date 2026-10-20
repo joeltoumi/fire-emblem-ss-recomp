@@ -157,11 +157,11 @@ void UpdateMenuItemPanel(int slot_or_item)
 
 		color = CanUnitUseWeapon(unit, gBattleActor.weapon) ? TEXT_COLOR_SYSTEM_BLUE : TEXT_COLOR_SYSTEM_GRAY;
 
-		Text_InsertDrawString(&texts[0], 0x1C, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x4F1));
-		Text_InsertDrawString(&texts[1], 0x02, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x4F3));
-		Text_InsertDrawString(&texts[2], 0x02, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x4F4));
-		Text_InsertDrawString(&texts[1], 0x32, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x501));
-		Text_InsertDrawString(&texts[2], 0x32, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(0x4F5));
+		Text_InsertDrawString(&texts[0], 0x1C, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_ID(0x4F1)));
+		Text_InsertDrawString(&texts[1], 0x02, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_ID(0x4F3)));
+		Text_InsertDrawString(&texts[2], 0x02, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_ID(0x4F4)));
+		Text_InsertDrawString(&texts[1], 0x32, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_ID(0x501)));
+		Text_InsertDrawString(&texts[2], 0x32, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_ID(0x4F5)));
 		
 		Text_InsertDrawNumberOrBlank(&texts[1], 0x24, color, gBattleActor.battleAttack);
 		Text_InsertDrawNumberOrBlank(&texts[2], 0x24, color, gBattleActor.battleHitRate);

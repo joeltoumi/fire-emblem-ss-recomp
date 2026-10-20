@@ -8,6 +8,7 @@
 #include "gba/gba.h"
 
 #include "prelude.h"
+#include "port/msg_id.h"
 
 #include "types.h"
 #include "variables.h"

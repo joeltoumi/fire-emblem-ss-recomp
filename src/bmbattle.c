@@ -327,17 +327,17 @@ void InitBattleUnitWithoutBonuses(struct BattleUnit* bu, struct Unit* unit) {
 void SetBattleUnitTerrainBonuses(struct BattleUnit* bu, int terrain) {
     bu->terrainId = terrain;
 
-    bu->terrainAvoid      = bu->unit.pClassData->pTerrainAvoidLookup[bu->terrainId];
-    bu->terrainDefense    = bu->unit.pClassData->pTerrainDefenseLookup[bu->terrainId];
-    bu->terrainResistance = bu->unit.pClassData->pTerrainResistanceLookup[bu->terrainId];
+    bu->terrainAvoid      = GBA_GET(const s8 *, bu->unit.pClassData->pTerrainAvoidLookup)[bu->terrainId];
+    bu->terrainDefense    = GBA_GET(const s8 *, bu->unit.pClassData->pTerrainDefenseLookup)[bu->terrainId];
+    bu->terrainResistance = GBA_GET(const s8 *, bu->unit.pClassData->pTerrainResistanceLookup)[bu->terrainId];
 }
 
 void SetBattleUnitTerrainBonusesAuto(struct BattleUnit* bu) {
     bu->terrainId = gBmMapTerrain[bu->unit.yPos][bu->unit.xPos];
 
-    bu->terrainAvoid      = bu->unit.pClassData->pTerrainAvoidLookup[bu->terrainId];
-    bu->terrainDefense    = bu->unit.pClassData->pTerrainDefenseLookup[bu->terrainId];
-    bu->terrainResistance = bu->unit.pClassData->pTerrainResistanceLookup[bu->terrainId];
+    bu->terrainAvoid      = GBA_GET(const s8 *, bu->unit.pClassData->pTerrainAvoidLookup)[bu->terrainId];
+    bu->terrainDefense    = GBA_GET(const s8 *, bu->unit.pClassData->pTerrainDefenseLookup)[bu->terrainId];
+    bu->terrainResistance = GBA_GET(const s8 *, bu->unit.pClassData->pTerrainResistanceLookup)[bu->terrainId];
 }
 
 void SetBattleUnitWeapon(struct BattleUnit* bu, int itemSlot) {

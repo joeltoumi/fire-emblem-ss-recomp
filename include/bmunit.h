@@ -52,7 +52,7 @@ struct CharacterData
 
     /* 28 */ u32 attributes;
 
-    /* 2C */ const struct SupportData* pSupportData;
+    /* 2C */ GBA_PTR(const struct SupportData*) pSupportData;
     /* 30 */ u8 visit_group;
 
     /* 31 */ u8 _pad_[0x34 - 0x31];
@@ -107,14 +107,14 @@ struct ClassData
 
     /* 2C */ u8 baseRanks[8];
 
-    /* 34 */ const struct BattleAnimDef * pBattleAnimDef;
-    /* 38 */ const s8 * pMovCostTable[3]; // standard, rain, snow
+    /* 34 */ GBA_PTR(const struct BattleAnimDef *) pBattleAnimDef;
+    /* 38 */ GBA_PTR(const s8 *) pMovCostTable[3]; // standard, rain, snow
 
-    /* 44 */ const s8 * pTerrainAvoidLookup;
-    /* 48 */ const s8 * pTerrainDefenseLookup;
-    /* 4C */ const s8 * pTerrainResistanceLookup;
+    /* 44 */ GBA_PTR(const s8 *) pTerrainAvoidLookup;
+    /* 48 */ GBA_PTR(const s8 *) pTerrainDefenseLookup;
+    /* 4C */ GBA_PTR(const s8 *) pTerrainResistanceLookup;
 
-    /* 50 */ const void * _pU50;
+    /* 50 */ GBA_PTR(const void *) _pU50;
 };
 
 enum {
@@ -500,7 +500,7 @@ void UnitRemoveItem(struct Unit* unit, int slot);
 
 #define UNIT_ARENA_LEVEL(aUnit) (((aUnit)->state >> 17) & 0x7)
 
-#define UNIT_SUPPORT_DATA(aUnit) ((aUnit)->pCharacterData->pSupportData)
+#define UNIT_SUPPORT_DATA(aUnit) GBA_GET(const struct SupportData *, (aUnit)->pCharacterData->pSupportData)
 
 // NOTE: if this ends up being only used in [Get|Set]UnitLeaderCharId, having this as a macro may end up being unnecessary
 #define UNIT_LEADER_CHARACTER(aUnit) ((aUnit)->supports[UNIT_SUPPORT_MAX_COUNT-1])

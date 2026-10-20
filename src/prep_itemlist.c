@@ -55,7 +55,7 @@ void sub_809EBF0(void)
 {
     TileMap_FillRect(gBG0TilemapBuffer + 0x34, 0xc, 1, 0);
 
-    PutDrawText(PrepItemSuppyTexts.th + 15, gBG0TilemapBuffer + 0x34, 0, 0, 0, GetStringFromIndex(0x5A9)); // TODO: msgid "Owner"
+    PutDrawText(PrepItemSuppyTexts.th + 15, gBG0TilemapBuffer + 0x34, 0, 0, 0, GetStringFromIndex(MSG_ID(0x5A9))); // TODO: msgid "Owner"
 
     BG_EnableSyncByMask(1);
     return;
@@ -70,12 +70,12 @@ void PrepItemList_DrawCurrentOwnerText(struct PrepItemListProc* proc) {
     ClearText(PrepItemSuppyTexts.th + 1);
 
     if (gUnknown_02012F56 <= idx) {
-        PutDrawText(PrepItemSuppyTexts.th + 1, gBG0TilemapBuffer + 0x38, 1, 0, 0, GetStringFromIndex(0x536));
+        PutDrawText(PrepItemSuppyTexts.th + 1, gBG0TilemapBuffer + 0x38, 1, 0, 0, GetStringFromIndex(MSG_ID(0x536)));
     } else {
         int pid = gPrepScreenItemList[proc->idxPerPage[proc->currentPage]].pid;
 
         if (pid == 0) {
-            PutDrawText(PrepItemSuppyTexts.th + 1, gBG0TilemapBuffer + 0x38, 3, 0, 0, GetStringFromIndex(0x598)); // TODO: msgid "Supply"
+            PutDrawText(PrepItemSuppyTexts.th + 1, gBG0TilemapBuffer + 0x38, 3, 0, 0, GetStringFromIndex(MSG_ID(0x598))); // TODO: msgid "Supply"
         } else {
             PutDrawText(PrepItemSuppyTexts.th + 1, gBG0TilemapBuffer + 0x38, 0, 0, 0, GetStringFromIndex(GetUnitFromCharId(pid)->pCharacterData->nameTextId));
         }
@@ -762,7 +762,7 @@ void PrepItemList_Loop_UnitInvKeyHandler(struct PrepItemListProc * proc)
 
         if (gKeyStatusPtr->newKeys & A_BUTTON) {
             if (CheckValidLinkArenaItemSupply(proc->unit, proc->unitInvIdx, gPrepScreenItemList[proc->idxPerPage[proc->currentPage]].item) == 0) {
-                StartPrepErrorHelpbox(-1, -1, 0x88B, proc);
+                StartPrepErrorHelpbox(-1, -1, MSG_ID(0x88B), proc);
                 return;
             }
             sub_80ACA84(0);

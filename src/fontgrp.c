@@ -678,11 +678,7 @@ void Text_DrawNumberOrBlank(struct Text *th, int n)
 {
     if (n == 255 || n == -1) {
         Text_Skip(th, -8);
-#ifdef REGION_EU
-        Text_DrawString(th, GetStringFromIndex(0x517)); // EU 0x08004104: "--"
-#else
-        Text_DrawString(th, GetStringFromIndex(0x535));
-#endif
+        Text_DrawString(th, GetStringFromIndex(MSG_ID(0x535)));
         return;
     }
 

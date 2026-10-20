@@ -47,7 +47,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = NULL,
         .xDisplay = 136,
         .yDisplay = 104,
-        .msgId = 0x06E8, // TODO: msgid "The unit's class. Each class[NL]possesses unique traits."
+        .msgId = MSG_ID(0x6E8), // TODO: msgid "The unit's class. Each class[NL]possesses unique traits."
         .redirect = NULL,
         .populate = WorldmapStatus_GetClassDescription,
     },
@@ -58,7 +58,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = &gHelpInfo_WorldmapStatus[3],
         .xDisplay = 136,
         .yDisplay = 120,
-        .msgId = 0x0542, // TODO: msgid "Unit level. The unit becomes[NL]stronger as it gains levels."
+        .msgId = MSG_ID(0x542), // TODO: msgid "Unit level. The unit becomes[NL]stronger as it gains levels."
         .redirect = NULL,
         .populate = NULL,
     },
@@ -69,7 +69,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = NULL,
         .xDisplay = 168,
         .yDisplay = 120,
-        .msgId = 0x0543, // TODO: msgid "Experience points gained. Gain[NL]100 points to earn a new level.[.]"
+        .msgId = MSG_ID(0x543), // TODO: msgid "Experience points gained. Gain[NL]100 points to earn a new level.[.]"
         .redirect = NULL,
         .populate = NULL,
     },
@@ -80,7 +80,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = NULL,
         .xDisplay = 136,
         .yDisplay = 136,
-        .msgId = 0x0544, // TODO: msgid "Unit hit points. The unit loses[.][NL]consciousness if this reaches 0."
+        .msgId = MSG_ID(0x544), // TODO: msgid "Unit hit points. The unit loses[.][NL]consciousness if this reaches 0."
         .redirect = NULL,
         .populate = NULL,
     },
@@ -91,7 +91,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = &gHelpInfo_WorldmapStatus[0],
         .xDisplay = 32,
         .yDisplay = 48,
-        .msgId = 0x0676, // TODO: msgid "The party's next destination.[.]"
+        .msgId = MSG_ID(0x676), // TODO: msgid "The party's next destination.[.]"
         .redirect = NULL,
         .populate = NULL,
     },
@@ -102,7 +102,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = &gHelpInfo_WorldmapStatus[0],
         .xDisplay = 16,
         .yDisplay = 72,
-        .msgId = 0x0677, // TODO: msgid "The current number of units."
+        .msgId = MSG_ID(0x677), // TODO: msgid "The current number of units."
         .redirect = NULL,
         .populate = NULL,
     },
@@ -113,7 +113,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = &gHelpInfo_WorldmapStatus[1],
         .xDisplay = 16,
         .yDisplay = 88,
-        .msgId = 0x06F3, // TODO: msgid "Money on hand."
+        .msgId = MSG_ID(0x6F3), // TODO: msgid "Money on hand."
         .redirect = NULL,
         .populate = NULL,
     },
@@ -124,7 +124,7 @@ struct HelpBoxInfo CONST_DATA gHelpInfo_WorldmapStatus[] =
         .adjRight = &gHelpInfo_WorldmapStatus[4],
         .xDisplay = 24,
         .yDisplay = 120,
-        .msgId = 0x06F0, // TODO: msgid "Total time played."
+        .msgId = MSG_ID(0x6F0), // TODO: msgid "Total time played."
         .redirect = NULL,
         .populate = NULL,
     },
@@ -161,7 +161,7 @@ void WorldmapStatus_GetCharDescription(struct HelpBoxProc * proc)
     }
     else
     {
-        proc->msgId = 0x06BE; // TODO: msgid "There are no messages for[.][NL]this menu item.[.]"
+        proc->msgId = MSG_ID(0x6BE); // TODO: msgid "There are no messages for[.][NL]this menu item.[.]"
     }
 
     return;

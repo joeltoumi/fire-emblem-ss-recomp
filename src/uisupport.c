@@ -99,7 +99,7 @@ s8 GetSupportScreenPartnerIsAlive(int idx, int partner) {
 
 //! FE8U = 0x080A0B20
 int GetSupportScreenPartnerCharId(int idx, int partner) {
-    return gCharacterData[GetSupportScreenCharIdAt(idx) - 1].pSupportData->characters[partner];
+    return GBA_GET(const struct SupportData *, gCharacterData[GetSupportScreenCharIdAt(idx) - 1].pSupportData)->characters[partner];
 }
 
 //! FE8U = 0x080A0B44
@@ -215,7 +215,7 @@ void SupportScreen_SetupUnits(struct SupportScreenProc* proc) {
             sSupportScreenUnits[sSupportScreenUnitCount].charId = unit->pCharacterData->number;
             sSupportScreenUnits[sSupportScreenUnitCount].classId = unit->pClassData->number;
 
-            for (j = 0; j < gCharacterData[unit->pCharacterData->number - 1].pSupportData->supportCount; j++) {
+            for (j = 0; j < GBA_GET(const struct SupportData *, gCharacterData[unit->pCharacterData->number - 1].pSupportData)->supportCount; j++) {
                 int charId = GetSupportScreenPartnerCharId(sSupportScreenUnitCount, j);
 
                 sSupportScreenUnits[sSupportScreenUnitCount].supportLevel[j] = GetUnitSupportLevel(unit, j);
@@ -232,7 +232,7 @@ void SupportScreen_SetupUnits(struct SupportScreenProc* proc) {
         struct GlobalSaveInfo GlobalSaveInfo;
         ReadGlobalSaveInfo(&GlobalSaveInfo);
 
-        SetTacticianName(GetStringFromIndex(0x26A)); // TODO: msgid "Mark"
+        SetTacticianName(GetStringFromIndex(MSG_ID(0x26A))); // TODO: msgid "Mark"
 
         for (j = 0; j < 0x100; j++) {
             if (!GGM_IsCharacterKnown(j, &GlobalSaveInfo)) {
@@ -293,7 +293,7 @@ int GetTotalSupportLevel(int idx) {
 
     int total = 0;
 
-    for (i = 0; i < gCharacterData[GetSupportScreenCharIdAt(idx) - 1].pSupportData->supportCount; i++) {
+    for (i = 0; i < GBA_GET(const struct SupportData *, gCharacterData[GetSupportScreenCharIdAt(idx) - 1].pSupportData)->supportCount; i++) {
         total += GetSupportScreenPartnerSupportLevel(idx, i);
     }
 
@@ -355,7 +355,7 @@ void DrawSupportScreenText(void) {
     InitText(th + 0, 9);
     ClearText(th - 1);
 
-    str = GetStringFromIndex(0x5AD); // TODO: msgid "Select Character"
+    str = GetStringFromIndex(MSG_ID(0x5AD)); // TODO: msgid "Select Character"
     Text_InsertDrawString(th - 1, (s16)GetStringTextCenteredPos(128, str), 0, str);
 
     PutText(th - 1, TILEMAP_LOCATED(gBG0TilemapBuffer, 7, 18));
@@ -365,7 +365,7 @@ void DrawSupportScreenText(void) {
         th + 0,
         0,
         perc == 100 ? 4 : 0,
-        GetStringFromIndex(0x5AA) // TODO: msgid "Success[.]"
+        GetStringFromIndex(MSG_ID(0x5AA)) // TODO: msgid "Success[.]"
     );
 
     Text_SetCursor(th + 0, 52);
@@ -376,7 +376,7 @@ void DrawSupportScreenText(void) {
         th + 0,
         60,
         perc == 100 ? 4 : 0,
-        GetStringFromIndex(0x5AE) // TODO: msgid "%[.]"
+        GetStringFromIndex(MSG_ID(0x5AE)) // TODO: msgid "%[.]"
     );
 
     PutText(th + 0, TILEMAP_LOCATED(gBG0TilemapBuffer, 7, 18) - 500);
@@ -950,7 +950,7 @@ int GetSupportScreenPartnerCount(int charId) {
         return 0;
     }
 
-    return gCharacterData[charId - 1].pSupportData->supportCount;
+    return GBA_GET(const struct SupportData *, gCharacterData[charId - 1].pSupportData)->supportCount;
 }
 
 u16 CONST_DATA sSprite_NameAffinLv[] = {
@@ -1130,14 +1130,14 @@ void DrawSupportSubScreenRemainingText(struct SubScreenProc* proc) {
         &th,
         48,
         proc->remainingSupports == 0 ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE,
-        GetStringFromIndex(0x5AB) // TODO: msgid "Remaining[.]"
+        GetStringFromIndex(MSG_ID(0x5AB)) // TODO: msgid "Remaining[.]"
     );
 
     Text_InsertDrawString(
         &th,
         96,
         proc->remainingSupports == 0 ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE,
-        GetStringFromIndex(0x5AC) // TODO: msgid "x[.]"
+        GetStringFromIndex(MSG_ID(0x5AC)) // TODO: msgid "x[.]"
     );
 
     Text_SetCursor(&th, CountDigits(proc->remainingSupports) * 8 + 96);

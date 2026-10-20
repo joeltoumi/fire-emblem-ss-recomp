@@ -87,7 +87,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 16, 3),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4E9)
+        GetStringFromIndex(MSG_ID(0x4E9))
     );
 
     if (UnitHasMagicRank(unit)) {
@@ -97,7 +97,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
             TILEMAP_LOCATED(gBG2TilemapBuffer, 16, 5),
             TEXT_COLOR_SYSTEM_GOLD,
             0, 0,
-            GetStringFromIndex(0x4FF)
+            GetStringFromIndex(MSG_ID(0x4FF))
         );
     } else {
         /* Str[.] */
@@ -106,7 +106,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
             TILEMAP_LOCATED(gBG2TilemapBuffer, 16, 5),
             TEXT_COLOR_SYSTEM_GOLD,
             0, 0,
-            GetStringFromIndex(0x4FE)
+            GetStringFromIndex(MSG_ID(0x4FE))
         );
     }
 
@@ -116,7 +116,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 16, 7),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4EC)
+        GetStringFromIndex(MSG_ID(0x4EC))
     );
 
     /* Spd[.] */
@@ -125,7 +125,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 16, 9),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4ED)
+        GetStringFromIndex(MSG_ID(0x4ED))
     );
 
     /* Luck */
@@ -134,7 +134,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 23, 3),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4EE)
+        GetStringFromIndex(MSG_ID(0x4EE))
     );
 
     /* Def[.] */
@@ -143,7 +143,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 23, 5),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4EF)
+        GetStringFromIndex(MSG_ID(0x4EF))
     );
 
     /* Res[.] */
@@ -152,7 +152,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 23, 7),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4F0)
+        GetStringFromIndex(MSG_ID(0x4F0))
     );
 
     /* Con[.] */
@@ -161,7 +161,7 @@ void DrawPrepScreenItemUseStatLabels(struct Unit *unit)
         TILEMAP_LOCATED(gBG2TilemapBuffer, 23, 9),
         TEXT_COLOR_SYSTEM_GOLD,
         0, 0,
-        GetStringFromIndex(0x4F7)
+        GetStringFromIndex(MSG_ID(0x4F7))
     );
 
     str = GetStringFromIndex(unit->pClassData->nameTextId);
@@ -544,7 +544,7 @@ void PrepItemUseDrawSubBox(void)
        text++,
         TILEMAP_LOCATED(gBG2TilemapBuffer, 17, 13),
         TEXT_COLOR_SYSTEM_WHITE, 0, 0,
-        GetStringFromIndex(0x585)
+        GetStringFromIndex(MSG_ID(0x585))
     );
 
     ClearText(text);
@@ -554,7 +554,7 @@ void PrepItemUseDrawSubBox(void)
         text,
         TILEMAP_LOCATED(gBG2TilemapBuffer, 19, 15),
         TEXT_COLOR_SYSTEM_WHITE, 0, 0,
-        GetStringFromIndex(0x843)
+        GetStringFromIndex(MSG_ID(0x843))
     );
 
     /* No */
@@ -562,7 +562,7 @@ void PrepItemUseDrawSubBox(void)
         text,
         TILEMAP_LOCATED(gBG2TilemapBuffer, 19, 15),
         TEXT_COLOR_SYSTEM_WHITE, 0x20, 0,
-        GetStringFromIndex(0x844)
+        GetStringFromIndex(MSG_ID(0x844))
     );
 
     BG_EnableSyncByMask(4);

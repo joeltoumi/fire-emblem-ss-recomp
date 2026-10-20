@@ -705,10 +705,10 @@ void GetGlobalSupportListFromSave(int unitId, u8* data, struct GlobalSaveInfo* i
         tmp1 = j >> 2;
         tmp2 = (j & 3) << 1;
 
-        for (i = 0; i < gCharacterData[unitId-1].pSupportData->supportCount; i++) {
+        for (i = 0; i < GBA_GET(const struct SupportData *, gCharacterData[unitId-1].pSupportData)->supportCount; i++) {
 
-            if ((ptr->unitA != gCharacterData[unitId-1].pSupportData->characters[i]) &&
-                (ptr->unitB != gCharacterData[unitId-1].pSupportData->characters[i])) {
+            if ((ptr->unitA != GBA_GET(const struct SupportData *, gCharacterData[unitId-1].pSupportData)->characters[i]) &&
+                (ptr->unitB != GBA_GET(const struct SupportData *, gCharacterData[unitId-1].pSupportData)->characters[i])) {
                 continue;
             }
 
@@ -718,7 +718,7 @@ void GetGlobalSupportListFromSave(int unitId, u8* data, struct GlobalSaveInfo* i
         }
     }
 
-    for (i = gCharacterData[unitId-1].pSupportData->supportCount; i < UNIT_SUPPORT_MAX_COUNT; i++) {
+    for (i = GBA_GET(const struct SupportData *, gCharacterData[unitId-1].pSupportData)->supportCount; i < UNIT_SUPPORT_MAX_COUNT; i++) {
         data[i] = 0;
     }
 

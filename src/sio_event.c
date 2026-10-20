@@ -212,7 +212,7 @@ void PutXMapProgressPercent(struct Text * th, const char * str, int number)
 
     Text_InsertDrawString(th, 0, 0, str);
     SioDrawNumber(th, 54, 2, number);
-    Text_InsertDrawString(th, 62, 0, GetStringFromIndex(0x5AE));
+    Text_InsertDrawString(th, 62, 0, GetStringFromIndex(MSG_ID(0x5AE)));
 
     PutText(th, TILEMAP_LOCATED(gBG0TilemapBuffer, 15, 12));
 
@@ -325,7 +325,7 @@ void XMapTransfer_8048730(void)
     SetTextFont(&Font_0203DB64);
     InitSystemTextFont();
 
-    PutXMapProgressPercent(&gUnk_Sio_0203DA88[0], GetStringFromIndex(0x77E), 0);
+    PutXMapProgressPercent(&gUnk_Sio_0203DA88[0], GetStringFromIndex(MSG_ID(0x77E)), 0);
     DrawStatBarGfx(0x100, 0xd, TILEMAP_LOCATED(gBG0TilemapBuffer, 14, 15), 0x6000, 100, 0, 100);
 
     BG_EnableSyncByMask(BG0_SYNC_BIT);

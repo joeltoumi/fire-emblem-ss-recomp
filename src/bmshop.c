@@ -339,7 +339,7 @@ void Shop_EntryDialogue(struct ProcShop * proc)
     }
     else
     {
-        StartShopDialogue(0x89A, proc);
+        StartShopDialogue(MSG_ID(0x89A), proc);
         // SHOP_TYPE_ARMORY: "Welcome to the armory.[A][NL2][NL]I deal in all sorts of goods.[.][NL][BuySell]"
         // SHOP_TYPE_VENDOR: "Welcome to the general store.[.][A][NL2][NL]How can I help you?[.][NL][BuySell]"
         // SHOP_TYPE_SECRET_SHOP: "Shhh... Hee hee...[A][NL2][NL]This is a secret shop![NL][BuySell]"
@@ -361,7 +361,7 @@ void Shop_HandleEntryDialoguePrompt(struct ProcShop * proc)
     case TALK_CHOICE_NO:
         if (GetUnitItemCount(proc->unit) == 0)
         {
-            StartShopDialogue(0x8AC, proc);
+            StartShopDialogue(MSG_ID(0x8AC), proc);
             // SHOP_TYPE_ARMORY: "You've got nothing to sell![.][A]"
             // SHOP_TYPE_VENDOR: "You have nothing to sell.[.][A]"
             // SHOP_TYPE_SECRET_SHOP: "You've got nothing to sell![.][A]"
@@ -377,7 +377,7 @@ void Shop_HandleEntryDialoguePrompt(struct ProcShop * proc)
 
 void Shop_BuyDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8A3, proc);
+    StartShopDialogue(MSG_ID(0x8A3), proc);
     // SHOP_TYPE_ARMORY: "What would you like?"
     // SHOP_TYPE_VENDOR: "What can I get for you?[.]"
     // SHOP_TYPE_SECRET_SHOP: "What do you need?[.]"
@@ -507,7 +507,7 @@ void Shop_Loop_BuyKeyHandler(struct ProcShop * proc)
     {
         if (price > (int)GetPartyGoldAmount())
         {
-            StartShopDialogue(0x8B2, proc);
+            StartShopDialogue(MSG_ID(0x8B2), proc);
             // SHOP_TYPE_ARMORY: "You don't have the money![.][A]"
             // SHOP_TYPE_VENDOR: "You're short of funds.[A]"
             // SHOP_TYPE_SECRET_SHOP: "Heh! Not enough money![A]"
@@ -517,7 +517,7 @@ void Shop_Loop_BuyKeyHandler(struct ProcShop * proc)
         else
         {
             SetTalkNumber(price);
-            StartShopDialogue(0x8B5, proc);
+            StartShopDialogue(MSG_ID(0x8B5), proc);
             // SHOP_TYPE_ARMORY: "How does [.][G] gold[.][NL]sound to you?[.][Yes]"
             // SHOP_TYPE_VENDOR: "That's worth [.][G] gold.[NL]Is that all right?[Yes]"
             // SHOP_TYPE_SECRET_SHOP: "That is worth [G] gold.[NL]Is that acceptable?[.][Yes]"
@@ -547,14 +547,14 @@ void Shop_TryAddItemToInventory(struct ProcShop * proc)
     {
         if (HasConvoyAccess())
         {
-            StartShopDialogue(0x8BE, proc);
+            StartShopDialogue(MSG_ID(0x8BE), proc);
             // SHOP_TYPE_ARMORY: "Looks like you're full.[.][A][NL2][NL]Send it to storage?[.][NL][Yes]"
             // SHOP_TYPE_VENDOR: "Your hands are full.[A][NL2][NL]Send it to storage?[.][NL][Yes]"
             // SHOP_TYPE_SECRET_SHOP: "Your hands are full.[A][NL2][NL]Send it to storage?[.][NL][Yes]"
         }
         else
         {
-            StartShopDialogue(0x8C1, proc);
+            StartShopDialogue(MSG_ID(0x8C1), proc);
             // SHOP_TYPE_ARMORY: "Looks like you're full.[.][A]"
             // SHOP_TYPE_VENDOR: "Your hands are full.[A]"
             // SHOP_TYPE_SECRET_SHOP: "Your hands are full.[A]"
@@ -580,14 +580,14 @@ void Shop_NoSendToConvoyDialogue(struct ProcShop * proc)
 {
     if (HasConvoyAccess())
     {
-        StartShopDialogue(0x8C7, proc);
+        StartShopDialogue(MSG_ID(0x8C7), proc);
         // SHOP_TYPE_ARMORY: "No? Too bad. You could[NL]take it if you made room.[.][A]"
         // SHOP_TYPE_VENDOR: "That's a shame. You could[.][NL]carry it if you made room.[A]"
         // SHOP_TYPE_SECRET_SHOP: "Ah, well... You could take[NL]it if you made room.[A]"
     }
     else
     {
-        StartShopDialogue(0x8CA, proc);
+        StartShopDialogue(MSG_ID(0x8CA), proc);
         // SHOP_TYPE_ARMORY: "Too bad you don't have a[NL]supply convoy to send it to.[A]"
         // SHOP_TYPE_VENDOR: "If you had some storage,[NL]I could send it there...[A]"
         // SHOP_TYPE_SECRET_SHOP: "If you had some storage,[NL]I could send it to you.[.][A]"
@@ -602,7 +602,7 @@ void Shop_AddItemToConvoy(struct ProcShop * proc)
 
 void Shop_SendToConvoyDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8C4, proc);
+    StartShopDialogue(MSG_ID(0x8C4), proc);
     // SHOP_TYPE_ARMORY: "Right. I'll send it now.[A]"
     // SHOP_TYPE_VENDOR: "Right. I'll have it sent.[.][A]"
     // SHOP_TYPE_SECRET_SHOP: "Heh heh... I'll send it then.[.][A]"
@@ -616,7 +616,7 @@ void Shop_CheckIfConvoyFull(struct ProcShop * proc)
 
 void Shop_ConvoyFullDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8CD, proc);
+    StartShopDialogue(MSG_ID(0x8CD), proc);
     // SHOP_TYPE_ARMORY: "Your storage is full, too![NL]Rearrange your things![A]"
     // SHOP_TYPE_VENDOR: "Your storage is full,[.][NL]too. Try again later.[.][A]"
     // SHOP_TYPE_SECRET_SHOP: "Heh... Your storage is full,[NL]too. Rearrange things...[A]"
@@ -624,7 +624,7 @@ void Shop_ConvoyFullDialogue(struct ProcShop * proc)
 
 void Shop_AnythingElseDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8A6, proc);
+    StartShopDialogue(MSG_ID(0x8A6), proc);
     // SHOP_TYPE_ARMORY: "Anything else?"
     // SHOP_TYPE_VENDOR: "Anything else?"
     // SHOP_TYPE_SECRET_SHOP: "Any other requests?[.]"
@@ -632,7 +632,7 @@ void Shop_AnythingElseDialogue(struct ProcShop * proc)
 
 void Shop_SellDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8A9, proc);
+    StartShopDialogue(MSG_ID(0x8A9), proc);
     // SHOP_TYPE_ARMORY: "What do you want to sell?[.]"
     // SHOP_TYPE_VENDOR: "What are you selling?[.]"
     // SHOP_TYPE_SECRET_SHOP: "What would you sell?"
@@ -706,7 +706,7 @@ void Shop_Loop_SellKeyHandler(struct ProcShop * proc)
     {
         if (!IsItemSellable(proc->unit->items[proc->head_loc]))
         {
-            StartShopDialogue(0x8BB, proc);
+            StartShopDialogue(MSG_ID(0x8BB), proc);
             // SHOP_TYPE_ARMORY: "I can't buy that.[.][A]"
             // SHOP_TYPE_VENDOR: "I can't buy that.[.][A]"
             // SHOP_TYPE_SECRET_SHOP: "Hee hee... Wait a minute.[.][NL]I can't buy that![.][A]"
@@ -716,7 +716,7 @@ void Shop_Loop_SellKeyHandler(struct ProcShop * proc)
         else
         {
             SetTalkNumber(GetItemSellPrice(proc->unit->items[proc->head_loc]));
-            StartShopDialogue(0x8B5, proc);
+            StartShopDialogue(MSG_ID(0x8B5), proc);
             // SHOP_TYPE_ARMORY: "How does [.][G] gold[.][NL]sound to you?[.][Yes]"
             // SHOP_TYPE_VENDOR: "That's worth [.][G] gold.[NL]Is that all right?[Yes]"
             // SHOP_TYPE_SECRET_SHOP: "That is worth [G] gold.[NL]Is that acceptable?[.][Yes]"
@@ -760,7 +760,7 @@ void Shop_HandleSellConfirmPrompt(struct ProcShop * proc)
 
 void Shop_SellAnythingElseDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8AF, proc);
+    StartShopDialogue(MSG_ID(0x8AF), proc);
     // SHOP_TYPE_ARMORY: "Selling anything else?"
     // SHOP_TYPE_VENDOR: "Anything else to sell?"
     // SHOP_TYPE_SECRET_SHOP: "What else are you selling?"
@@ -769,7 +769,7 @@ void Shop_SellAnythingElseDialogue(struct ProcShop * proc)
 void Shop_AnythingElseRestartDialogue(struct ProcShop * proc)
 {
     proc->head_loc = 0;
-    StartShopDialogue(0x89D, proc);
+    StartShopDialogue(MSG_ID(0x89D), proc);
     // SHOP_TYPE_ARMORY: "Do you need anything else?[NL][BuySell]"
     // SHOP_TYPE_VENDOR: "Anything else for you?[NL][BuySell]"
     // SHOP_TYPE_SECRET_SHOP: "Well? Anything else for you?[NL][BuySell]"
@@ -777,7 +777,7 @@ void Shop_AnythingElseRestartDialogue(struct ProcShop * proc)
 
 void Shop_AnythingElseContinueDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x8A0, proc);
+    StartShopDialogue(MSG_ID(0x8A0), proc);
     // SHOP_TYPE_ARMORY: "Do you need anything else?[NL][ShopContinue]"
     // SHOP_TYPE_VENDOR: "Can I do anything else for you?[.][NL][ShopContinue]"
     // SHOP_TYPE_SECRET_SHOP: "Is there anything else you need?[NL][ShopContinue]"
@@ -787,12 +787,12 @@ void Shop_ExitShopDialogue(struct ProcShop * proc)
 {
 
     if (proc->unit == 0) {
-        StartShopDialogue(0x898, proc);
+        StartShopDialogue(MSG_ID(0x898), proc);
         // SHOP_TYPE_ARMORY: "Come back again.[A]"
         // SHOP_TYPE_VENDOR: "Hope to see you again![A]"
         // SHOP_TYPE_SECRET_SHOP: "[N/A]"
     } else {
-        StartShopDialogue(0x8B8, proc);
+        StartShopDialogue(MSG_ID(0x8B8), proc);
         // SHOP_TYPE_ARMORY: "Come back again.[A]"
         // SHOP_TYPE_VENDOR: "Drop in again.[A]"
         // SHOP_TYPE_SECRET_SHOP: "Hee hee... Buh-bye![.][A]"
@@ -807,7 +807,7 @@ void Shop_OnExit(void)
 
 void Shop_PrepEntryDialogue(struct ProcShop * proc)
 {
-    StartShopDialogue(0x896, proc);
+    StartShopDialogue(MSG_ID(0x896), proc);
     // SHOP_TYPE_ARMORY: "Welcome to the armory![A][NL2][NL]These are the weapons[.][NL]we have for sale.[.][A]"
     // SHOP_TYPE_VENDOR: "Welcome to the[NL]general store![A][NL2][NL]Here are all the items[NL]we have for sale.[.][A]"
     // SHOP_TYPE_SECRET_SHOP: "[N/A]"
@@ -1166,7 +1166,7 @@ void DrawShopItemLine(struct Text * th, int item, struct Unit * unit, u16 * dst)
     if (IsItemSellable(item) != 0)
         PutNumber(dst + 0x11, TEXT_COLOR_SYSTEM_BLUE, GetItemSellPrice(item));
     else
-        Text_InsertDrawString(th, 0x5C, TEXT_COLOR_SYSTEM_BLUE, GetStringFromIndex(0x537));
+        Text_InsertDrawString(th, 0x5C, TEXT_COLOR_SYSTEM_BLUE, GetStringFromIndex(MSG_ID(0x537)));
 }
 
 u16 GetItemPurchasePrice(struct Unit * unit, int item)

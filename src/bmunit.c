@@ -36,20 +36,20 @@ EWRAM_DATA struct Unit gUnitArrayPurple[5] = {}; // Purple units
 CONST_DATA static int sStatusNameTextIdLookup[] = {
     // TODO: TEXT ID DEFINITIONS
 
-    [UNIT_STATUS_NONE]     = 0x536,
-    [UNIT_STATUS_POISON]   = 0x514,
-    [UNIT_STATUS_SLEEP]    = 0x515,
-    [UNIT_STATUS_SILENCED] = 0x516,
-    [UNIT_STATUS_BERSERK]  = 0x517,
-    [UNIT_STATUS_ATTACK]   = 0x51B,
-    [UNIT_STATUS_DEFENSE]  = 0x51C,
-    [UNIT_STATUS_CRIT]     = 0x51D,
-    [UNIT_STATUS_AVOID]    = 0x51E,
-    [UNIT_STATUS_SICK]     = 0x518,
-    [UNIT_STATUS_RECOVER]  = 0x519,
-    [UNIT_STATUS_PETRIFY]  = 0x51A,
+    [UNIT_STATUS_NONE]     = MSG_ID(0x536),
+    [UNIT_STATUS_POISON]   = MSG_ID(0x514),
+    [UNIT_STATUS_SLEEP]    = MSG_ID(0x515),
+    [UNIT_STATUS_SILENCED] = MSG_ID(0x516),
+    [UNIT_STATUS_BERSERK]  = MSG_ID(0x517),
+    [UNIT_STATUS_ATTACK]   = MSG_ID(0x51B),
+    [UNIT_STATUS_DEFENSE]  = MSG_ID(0x51C),
+    [UNIT_STATUS_CRIT]     = MSG_ID(0x51D),
+    [UNIT_STATUS_AVOID]    = MSG_ID(0x51E),
+    [UNIT_STATUS_SICK]     = MSG_ID(0x518),
+    [UNIT_STATUS_RECOVER]  = MSG_ID(0x519),
+    [UNIT_STATUS_PETRIFY]  = MSG_ID(0x51A),
     [UNIT_STATUS_12]       = 0,
-    [UNIT_STATUS_13]       = 0x51A,
+    [UNIT_STATUS_13]       = MSG_ID(0x51A),
 };
 
 struct Unit* CONST_DATA gUnitLookup[0x100] = { // unit lookup
@@ -1382,14 +1382,14 @@ const s8* GetUnitMovementCost(struct Unit* unit) {
     switch (gPlaySt.chapterWeatherId) {
 
     case WEATHER_RAIN:
-        return unit->pClassData->pMovCostTable[1];
+        return GBA_GET(const s8 *, unit->pClassData->pMovCostTable[1]);
 
     case WEATHER_SNOW:
     case WEATHER_SNOWSTORM:
-        return unit->pClassData->pMovCostTable[2];
+        return GBA_GET(const s8 *, unit->pClassData->pMovCostTable[2]);
 
     default:
-        return unit->pClassData->pMovCostTable[0];
+        return GBA_GET(const s8 *, unit->pClassData->pMovCostTable[0]);
 
     } // switch (gPlaySt.chapterWeatherId)
 }

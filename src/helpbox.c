@@ -245,12 +245,12 @@ void DisplayHelpBoxObj(int x, int y, int w, int h, int noHelpSprite) {
 int DrawHelpBoxWeaponLabels(int item)
 {
     Text_InsertDrawString(&gHelpBoxSt.text[0], 0, 8, GetWeaponTypeDisplayString(GetItemType(item)));
-    Text_InsertDrawString(&gHelpBoxSt.text[0], 47, 8, GetStringFromIndex(0x500)); // TODO: msg id "Rng[.]"
-    Text_InsertDrawString(&gHelpBoxSt.text[0], 97, 8, GetStringFromIndex(0x502)); // TODO: msg id "Wt"
+    Text_InsertDrawString(&gHelpBoxSt.text[0], 47, 8, GetStringFromIndex(MSG_ID(0x500))); // TODO: msg id "Rng[.]"
+    Text_InsertDrawString(&gHelpBoxSt.text[0], 97, 8, GetStringFromIndex(MSG_ID(0x502))); // TODO: msg id "Wt"
 
-    Text_InsertDrawString(&gHelpBoxSt.text[1], 0, 8, GetStringFromIndex(0x503)); // TODO: msg id "Mt"
-    Text_InsertDrawString(&gHelpBoxSt.text[1], 47, 8, GetStringFromIndex(0x4F4)); // TODO: msg id "Hit[.]}"
-    Text_InsertDrawString(&gHelpBoxSt.text[1], 97, 8, GetStringFromIndex(0x501)); // TODO: msg id "Crit"
+    Text_InsertDrawString(&gHelpBoxSt.text[1], 0, 8, GetStringFromIndex(MSG_ID(0x503))); // TODO: msg id "Mt"
+    Text_InsertDrawString(&gHelpBoxSt.text[1], 47, 8, GetStringFromIndex(MSG_ID(0x4F4))); // TODO: msg id "Hit[.]}"
+    Text_InsertDrawString(&gHelpBoxSt.text[1], 97, 8, GetStringFromIndex(MSG_ID(0x501))); // TODO: msg id "Crit"
 
     return 2;
 }
@@ -270,9 +270,9 @@ void DrawHelpBoxWeaponStats(int item)
 //! FE8U = 0x08089D50
 int DrawHelpBoxStaffLabels(int item)
 {
-    Text_InsertDrawString(&gHelpBoxSt.text[0], 0, 8, GetStringFromIndex(0x509)); // TODO: msg id "Staff[.]"
+    Text_InsertDrawString(&gHelpBoxSt.text[0], 0, 8, GetStringFromIndex(MSG_ID(0x509))); // TODO: msg id "Staff[.]"
     Text_InsertDrawString(&gHelpBoxSt.text[0], 30, 7, GetItemDisplayRankString(item));
-    Text_InsertDrawString(&gHelpBoxSt.text[0], 48, 8, GetStringFromIndex(0x500)); // TODO: msg id "Rng[.]"
+    Text_InsertDrawString(&gHelpBoxSt.text[0], 48, 8, GetStringFromIndex(MSG_ID(0x500))); // TODO: msg id "Rng[.]"
     Text_InsertDrawString(&gHelpBoxSt.text[0], 70, 7, GetItemDisplayRangeString(item));
     return 1;
 }
@@ -280,8 +280,8 @@ int DrawHelpBoxStaffLabels(int item)
 //! FE8U = 0x08089DB0
 void DrawHelpBoxSaveMenuLabels(void)
 {
-    Text_InsertDrawString(&gHelpBoxSt.text[0], 0, 8, GetStringFromIndex(0x147)); // TODO: msg id "Base"
-    Text_InsertDrawString(&gHelpBoxSt.text[0], 90, 8, GetStringFromIndex(0x148)); // TODO: msg id "LV"
+    Text_InsertDrawString(&gHelpBoxSt.text[0], 0, 8, GetStringFromIndex(MSG_ID(0x147))); // TODO: msg id "Base"
+    Text_InsertDrawString(&gHelpBoxSt.text[0], 90, 8, GetStringFromIndex(MSG_ID(0x148))); // TODO: msg id "LV"
 }
 
 //! FE8U = 0x08089DE8
@@ -294,7 +294,7 @@ void DrawHelpBoxSaveMenuStats(void)
     if (str != 0) {
         Text_InsertDrawString(&gHelpBoxSt.text[0], 26, 7, str);
     } else {
-        Text_InsertDrawString(&gHelpBoxSt.text[0], 26, 7, GetStringFromIndex(0x538));
+        Text_InsertDrawString(&gHelpBoxSt.text[0], 26, 7, GetStringFromIndex(MSG_ID(0x538)));
     }
 
     level = GetLeaderLevelForSaveMenu();
@@ -302,7 +302,7 @@ void DrawHelpBoxSaveMenuStats(void)
     if (level >= 0) {
         Text_InsertDrawNumberOrBlank(&gHelpBoxSt.text[0], 116, 7, level);
     } else {
-        Text_InsertDrawString(&gHelpBoxSt.text[0], 108, 7, GetStringFromIndex(0x535));
+        Text_InsertDrawString(&gHelpBoxSt.text[0], 108, 7, GetStringFromIndex(MSG_ID(0x535)));
     }
 
     return;

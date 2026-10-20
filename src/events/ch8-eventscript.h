@@ -415,14 +415,14 @@ int MenuCommand_DrawRouteSplit(struct MenuProc* menu, struct MenuItemProc* menu_
 u8 Command_EirikaMode(struct MenuProc* menu, struct MenuItemProc* menu_item)
 {
     gPlaySt.chapterModeIndex = CHAPTER_MODE_EIRIKA;
-    SetEventSlotC(0xC17);
+    SetEventSlotC(MSG_ID(0xC17));
     return MENU_ACT_CLEAR | MENU_ACT_SND6A | MENU_ACT_END | MENU_ACT_SKIPCURSOR;
 }
 
 u8 Command_EphraimMode(struct MenuProc* menu, struct MenuItemProc* menu_item)
 {
     gPlaySt.chapterModeIndex = CHAPTER_MODE_EPHRAIM;
-    SetEventSlotC(0xC18);
+    SetEventSlotC(MSG_ID(0xC18));
     return MENU_ACT_CLEAR | MENU_ACT_SND6A | MENU_ACT_END | MENU_ACT_SKIPCURSOR;
 }
 

@@ -2626,13 +2626,13 @@ static DECL_INFO sHelpInfo_08A00DD8 =
 static DECL_INFO sHelpInfo_08A00DF4 =
 {
     &sHelpInfo_08A00DD8, &sHelpInfo_08A00E10, &gHelpInfo_Ss1CharName, NULL,
-    104, 72, 3, HbRedirect_SSItem, HbPopulate_SSItem,
+    104, 72, MSG_ID(0x003), HbRedirect_SSItem, HbPopulate_SSItem,
 };
 
 static DECL_INFO sHelpInfo_08A00E10 =
 {
     &sHelpInfo_08A00DF4, &sHelpInfo_08A00E2C, &gHelpInfo_Ss1CharName, &sHelpInfo_08A00E64,
-    104, 88, 4, HbRedirect_SSItem, HbPopulate_SSItem,
+    104, 88, MSG_ID(0x004), HbRedirect_SSItem, HbPopulate_SSItem,
 };
 
 static DECL_INFO sHelpInfo_08A00E2C =
@@ -2729,7 +2729,7 @@ static DECL_INFO sHelpInfo_08A00F7C =
 static DECL_INFO sHelpInfo_08A00F98 =
 {
     &sHelpInfo_08A00F7C, &sHelpInfo_08A00FB4, &sHelpInfo_08A00F60, NULL,
-    168, 40, 3, NULL, HbPopulate_SSWExp,
+    168, 40, MSG_ID(0x003), NULL, HbPopulate_SSWExp,
 };
 
 static DECL_INFO sHelpInfo_08A00FB4 =

@@ -267,9 +267,9 @@ void sub_80ABF74(u8 param_1)
 
 u16 CONST_DATA gTextIds_DifficultyDescription[] =
 {
-    0x0149, // TODO: msgid "For first-timers.[.][NL]Game rules and[NL]controls will be[NL]explained as you[NL]play.[.]"
-    0x014A, // TODO: msgid "For experienced[.][NL]players. No game-[.][NL]play hints will[.][NL]be provided as[NL]you play.[.]"
-    0x014B, // TODO: msgid "For players seeking[.][NL]a real challenge.[.][NL]No instructions are[.][NL]given & difficulty[NL]is set to high.[.]"
+    MSG_ID(0x149), // TODO: msgid "For first-timers.[.][NL]Game rules and[NL]controls will be[NL]explained as you[NL]play.[.]"
+    MSG_ID(0x14A), // TODO: msgid "For experienced[.][NL]players. No game-[.][NL]play hints will[.][NL]be provided as[NL]you play.[.]"
+    MSG_ID(0x14B), // TODO: msgid "For players seeking[.][NL]a real challenge.[.][NL]No instructions are[.][NL]given & difficulty[NL]is set to high.[.]"
 };
 
 //! FE8U = 0x080ABFE0

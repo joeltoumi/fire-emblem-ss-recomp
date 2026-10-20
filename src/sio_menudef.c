@@ -114,7 +114,7 @@ struct MenuItemDef CONST_DATA MenuItems_085AAC5C[] =
 {
     {
         .name = "",
-        .overrideId = 3,
+        .overrideId = MSG_ID(0x003),
         .isAvailable = sub_804D858,
         .onDraw = sub_804D8DC,
         .onSelected = sub_804D8A4,
@@ -122,7 +122,7 @@ struct MenuItemDef CONST_DATA MenuItems_085AAC5C[] =
 
     {
         .name = "",
-        .overrideId = 4,
+        .overrideId = MSG_ID(0x004),
         .isAvailable = sub_804D858,
         .onDraw = sub_804D8DC,
         .onSelected = sub_804D8A4,
@@ -130,7 +130,7 @@ struct MenuItemDef CONST_DATA MenuItems_085AAC5C[] =
 
     {
         .name = "",
-        .overrideId = 5,
+        .overrideId = MSG_ID(0x005),
         .isAvailable = sub_804D858,
         .onDraw = sub_804D8DC,
         .onSelected = sub_804D8A4,
@@ -138,7 +138,7 @@ struct MenuItemDef CONST_DATA MenuItems_085AAC5C[] =
 
     {
         .name = "",
-        .overrideId = 6,
+        .overrideId = MSG_ID(0x006),
         .isAvailable = sub_804D858,
         .onDraw = sub_804D8DC,
         .onSelected = sub_804D8A4,
@@ -146,7 +146,7 @@ struct MenuItemDef CONST_DATA MenuItems_085AAC5C[] =
 
     {
         .name = "",
-        .overrideId = 7,
+        .overrideId = MSG_ID(0x007),
         .isAvailable = sub_804D858,
         .onDraw = sub_804D8DC,
         .onSelected = sub_804D8A4,

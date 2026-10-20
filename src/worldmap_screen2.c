@@ -279,7 +279,7 @@ const char * GetWorldMapNodeName(u32 nodeId)
         return GetStringFromIndex(nodeId[gWMNodeData].nameTextId);
     }
 
-    return GetStringFromIndex(0x066D); // TODO: msgid "[DashedLine][DashedLine][DashedLine][DashedLine][DashedLine]"
+    return GetStringFromIndex(MSG_ID(0x66D)); // TODO: msgid "[DashedLine][DashedLine][DashedLine][DashedLine][DashedLine]"
 }
 
 const u8 gUnknown_08206450[2][0x1d] =

@@ -19,9 +19,9 @@ from pathlib import Path
 
 NM = "arm-none-eabi-nm"
 
-# Sources that only hold event data (see main).
+# Sources that only hold game data the port reads from the ROM (see main).
 EVENT_DATA_OBJS = ["events_info", "events_wm", "events_trapdata", "events_shoplist", "events_udefs",
-                   "data_battlequotes"]
+                   "data_battlequotes", "data_characters", "data_classes", "data_items", "data_event_trigger"]
 # Sources whose event scripts (Event*) are read from the ROM; their code and
 # other data stay native. The port compiles these with PORT_ROM_EVENT_SCRIPTS.
 EVENT_SCRIPT_OBJS = ["events_script", "events_script_utils", "eventscr", "bmtrade", "sio_battlemap", "sio_event"]
@@ -56,9 +56,10 @@ def main():
     # The texts: src/msg_data.c is generated from texts/ (the English script
     # the decomp ships); the port uses the ROM's own text instead.
     objs.append(root / "src" / "msg_data.o")
-    # The chapter events, unit definitions and battle quotes are C data in
-    # the decomp, but they hold GBA pointers (and, on other versions of the
-    # game, other message ids): the port reads them from the ROM too.
+    # The chapter events, unit definitions, battle quotes and the character,
+    # class and item tables are C data in the decomp, but they hold GBA
+    # pointers and message ids (which differ in other versions of the game):
+    # the port reads them from the ROM too.
     objs += [root / "src" / f"{n}.o" for n in EVENT_DATA_OBJS]
     seen = set()
     rows = []

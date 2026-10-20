@@ -960,14 +960,14 @@ s8 sub_808F824(int textCode)
 
 int CONST_DATA gTextIds_AskExit[] =
 {
-    0x0847, // TODO: msgid "Ask[.]"
-    0x0848, // TODO: msgid "Exit"
+    MSG_ID(0x847), // TODO: msgid "Ask[.]"
+    MSG_ID(0x848), // TODO: msgid "Exit"
 };
 
 int CONST_DATA gTextIds_YesNo[] =
 {
-    0x0843, // TODO: msgid "Yes[.]"
-    0x0844, // TODO: msgid "No"
+    MSG_ID(0x843), // TODO: msgid "Yes[.]"
+    MSG_ID(0x844), // TODO: msgid "No"
 };
 
 //! FE8U = 0x0808F8B4

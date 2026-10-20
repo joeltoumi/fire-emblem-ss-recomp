@@ -167,7 +167,7 @@ CONST_DATA struct MenuItemDef gMenuItem_PromoSel[] = {
     {
         "　第１兵種",
         0,
-        0x6DC,  /* Discard items. Important[NL]items cannot be discarded. */
+        MSG_ID(0x6DC),  /* Discard items. Important[NL]items cannot be discarded. */
         TEXT_COLOR_SYSTEM_WHITE,
         0,
         MenuAlwaysEnabled,
@@ -180,7 +180,7 @@ CONST_DATA struct MenuItemDef gMenuItem_PromoSel[] = {
     {
         "　第２兵種",
         0,
-        0x6DC,  /* Discard items. Important[NL]items cannot be discarded. */
+        MSG_ID(0x6DC),  /* Discard items. Important[NL]items cannot be discarded. */
         TEXT_COLOR_SYSTEM_WHITE,
         1,
         MenuAlwaysEnabled,
@@ -193,7 +193,7 @@ CONST_DATA struct MenuItemDef gMenuItem_PromoSel[] = {
     {
         "　第３兵種",
         0,
-        0x6DC,  /* Discard items. Important[NL]items cannot be discarded. */
+        MSG_ID(0x6DC),  /* Discard items. Important[NL]items cannot be discarded. */
         TEXT_COLOR_SYSTEM_WHITE,
         2,
         ClassChgMenuItem_3rdUsability,

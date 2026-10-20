@@ -341,7 +341,7 @@ void PrepUnit_DrawPickLeftBar(struct ProcPrepUnit *proc, s8 val)
             TILEMAP_LOCATED(gBG0TilemapBuffer, 0xD, 0x1),
             TEXT_COLOR_SYSTEM_WHITE,
             6, 0,
-            GetStringFromIndex(0x5A1)   /* Pick */
+            GetStringFromIndex(MSG_ID(0x5A1))   /* Pick */
         );
 
         PutDrawText(
@@ -349,7 +349,7 @@ void PrepUnit_DrawPickLeftBar(struct ProcPrepUnit *proc, s8 val)
             TILEMAP_LOCATED(gBG0TilemapBuffer, 0xD, 0x1),
             TEXT_COLOR_SYSTEM_WHITE,
             0x29, 0,
-            GetStringFromIndex(0x5A2)   /* Units Left */
+            GetStringFromIndex(MSG_ID(0x5A2))   /* Units Left */
         );
     }
 
@@ -425,7 +425,7 @@ s8 PrepUnit_HandlePressA(struct ProcPrepUnit *proc)
         StartPrepErrorHelpbox(
             (ilist & 1) * 56 + 0x70,
             (ilist / 2) * 16 - proc->yDiff_cur + 0x18,
-            0xC52,    /* This unit cannot take part[NL]in this chapter. */
+            MSG_ID(0xC52),    /* This unit cannot take part[NL]in this chapter. */
             proc
         );
         return 0;
@@ -437,7 +437,7 @@ s8 PrepUnit_HandlePressA(struct ProcPrepUnit *proc)
             StartPrepErrorHelpbox(
                 (ilist & 1) * 56 + 0x70,
                 (ilist / 2) * 16 - proc->yDiff_cur + 0x18,
-                0x88A,    /* This unit cannot be deployed.[.] */
+                MSG_ID(0x88A),    /* This unit cannot be deployed.[.] */
                 proc
             );
             return 0;
@@ -448,7 +448,7 @@ s8 PrepUnit_HandlePressA(struct ProcPrepUnit *proc)
             StartPrepErrorHelpbox(
                 (ilist & 1) * 56 + 0x70,
                 (ilist / 2) * 16 - proc->yDiff_cur + 0x18,
-                0x889,    /* This unit has no usable[.][NL]weapons, so it cannot join.[.] */
+                MSG_ID(0x889),    /* This unit has no usable[.][NL]weapons, so it cannot join.[.] */
                 proc
             );
             return 0;

@@ -27,8 +27,8 @@ struct ItemData
 
     /* 08 */ u32 attributes;
 
-    /* 0C */ const struct ItemStatBonuses* pStatBonuses;
-    /* 10 */ const u8* pEffectiveness;
+    /* 0C */ GBA_PTR(const struct ItemStatBonuses*) pStatBonuses;
+    /* 10 */ GBA_PTR(const u8*) pEffectiveness;
 
     /* 14 */ u8  maxUses;
 

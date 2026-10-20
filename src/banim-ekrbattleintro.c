@@ -954,10 +954,10 @@ bool PrepareBattleGraphicsMaybe(void)
     valid_r = gBanimValid[POS_R];
 
     if (valid_l)
-        animdef1 = unit_bu1->pClassData->pBattleAnimDef;
+        animdef1 = GBA_GET(const struct BattleAnimDef *, unit_bu1->pClassData->pBattleAnimDef);
 
     if (valid_r)
-        animdef2 = unit_bu2->pClassData->pBattleAnimDef;
+        animdef2 = GBA_GET(const struct BattleAnimDef *, unit_bu2->pClassData->pBattleAnimDef);
 
     if (valid_l)
     {

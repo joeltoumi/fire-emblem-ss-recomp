@@ -273,13 +273,13 @@ void NewPopup2_PlanD(ProcPtr parent, int item, int msg0, int msg1)
 void NewPopup2_DropItem(ProcPtr parent, int item)
 {
     NewPopup2_PlanD(parent, item,
-        0x00F,        /* Dropped */
-        0x022);      /* .[.] */
+        MSG_ID(0x00F),        /* Dropped */
+        MSG_ID(0x022));      /* .[.] */
 }
 
 void NewPopup2_SendItem(ProcPtr parent, int item)
 {
     NewPopup2_PlanD(parent, item,
-    0x010,           /* Sent [.] */
-    0x011);          /* .[.] */
+    MSG_ID(0x010),           /* Sent [.] */
+    MSG_ID(0x011));          /* .[.] */
 }

@@ -97,7 +97,7 @@ u8 MapMenu_IsSuspendCommandAvailable(const struct MenuItemDef* def, int number) 
 
 u8 MapMenu_SuspendCommand(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x864); // TODO: msgid "You cannot stop in the[NL]middle of the tutorial.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x864)); // TODO: msgid "You cannot stop in the[NL]middle of the tutorial.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -441,7 +441,7 @@ u8 GiveSelection_OnSelect(ProcPtr proc, struct SelectTarget* target) {
 u8 UnitActionMenu_Attack(struct MenuProc* menu, struct MenuItemProc* menuItem) {
 
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x858); // TODO: msgid "There's no more ammo for[NL]the ballista.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x858)); // TODO: msgid "There's no more ammo for[NL]the ballista.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -755,7 +755,7 @@ u8 VisitCommandUsability(const struct MenuItemDef* def, int number) {
 
 u8 VisitCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x84C); // TODO: msgid "You can't visit villages or[.][NL]houses while Silenced."
+        MenuFrozenHelpBox(menu, MSG_ID(0x84C)); // TODO: msgid "You can't visit villages or[.][NL]houses while Silenced."
         return MENU_ACT_SND6B;
     }
 
@@ -1141,7 +1141,7 @@ u8 ItemSubMenu_UseItem(struct MenuProc* menu, struct MenuItemProc* menuItem) {
 
 u8 ItemSubMenu_EquipItem(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x84D); // TODO: msgid "You can't equip[.][NL]this weapon."
+        MenuFrozenHelpBox(menu, MSG_ID(0x84D)); // TODO: msgid "You can't equip[.][NL]this weapon."
         return MENU_ACT_SND6B;
     }
 
@@ -1168,7 +1168,7 @@ u8 ItemSubMenu_DiscardItem(struct MenuProc* menu, struct MenuItemProc* menuItem)
     struct MenuRect rect;
 
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x84F); // TODO: msgid "Treasure can't be dropped."
+        MenuFrozenHelpBox(menu, MSG_ID(0x84F)); // TODO: msgid "Treasure can't be dropped."
         return MENU_ACT_SND6B;
     }
 
@@ -1293,7 +1293,7 @@ u8 StaffCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     ProcPtr proc;
 
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x851); // TODO: msgid "You can't use a staff[.][NL]while Silenced.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x851)); // TODO: msgid "You can't use a staff[.][NL]while Silenced.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -1408,7 +1408,7 @@ u8 TalkCommandUsability(const struct MenuItemDef* def, int number) {
 u8 TalkCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
 
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x852); // TODO: msgid "You can't speak[.][NL]while Silenced.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x852)); // TODO: msgid "You can't speak[.][NL]while Silenced.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -1452,7 +1452,7 @@ u8 SupportCommandUsability(const struct MenuItemDef* def, int number) {
 u8 SupportCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
 
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x852); // TODO: msgid "You can't speak[.][NL]while Silenced.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x852)); // TODO: msgid "You can't speak[.][NL]while Silenced.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -1740,9 +1740,9 @@ u8 ArenaCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
 
     if (menuItem->availability == MENU_DISABLED) {
         if (IsUnitMagicSealed(gActiveUnit)) {
-            MenuFrozenHelpBox(menu, 0x853); // TODO: msgid "You can't enter the[.][NL]arena while Silenced.[.]"
+            MenuFrozenHelpBox(menu, MSG_ID(0x853)); // TODO: msgid "You can't enter the[.][NL]arena while Silenced.[.]"
         } else {
-            MenuFrozenHelpBox(menu, 0x854); // TODO: msgid "You can't fight, so you[.][NL]can't enter the arena."
+            MenuFrozenHelpBox(menu, MSG_ID(0x854)); // TODO: msgid "You can't fight, so you[.][NL]can't enter the arena."
         }
 
         return MENU_ACT_SND6B;
@@ -1777,7 +1777,7 @@ u8 StealCommandUsability(const struct MenuItemDef* def, int number) {
 
 u8 StealCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x862); // TODO msgid "Your inventory is full.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x862)); // TODO msgid "Your inventory is full.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -1792,7 +1792,7 @@ u8 StealCommandEffect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
 
 void StealMapSelect_Init(ProcPtr menu) {
     StartUnitInventoryInfoWindow(menu);
-    StartSubtitleHelp(menu, GetStringFromIndex(0x86D)); // TODO: msgid "Select which unit to steal from."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x86D))); // TODO: msgid "Select which unit to steal from."
 
     return;
 }
@@ -1851,7 +1851,7 @@ int StealItemMenuCommand_Draw(struct MenuProc* menu, struct MenuItemProc* menuIt
 
 u8 StealItemMenuCommand_Effect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     if (menuItem->availability == MENU_DISABLED) {
-        MenuFrozenHelpBox(menu, 0x855); // TODO: msgid "Weapons, magic, and[.][NL]staves can't be stolen.[.]"
+        MenuFrozenHelpBox(menu, MSG_ID(0x855)); // TODO: msgid "Weapons, magic, and[.][NL]staves can't be stolen.[.]"
         return MENU_ACT_SND6B;
     }
 
@@ -2035,7 +2035,7 @@ u8 HealMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target) {
 
 void RescueSelection_OnConstruction(ProcPtr proc) {
     RefreshUnitTakeRescueInfoWindows(proc);
-    StartSubtitleHelp(proc, GetStringFromIndex(0x868)); // TODO: msgid "Select a unit to rescue."
+    StartSubtitleHelp(proc, GetStringFromIndex(MSG_ID(0x868))); // TODO: msgid "Select a unit to rescue."
 
     return;
 }
@@ -2049,7 +2049,7 @@ u8 RescueSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
 }
 
 void DropSelection_OnConstruction(ProcPtr menu) {
-    StartSubtitleHelp(menu, GetStringFromIndex(0x869)); // TODO: msgid "Select which space to drop the unit into.[.]"
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x869))); // TODO: msgid "Select which space to drop the unit into.[.]"
 
     return;
 }
@@ -2061,7 +2061,7 @@ void sub_80246DC(void) {
 void GiveSelection_OnInit(ProcPtr menu) {
     StartUnitGiveInfoWindows(menu);
 
-    StartSubtitleHelp(menu, GetStringFromIndex(0x86B)); // TODO: msgid "Select a unit to give the traveler to."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x86B))); // TODO: msgid "Select a unit to give the traveler to."
     return;
 }
 
@@ -2076,7 +2076,7 @@ u8 GiveSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
 void TakeSelection_OnInit(ProcPtr menu) {
     RefreshUnitTakeRescueInfoWindows(menu);
 
-    StartSubtitleHelp(menu, GetStringFromIndex(0x86A)); // TODO: msgid "Select a unit to receive the traveler."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x86A))); // TODO: msgid "Select a unit to receive the traveler."
 
     return;
 }
@@ -2090,7 +2090,7 @@ u8 TakeSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
 
 void TradeTargetSelection_OnInit(ProcPtr menu) {
     StartUnitInventoryInfoWindow(menu);
-    StartSubtitleHelp(menu, GetStringFromIndex(0x86C)); // TODO: msgid "Select which unit to trade with."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x86C))); // TODO: msgid "Select which unit to trade with."
 
     return;
 }
@@ -2105,7 +2105,7 @@ u8 TradeSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
 
 void TalkSupportSelection_OnInit(ProcPtr menu) {
     StartUnitHpInfoWindow(menu);
-    StartSubtitleHelp(menu, GetStringFromIndex(0x86F)); // TODO: msgid "Select which unit to speak to."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x86F))); // TODO: msgid "Select which unit to speak to."
 
     return;
 }
@@ -2119,7 +2119,7 @@ u8 TalkSupportSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
 
 void RefreshMapSelect_Init(ProcPtr menu) {
     StartUnitHpInfoWindow(menu);
-    StartSubtitleHelp(menu, GetStringFromIndex(0x870)); // TODO: msgid "Select unit to refresh.[.]"
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x870))); // TODO: msgid "Select unit to refresh.[.]"
 
     return;
 }
@@ -2147,7 +2147,7 @@ u8 WarpUnitMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target) {
 
 void SummonSelection_OnInit(ProcPtr menu) {
 
-    StartSubtitleHelp(menu, GetStringFromIndex(0x880)); // TODO: msgid "Select which space to summon into."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x880))); // TODO: msgid "Select which space to summon into."
     return;
 }
 
@@ -2155,7 +2155,7 @@ u8 SummonSelection_OnChange(ProcPtr proc, struct SelectTarget * target) {
 }
 
 void sub_8024888(ProcPtr menu) {
-    StartSubtitleHelp(menu, GetStringFromIndex(0x880)); // TODO: msgid "Select which space to summon into."
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x880))); // TODO: msgid "Select which space to summon into."
 
     return;
 }
@@ -2166,7 +2166,7 @@ void sub_80248A4(void) {
 
 void PickSelection_OnInit(ProcPtr menu) {
 
-    StartSubtitleHelp(menu, GetStringFromIndex(0x881)); // TODO: msgid "Select which space to use picks on.[.]"
+    StartSubtitleHelp(menu, GetStringFromIndex(MSG_ID(0x881))); // TODO: msgid "Select which space to use picks on.[.]"
 
     return;
 }

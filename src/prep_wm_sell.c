@@ -32,8 +32,8 @@ void WmSell_DrawSupplyDialogueSpriteText(void) {
 }
 
 int CONST_DATA gShopSellTextIndexLookup[] = {
-    0x5A3, // TODO msgid "Sell unwanted items."
-    0x5A4, // TODO msgid "Are you sure?"
+    MSG_ID(0x5A3), // TODO msgid "Sell unwanted items."
+    MSG_ID(0x5A4), // TODO msgid "Are you sure?"
 };
 
 char * CONST_DATA gpShopSellStringBuffer = gBufPrep;
@@ -95,9 +95,9 @@ void sub_809FE68(void) {
 
     SpriteText_DrawBackgroundExt(&_PrepItemSuppyTexts->textC, 0);
 
-    Text_InsertDrawString(&_PrepItemSuppyTexts->textC, 0, 0, GetStringFromIndex(0x059C)); // TODO msgid "Sell     Quit[.]"
-    Text_InsertDrawString(&_PrepItemSuppyTexts->textC, 64, 0, GetStringFromIndex(0x059B)); // TODO msgid "Sell?[.]"
-    Text_InsertDrawString(&_PrepItemSuppyTexts->textC, 128, 3, GetStringFromIndex(0x059D)); // TODO msgid "Value[.]"
+    Text_InsertDrawString(&_PrepItemSuppyTexts->textC, 0, 0, GetStringFromIndex(MSG_ID(0x59C))); // TODO msgid "Sell     Quit[.]"
+    Text_InsertDrawString(&_PrepItemSuppyTexts->textC, 64, 0, GetStringFromIndex(MSG_ID(0x59B))); // TODO msgid "Sell?[.]"
+    Text_InsertDrawString(&_PrepItemSuppyTexts->textC, 128, 3, GetStringFromIndex(MSG_ID(0x59D))); // TODO msgid "Value[.]"
 
     SetTextFont(0);
 
@@ -164,7 +164,7 @@ void WmSell_PutSupplyFaceAndText(void) {
 
     TileMap_FillRect(gBG0TilemapBuffer + 0x34, 12, 1, 0);
 
-    PutDrawText(&_PrepItemSuppyTexts->textA, gBG0TilemapBuffer + 0x34 + 0x6d, 0, 2, 0, GetStringFromIndex(0x598)); // TODO msgid "Supply"
+    PutDrawText(&_PrepItemSuppyTexts->textA, gBG0TilemapBuffer + 0x34 + 0x6d, 0, 2, 0, GetStringFromIndex(MSG_ID(0x598))); // TODO msgid "Supply"
     PutFaceChibi(FID_SUPPLY, gBG0TilemapBuffer + 0x34 - 0x13, 0x270, 2, 1);
 
     BG_EnableSyncByMask(1);
@@ -363,7 +363,7 @@ void WmSell_OnLoop_MainKeyHandler(struct WmSellProc* proc) {
                 StartPrepErrorHelpbox(
                     16,
                     proc->unk_30 * 16 + 72,
-                    0x850, // TODO: msgid "Treasure can't be sold.[.]"
+                    MSG_ID(0x850), // TODO: msgid "Treasure can't be sold.[.]"
                     proc
                 );
             } else {

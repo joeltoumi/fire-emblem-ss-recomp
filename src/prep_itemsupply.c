@@ -36,9 +36,9 @@ void sub_809D244(void)
 }
 
 int CONST_DATA gSupplyTextIndexLookup[] = {
-    0x5A5, // TODO: msgid "What'll you do?[.]"
-    0x5A6, // TODO: msgid "I'll take it.[.]"
-    0x5A7, // TODO: msgid "Here you go!"
+    MSG_ID(0x5A5), // TODO: msgid "What'll you do?[.]"
+    MSG_ID(0x5A6), // TODO: msgid "I'll take it.[.]"
+    MSG_ID(0x5A7), // TODO: msgid "Here you go!"
 };
 
 char* CONST_DATA gpPrepItemSupplyStringBuffer = gBufPrep;
@@ -78,7 +78,7 @@ void sub_809D300(struct Text * textBase, u16 * tm, int yLines, struct Unit * uni
 
     if (gUnknown_02012F56 == 0) {
         ClearText(textBase);
-        Text_InsertDrawString(textBase, 0, 1, GetStringFromIndex(0x5a8)); // TODO: msgid "Nothing[.]"
+        Text_InsertDrawString(textBase, 0, 1, GetStringFromIndex(MSG_ID(0x5A8))); // TODO: msgid "Nothing[.]"
         PutText(textBase, tm + 3);
         return;
     }
@@ -236,14 +236,14 @@ void sub_809D644(struct PrepItemSupplyProc * proc)
         th,
         0,
         color,
-        GetStringFromIndex(0x59E) // TODO: msgid "Give"
+        GetStringFromIndex(MSG_ID(0x59E)) // TODO: msgid "Give"
     );
 
     Text_InsertDrawString(
         &PrepItemSuppyTexts.th[0xf],
         0x40,
         unitItemCount == UNIT_ITEM_COUNT ? 1 : 0,
-        GetStringFromIndex(0x59F) // TODO: msgid "Take"
+        GetStringFromIndex(MSG_ID(0x59F)) // TODO: msgid "Take"
     );
 
     SetTextFont(NULL);
@@ -255,9 +255,9 @@ void sub_809D6CC(void)
     SetTextFont(NULL);
     TileMap_FillRect(gBG0TilemapBuffer + 0x34, 12, 1, 0);
 
-    PutDrawText(&PrepItemSuppyTexts.th[0], gBG0TilemapBuffer + 0x34 + 0x6d, 0, 2, 0, GetStringFromIndex(0x598));
+    PutDrawText(&PrepItemSuppyTexts.th[0], gBG0TilemapBuffer + 0x34 + 0x6d, 0, 2, 0, GetStringFromIndex(MSG_ID(0x598)));
     PutFaceChibi(FID_SUPPLY, gBG0TilemapBuffer + 0x34 - 0x13, 0x270, 2, 1);
-    PutDrawText(&PrepItemSuppyTexts.th[0] + 1, gBG0TilemapBuffer + 0x34 - 1, 0, 4, 0, GetStringFromIndex(0x5a0));
+    PutDrawText(&PrepItemSuppyTexts.th[0] + 1, gBG0TilemapBuffer + 0x34 - 1, 0, 4, 0, GetStringFromIndex(MSG_ID(0x5A0)));
 
     PutNumber(
         gBG0TilemapBuffer + 0x34 + 5,
@@ -480,8 +480,8 @@ void sub_809DC70(struct PrepItemSupplyProc * proc)
 }
 
 int CONST_DATA gSupplyHelpTextIndexLookup[] = {
-    0x5B6, // TODO: msgid "Put items in storage. Up to[.][NL]100 items can be put in storage."
-    0x5B7, // TODO: msgid "Receive item.[.][NL]A unit can carry up to 5 items.[.]"
+    MSG_ID(0x5B6), // TODO: msgid "Put items in storage. Up to[.][NL]100 items can be put in storage."
+    MSG_ID(0x5B7), // TODO: msgid "Receive item.[.][NL]A unit can carry up to 5 items.[.]"
 };
 
 //! FE8U = 0x0809DCD4
@@ -1058,7 +1058,7 @@ void PrepItemSupply_Loop_UnitInvKeyHandler(struct PrepItemSupplyProc * proc)
 
         if (gKeyStatusPtr->newKeys & A_BUTTON) {
             if (sub_8097F98(proc->unit, proc->unitInvIdx) == 0) {
-                StartPrepErrorHelpbox(-1, -1, 0x88B, proc); // TODO: msgid "If you have no usable[.][NL]weapons, you cannot attack.[.]"
+                StartPrepErrorHelpbox(-1, -1, MSG_ID(0x88B), proc); // TODO: msgid "If you have no usable[.][NL]weapons, you cannot attack.[.]"
                 return;
             }
             PrepItemSupply_GiveItemToSupply(proc);

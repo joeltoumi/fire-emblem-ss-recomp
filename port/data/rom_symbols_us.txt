@@ -7207,6 +7207,9 @@ Img_EkrPopup 08803b30
 gUnknown_08803BD0 08803bd0
 Pal_EkrPopup 08803cb0
 Tsa_EkrPopup 08803cd0
+gCharacterData 08803d64
+gClassData 08807164
+gItemData 08809b10
 portrait_Mystery_faded_palette 0880d3f8
 portrait_Mystery_faded_mouth 0880d418
 portrait_Mystery_faded_chibi 0880da18
@@ -10884,6 +10887,9 @@ EventListScr_DebugMap_Tutorial 089ec668
 DebugMapEvents 089ec66c
 gBattleTalkList 089ec6bc
 gDefeatTalkList 089ecd4c
+gSupportTalkList 089ed10c
+gForceDeploymentList 089ed64c
+gPidList_SethLArachelMyrrhInnes 089ed674
 ChestItemList_Event_089ED70C 089ed70c
 ChestItemList_Event_089ED71A 089ed71a
 ChestItemList_Event_089ED728 089ed728

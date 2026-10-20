@@ -798,9 +798,9 @@ int AiGetInRangeCombatPositionScoreComponent(int x, int y, struct Unit* unit) {
 int AiGetTerrainCombatPositionScoreComponent(int x, int y) {
     int terrainId = gBmMapTerrain[y][x];
 
-    return gActiveUnit->pClassData->pTerrainAvoidLookup[terrainId]
-         + gActiveUnit->pClassData->pTerrainDefenseLookup[terrainId]
-         + gActiveUnit->pClassData->pTerrainResistanceLookup[terrainId];
+    return GBA_GET(const s8 *, gActiveUnit->pClassData->pTerrainAvoidLookup)[terrainId]
+         + GBA_GET(const s8 *, gActiveUnit->pClassData->pTerrainDefenseLookup)[terrainId]
+         + GBA_GET(const s8 *, gActiveUnit->pClassData->pTerrainResistanceLookup)[terrainId];
 }
 
 struct Vec2 CONST_DATA sRange3OffsetLut_[] = {

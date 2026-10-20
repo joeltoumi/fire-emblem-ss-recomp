@@ -76,7 +76,7 @@ void PutSioErrorMessage(void) {
 
     proc->unk_5c = 0;
 
-    proc->unk_2c = GetStringFromIndex(0x88E);
+    proc->unk_2c = GetStringFromIndex(MSG_ID(0x88E));
     /*
     * TODO: msgid:
     *    "Linking error.

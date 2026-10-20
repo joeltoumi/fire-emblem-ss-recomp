@@ -1059,8 +1059,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMGeneralMenu[] =
 {
     {
         .name = "　部隊",
-        .nameMsgId = 0x0645, // TODO: msgid "Unit"
-        .helpMsgId = 0x06DF,
+        .nameMsgId = MSG_ID(0x645), // TODO: msgid "Unit"
+        .helpMsgId = MSG_ID(0x6DF),
         .overrideId = 0,
         .isAvailable = MenuAlwaysEnabled,
         .onSelected = WMMenu_OnUnitSelected,
@@ -1068,8 +1068,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMGeneralMenu[] =
 
     {
         .name = "　状況",
-        .nameMsgId = 0x0646, // TODO: msgid "Status"
-        .helpMsgId = 0x06E0,
+        .nameMsgId = MSG_ID(0x646), // TODO: msgid "Status"
+        .helpMsgId = MSG_ID(0x6E0),
         .overrideId = 1,
         .isAvailable = MenuAlwaysEnabled,
         .onSelected = WMMenu_OnStatusSelected,
@@ -1077,8 +1077,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMGeneralMenu[] =
 
     {
         .name = "　辞書",
-        .nameMsgId = 0x0647, // TODO: msgid "Guide"
-        .helpMsgId = 0x06E5,
+        .nameMsgId = MSG_ID(0x647), // TODO: msgid "Guide"
+        .helpMsgId = MSG_ID(0x6E5),
         .overrideId = 2,
         .isAvailable = MapMenu_IsGuideCommandAvailable,
         .onDraw = WMMenu_OnGuideDraw,
@@ -1087,8 +1087,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMGeneralMenu[] =
 
     {
         .name = "　設定",
-        .nameMsgId = 0x0648, // TODO: msgid "Options"
-        .helpMsgId = 0x06E1,
+        .nameMsgId = MSG_ID(0x648), // TODO: msgid "Options"
+        .helpMsgId = MSG_ID(0x6E1),
         .overrideId = 3,
         .isAvailable = MenuAlwaysEnabled,
         .onSelected = WMMenu_OnOptionsSelected,
@@ -1096,8 +1096,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMGeneralMenu[] =
 
     {
         .name = "　記録",
-        .nameMsgId = 0x0649, // TODO: msgid "Save"
-        .helpMsgId = 0x0679,
+        .nameMsgId = MSG_ID(0x649), // TODO: msgid "Save"
+        .helpMsgId = MSG_ID(0x679),
         .overrideId = 4,
         .isAvailable = MenuAlwaysEnabled,
         .onSelected = WMMenu_OnSaveSelected,
@@ -1288,8 +1288,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMNodeMenu[] =
 {
     {
         .name = "　武器屋に入る",
-        .nameMsgId = 0x066E, // TODO: msgid " Enter Armory[.]"
-        .helpMsgId = 0x06CF,
+        .nameMsgId = MSG_ID(0x66E), // TODO: msgid " Enter Armory[.]"
+        .helpMsgId = MSG_ID(0x6CF),
         .overrideId = 0,
         .isAvailable = WMMenu_IsArmoryAvailable,
         .onSelected = WMMenu_OnArmorySelected,
@@ -1297,8 +1297,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMNodeMenu[] =
 
     {
         .name = "　道具屋に入る",
-        .nameMsgId = 0x066F, // TODO: msgid " Enter Shop[.]"
-        .helpMsgId = 0x06D0,
+        .nameMsgId = MSG_ID(0x66F), // TODO: msgid " Enter Shop[.]"
+        .helpMsgId = MSG_ID(0x6D0),
         .overrideId = 1,
         .isAvailable = WMMenu_IsVendorAvailable,
         .onSelected = WMMenu_OnVendorSelected,
@@ -1306,8 +1306,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMNodeMenu[] =
 
     {
         .name = "　秘密店に入る",
-        .nameMsgId = 0x0670, // TODO: msgid " Enter ? Shop[.]"
-        .helpMsgId = 0x06D1,
+        .nameMsgId = MSG_ID(0x670), // TODO: msgid " Enter ? Shop[.]"
+        .helpMsgId = MSG_ID(0x6D1),
         .overrideId = 2,
         .isAvailable = WMMenu_IsSecretShopAvailable,
         .onSelected = WMMenu_OnSecretShopSelected,
@@ -1315,8 +1315,8 @@ struct MenuItemDef CONST_DATA MenuItemDef_WMNodeMenu[] =
 
     {
         .name = "　アイテム整理",
-        .nameMsgId = 0x0671, // TODO: msgid " Manage Items[.]"
-        .helpMsgId = 0x0678,
+        .nameMsgId = MSG_ID(0x671), // TODO: msgid " Manage Items[.]"
+        .helpMsgId = MSG_ID(0x678),
         .overrideId = 3,
         .isAvailable = MenuAlwaysEnabled,
         .onSelected = WMMenu_OnManageItemsSelected,

@@ -169,14 +169,14 @@ void DrawBattlePopup(struct ProcEkrPopup *proc, int type, u32 priv)
         width2 = GetStringTextLen(str) + 0x10;
 
         /* broke! */
-        str = GetStringFromIndex(0x03);
+        str = GetStringFromIndex(MSG_ID(0x003));
         width3 = GetStringTextLen(str) + width2 + 0x04;
     } else {
         width1 = 0;
         width2 = 0x10;
 
         /* You can now use  */
-        str = GetStringFromIndex(0x0D);
+        str = GetStringFromIndex(MSG_ID(0x00D));
         width3 = GetStringTextLen(str) + 0x10;
     }
 
@@ -208,12 +208,12 @@ void DrawBattlePopup(struct ProcEkrPopup *proc, int type, u32 priv)
         Text_Skip(text, 0x14);
 
         /* broke! */
-        str = GetStringFromIndex(0x03);
+        str = GetStringFromIndex(MSG_ID(0x003));
         Text_SetColor(text, TEXT_COLOR_SYSTEM_WHITE);
         Text_DrawString(text, str);
     } else {
         /* You can now use  */
-        str = GetStringFromIndex(0x0D);
+        str = GetStringFromIndex(MSG_ID(0x00D));
         Text_SetColor(text, TEXT_COLOR_SYSTEM_WHITE);
         Text_DrawString(text, str);
     }

@@ -354,7 +354,7 @@ char* GetAffinityName(int affinity)
 {
     int textIdLookup[] = {
         // TODO: text ids
-        0x534, 0x510, 0x511, 0x512, 0x513, 0x50C, 0x50B, 0x50A
+        MSG_ID(0x534), MSG_ID(0x510), MSG_ID(0x511), MSG_ID(0x512), MSG_ID(0x513), MSG_ID(0x50C), MSG_ID(0x50B), MSG_ID(0x50A)
     };
 
     return GetStringFromIndex(textIdLookup[affinity]);

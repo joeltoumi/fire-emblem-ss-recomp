@@ -799,7 +799,7 @@ void ExecJunaFruitItem(ProcPtr proc) {
 
     PlaySoundEffect(SONG_5A);
 
-    NewPopup2_PlanB(proc, GetItemIconId(itemId), 0, levelCount, GetStringFromIndex(0x1E));
+    NewPopup2_PlanB(proc, GetItemIconId(itemId), 0, levelCount, GetStringFromIndex(MSG_ID(0x01E)));
 
     return;
 }

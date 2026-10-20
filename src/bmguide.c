@@ -47,31 +47,31 @@ u16 CONST_DATA gSprite_BButtonBack[] =
 
 int CONST_DATA gTextIds_GuideCategoriesChapter[] =
 {
-    0x05C0, // TODO: msgid "Prologue"
-    0x05C1, // TODO: msgid "Chapter 1"
-    0x05C2, // TODO: msgid "Chapter 2"
-    0x05C3, // TODO: msgid "Chapter 3"
-    0x05C4, // TODO: msgid "Chapter 4"
-    0x05C5, // TODO: msgid "Chapter 5"
-    0x05C6, // TODO: msgid "Chapter 6"
-    0x05C7, // TODO: msgid "Chapter 7"
-    0x05C8, // TODO: msgid "Chapter 8"
+    MSG_ID(0x5C0), // TODO: msgid "Prologue"
+    MSG_ID(0x5C1), // TODO: msgid "Chapter 1"
+    MSG_ID(0x5C2), // TODO: msgid "Chapter 2"
+    MSG_ID(0x5C3), // TODO: msgid "Chapter 3"
+    MSG_ID(0x5C4), // TODO: msgid "Chapter 4"
+    MSG_ID(0x5C5), // TODO: msgid "Chapter 5"
+    MSG_ID(0x5C6), // TODO: msgid "Chapter 6"
+    MSG_ID(0x5C7), // TODO: msgid "Chapter 7"
+    MSG_ID(0x5C8), // TODO: msgid "Chapter 8"
 };
 
 u16 CONST_DATA gTextIds_GuideCategoriesTopic[] =
 {
     0x0000,
-    0x05C9, // TODO: msgid "Basic Rules"
-    0x05CA, // TODO: msgid "Movement"
-    0x05CB, // TODO: msgid "Combat"
-    0x05CC, // TODO: msgid "Rescue"
-    0x05CD, // TODO: msgid "Items"
-    0x05CE, // TODO: msgid "Terrain"
-    0x05CF, // TODO: msgid "Allies"
-    0x05D0, // TODO: msgid "Victory"
-    0x05D1, // TODO: msgid "Save"
-    0x05D2, // TODO: msgid "World Map"
-    0x05D3, // TODO: msgid "Other"
+    MSG_ID(0x5C9), // TODO: msgid "Basic Rules"
+    MSG_ID(0x5CA), // TODO: msgid "Movement"
+    MSG_ID(0x5CB), // TODO: msgid "Combat"
+    MSG_ID(0x5CC), // TODO: msgid "Rescue"
+    MSG_ID(0x5CD), // TODO: msgid "Items"
+    MSG_ID(0x5CE), // TODO: msgid "Terrain"
+    MSG_ID(0x5CF), // TODO: msgid "Allies"
+    MSG_ID(0x5D0), // TODO: msgid "Victory"
+    MSG_ID(0x5D1), // TODO: msgid "Save"
+    MSG_ID(0x5D2), // TODO: msgid "World Map"
+    MSG_ID(0x5D3), // TODO: msgid "Other"
 };
 
 // clang-format on
@@ -198,7 +198,7 @@ void PutGuideBottomBarText(void)
     ClearText(&gGuideSt->unk_ec);
     PutDrawText(
         &gGuideSt->unk_ec, TILEMAP_LOCATED(gBG0TilemapBuffer, 4, 18), TEXT_COLOR_SYSTEM_WHITE, 0, 22,
-        GetStringFromIndex(0x05D4)); // TODO: msgid "About"
+        GetStringFromIndex(MSG_ID(0x5D4))); // TODO: msgid "About"
 
     Text_DrawString(
         &gGuideSt->unk_ec, GetStringFromIndex(gTextIds_GuideCategoriesTopic[gGuideSt->unk_54[gGuideSt->categoryIdx]]));

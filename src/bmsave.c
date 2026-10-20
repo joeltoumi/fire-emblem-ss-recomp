@@ -265,6 +265,12 @@ s8 LoadSavedEid8A(int slot)
 
 bool IsGameNotFirstChapter(struct PlaySt *chapter_data)
 {
+#ifdef PLATFORM_PC
+    // A caller passes a save slot number as the pointer: on the GBA that
+    // reads the BIOS, which returns its last fetched opcode (never zero).
+    if ((uintptr_t)chapter_data < 0x4000)
+        return true;
+#endif
     if (PLAY_FLAG_COMPLETE & chapter_data->chapterStateBits)
         return true;
     else if (0 != chapter_data->chapterIndex)

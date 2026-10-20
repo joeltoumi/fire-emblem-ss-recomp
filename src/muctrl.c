@@ -545,7 +545,7 @@ u8 * sub_807A644(struct Unit * unit, struct Vec2 * pos, s8 flag)
 
     if (flag == 0)
     {
-        GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, unit->pClassData->pMovCostTable[0]);
+        GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, GBA_GET(const s8 *, unit->pClassData->pMovCostTable[0]));
         GenerateBestMovementScript(x, y, gWorkingMovementScript);
     }
     else
@@ -565,7 +565,7 @@ u8 * sub_807A644(struct Unit * unit, struct Vec2 * pos, s8 flag)
             terrainFlag = 0;
         }
 
-        GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, unit->pClassData->pMovCostTable[0]);
+        GenerateExtendedMovementMapOnRange(unit->xPos, unit->yPos, GBA_GET(const s8 *, unit->pClassData->pMovCostTable[0]));
         GenerateBestMovementScript(x, y, gWorkingMovementScript);
 
         if (terrainFlag != 0)

@@ -350,7 +350,7 @@ void LoadBattleSpritesForBranchScreen(struct ProcPromoSel *proc) {
             unit = GetUnitFromCharId(proc->pid);
             copied_unit = *unit;
             copied_unit.pClassData = GetClassData(proc->jid[proc->main_select]);
-            battle_anim_ptr = copied_unit.pClassData->pBattleAnimDef;
+            battle_anim_ptr = GBA_GET(const struct BattleAnimDef *, copied_unit.pClassData->pBattleAnimDef);
             ret = GetBattleAnimationId(
                 &copied_unit,
                 battle_anim_ptr,
@@ -580,7 +580,7 @@ void sub_80CD47C(int a, int b, int c, int d, int e) {
 u8 LoadClassBattleSprite(s16 * out, u16 jid, u16 wpn_before) 
 {
     u8 i;
-    const struct BattleAnimDef * anim_instr = GetClassData(jid)->pBattleAnimDef;
+    const struct BattleAnimDef * anim_instr = GBA_GET(const struct BattleAnimDef *, GetClassData(jid)->pBattleAnimDef);
     u32 item_type = GetItemType(wpn_before);
     u16 expected_type = item_type + 0x100;
     u8 ret;

@@ -681,7 +681,7 @@ void sub_8049238(ProcPtr proc)
 {
     StartLinkArenaPointsBox();
 
-    if (!sub_80490EC(88, 60, GetStringFromIndex(0x771), 1, proc)) // TODO: msgid "Points"
+    if (!sub_80490EC(88, 60, GetStringFromIndex(MSG_ID(0x771)), 1, proc)) // TODO: msgid "Points"
     {
         EndLinkArenaPointsBox();
     }
@@ -693,6 +693,6 @@ void sub_8049238(ProcPtr proc)
 void sub_804926C(ProcPtr proc)
 {
     StartLinkArenaPointsBox();
-    sub_80490EC(88, 60, GetStringFromIndex(0x771), 0, proc); // TODO: msgid "Points"
+    sub_80490EC(88, 60, GetStringFromIndex(MSG_ID(0x771)), 0, proc); // TODO: msgid "Points"
     return;
 }

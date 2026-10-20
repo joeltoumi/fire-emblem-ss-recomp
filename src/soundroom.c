@@ -1276,12 +1276,12 @@ void sub_80AFF30(void)
     InitText(&gUnk_SoundRoom_0201F148.text[0], 5);
     ClearText(&gUnk_SoundRoom_0201F148.text[0]);
 
-    Text_InsertDrawString(&gUnk_SoundRoom_0201F148.text[0], 0, 0, GetStringFromIndex(0x5AA)); // TODO: msgid "Success[.]"
+    Text_InsertDrawString(&gUnk_SoundRoom_0201F148.text[0], 0, 0, GetStringFromIndex(MSG_ID(0x5AA))); // TODO: msgid "Success[.]"
 
     InitText(&gUnk_SoundRoom_0201F148.text[6], 2);
     ClearText(&gUnk_SoundRoom_0201F148.text[6]);
 
-    Text_DrawString(&gUnk_SoundRoom_0201F148.text[6], GetStringFromIndex(0x5AE)); // TODO: msgid "%[.]"
+    Text_DrawString(&gUnk_SoundRoom_0201F148.text[6], GetStringFromIndex(MSG_ID(0x5AE))); // TODO: msgid "%[.]"
 
     return;
 }
@@ -1293,7 +1293,7 @@ void DrawSoundRoomSongTitle(int index)
 
     if (index == -1)
     {
-        str = GetStringFromIndex(0x7D0); // TODO: msgid "?????[.]"
+        str = GetStringFromIndex(MSG_ID(0x7D0)); // TODO: msgid "?????[.]"
     }
     else
     {

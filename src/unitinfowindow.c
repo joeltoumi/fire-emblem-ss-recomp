@@ -185,8 +185,8 @@ int GetUnitInfoWindowX(struct Unit* unit, int width) {
 void DrawUnitHpText(struct Text* text, struct Unit* unit) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4E9)); // TODO: msgid "HP"
-    Text_InsertDrawString(text, 40, 3, GetStringFromIndex(0x539)); // TODO: msgid "/[.]"
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4E9))); // TODO: msgid "HP"
+    Text_InsertDrawString(text, 40, 3, GetStringFromIndex(MSG_ID(0x539))); // TODO: msgid "/[.]"
 
     Text_InsertDrawNumberOrBlank(text, 32, 2, GetUnitCurrentHp(unit));
     Text_InsertDrawNumberOrBlank(text, 56, 2, GetUnitMaxHp(unit));
@@ -198,7 +198,7 @@ void DrawUnitHpText(struct Text* text, struct Unit* unit) {
 void DrawUnitConText(struct Text* text, struct Unit* unit) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4F7)); // TODO: msgid "Con[.]"
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4F7))); // TODO: msgid "Con[.]"
     Text_InsertDrawNumberOrBlank(text, 56, 2, UNIT_CON(unit));
 
     return;
@@ -208,7 +208,7 @@ void DrawUnitConText(struct Text* text, struct Unit* unit) {
 void DrawUnitAidText(struct Text* text, struct Unit* unit) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4f8)); // TODO: msgid "Aid[.]"
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4F8))); // TODO: msgid "Aid[.]"
     Text_InsertDrawNumberOrBlank(text, 56, 2, GetUnitAid(unit));
 
     return;
@@ -228,7 +228,7 @@ void PutUnitAidIconForTextAt(struct Unit* unit, int x, int y) {
 void DrawUnitStatusText(struct Text* text, struct Unit* unit) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4FA)); // TODO: msgid "Cond"
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4FA))); // TODO: msgid "Cond"
     Text_InsertDrawString(text, 24, 2, GetUnitStatusName(unit));
 
     return;
@@ -238,8 +238,8 @@ void DrawUnitStatusText(struct Text* text, struct Unit* unit) {
 void DrawUnitResChangeText(struct Text* text, struct Unit* unit, int bonus) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4f0)); // TODO: msgid "Res[.]"
-    Text_InsertDrawString(text, 40, 3, GetStringFromIndex(0x53A));
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4F0))); // TODO: msgid "Res[.]"
+    Text_InsertDrawString(text, 40, 3, GetStringFromIndex(MSG_ID(0x53A)));
 
     Text_InsertDrawNumberOrBlank(text, 56, 2, GetUnitResistance(unit) + bonus);
     Text_InsertDrawNumberOrBlank(text, 32, 2, GetUnitResistance(unit));
@@ -251,7 +251,7 @@ void DrawUnitResChangeText(struct Text* text, struct Unit* unit, int bonus) {
 void DrawUnitResUnkText(struct Text* text, struct Unit* unit, int unused) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4f0)); // TODO: msgid "Res[.]"
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4F0))); // TODO: msgid "Res[.]"
     Text_InsertDrawNumberOrBlank(text, 56, 2, GetUnitResistance(unit));
 
     return;
@@ -261,7 +261,7 @@ void DrawUnitResUnkText(struct Text* text, struct Unit* unit, int unused) {
 void DrawAccuracyText(struct Text* text, int accuracy) {
     ClearText(text);
 
-    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(0x4F4)); // TODO: msgid "Hit[.]"
+    Text_InsertDrawString(text, 0, 3, GetStringFromIndex(MSG_ID(0x4F4))); // TODO: msgid "Hit[.]"
     Text_InsertDrawNumberOrBlank(text, 56, 2, accuracy);
 
     return;
@@ -298,7 +298,7 @@ void RefreshUnitInventoryInfoWindow(struct Unit* unit) {
         int offset;
 
         ClearText(proc->lines + 0);
-        Text_InsertDrawString(proc->lines + 0, 0, 1, GetStringFromIndex(0x5a8)); // TODO: msgid "Nothing[.]"
+        Text_InsertDrawString(proc->lines + 0, 0, 1, GetStringFromIndex(MSG_ID(0x5A8))); // TODO: msgid "Nothing[.]"
 
         offset = TILEMAP_INDEX(xPos+3, 0+3);
         PutText(proc->lines + 0, gBG0TilemapBuffer + offset);

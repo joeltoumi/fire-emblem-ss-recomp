@@ -379,7 +379,7 @@ void AtMenu_AddPrepScreenSupportMenuItem(struct ProcAtMenu *proc)
     if (0 == (s8)sub_80A095C(2))
         color = 1;
 
-    SetPrepScreenMenuItem(4, PrepScreenMenu_OnSupport, color, 0x577, 0);
+    SetPrepScreenMenuItem(4, PrepScreenMenu_OnSupport, color, MSG_ID(0x577), 0);
 }
 
 s8 CanPrepScreenCheckMap()
@@ -400,13 +400,13 @@ void InitPrepScreenMainMenu(struct ProcAtMenu* proc)
             PREP_MAINMENU_UNIT,
             PrepScreenMenu_OnPickUnits,
             TEXT_COLOR_SYSTEM_WHITE,
-            0x574, 0);
+            MSG_ID(0x574), 0);
 
         SetPrepScreenMenuItem(
             PREP_MAINMENU_ITEM,
             PrepScreenMenu_OnItems,
             TEXT_COLOR_SYSTEM_WHITE,
-            0x576, 0);
+            MSG_ID(0x576), 0);
 
         AtMenu_AddPrepScreenSupportMenuItem(proc);
 
@@ -415,13 +415,13 @@ void InitPrepScreenMainMenu(struct ProcAtMenu* proc)
                 PREP_MAINMENU_CHECKMAP,
                 PrepScreenMenu_OnCheckMap,
                 TEXT_COLOR_SYSTEM_WHITE,
-                0x578, 0);
+                MSG_ID(0x578), 0);
         } else {
             SetPrepScreenMenuItem(
                 PREP_MAINMENU_CHECKMAP,
                 PrepScreenMenu_OnCheckMap,
                 TEXT_COLOR_SYSTEM_GRAY,
-                0x578, 0);
+                MSG_ID(0x578), 0);
         }
 
         color = TEXT_COLOR_SYSTEM_WHITE;
@@ -432,26 +432,26 @@ void InitPrepScreenMainMenu(struct ProcAtMenu* proc)
             PREP_MAINMENU_SAVE,
             PrepScreenMenu_OnSave,
             color,
-            0x579, 0);
+            MSG_ID(0x579), 0);
 
     } else {
         SetPrepScreenMenuItem(
             PREP_MAINMENU_UNIT,
             PrepScreenMenu_OnPickUnits,
             TEXT_COLOR_SYSTEM_WHITE,
-            0x574, 0);
+            MSG_ID(0x574), 0);
 
         SetPrepScreenMenuItem(
             PREP_MAINMENU_ITEM,
             PrepScreenMenu_OnItems,
             TEXT_COLOR_SYSTEM_WHITE,
-            0x576, 0);
+            MSG_ID(0x576), 0);
 
         SetPrepScreenMenuItem(
             PREP_MAINMENU_UNK3,
             sub_8095284,
             TEXT_COLOR_SYSTEM_WHITE,
-            0x75C, 0);
+            MSG_ID(0x75C), 0);
     }
 
     SetPrepScreenMenuOnBPress(PrepScreenMenu_OnBPress);
@@ -735,7 +735,7 @@ void Prep_DrawChapterGoal(int VRAM_offset, int pal)
     if (GetBattleMapKind() != BATTLEMAP_KIND_SKIRMISH)
         msg = GetROMChapterStruct(gPlaySt.chapterIndex)->goalWindowTextId;
     else
-        msg = 0x19E;
+        msg = MSG_ID(0x19E);
 
     str = GetStringFromIndex(msg);
 

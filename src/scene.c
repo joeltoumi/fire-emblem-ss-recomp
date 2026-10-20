@@ -169,14 +169,14 @@ struct ProcCmd CONST_DATA gProcScr_TalkShiftClearAll[] =
 
 struct ChoiceEntryInfo CONST_DATA gYesNoTalkChoice[2] =
 {
-    { 0x843, NULL }, // Yes
-    { 0x844, NULL }, // No
+    { MSG_ID(0x843), NULL }, // Yes
+    { MSG_ID(0x844), NULL }, // No
 };
 
 struct ChoiceEntryInfo CONST_DATA gBuySellTalkChoice[2] =
 {
-    { 0x845, TalkChoice_OnBuy }, // Buy
-    { 0x846, TalkChoice_OnSell }, // Sell
+    { MSG_ID(0x845), TalkChoice_OnBuy }, // Buy
+    { MSG_ID(0x846), TalkChoice_OnSell }, // Sell
 };
 
 struct ProcCmd CONST_DATA gProcScr_TalkChoice[] =

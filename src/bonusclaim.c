@@ -441,7 +441,7 @@ void BonusClaim_Loop_MainKeyHandler(struct BonusClaimProc * proc)
             int itemIdx = gpBonusClaimItemList[curIdx].unk_00;
 
             if (((1 << itemIdx) & GetBonusContentClaimFlags()) != 0) {
-                StartBonusClaimHelpBox(-1, -1, 0x88F, proc); // TODO: msgid "Already used"
+                StartBonusClaimHelpBox(-1, -1, MSG_ID(0x88F), proc); // TODO: msgid "Already used"
                 return;
             }
 
@@ -622,7 +622,7 @@ void BonusClaim_StartSelectTargetSubMenu(struct BonusClaimProc * proc)
             count = GetConvoyItemCount();
             color = (count == CONVOY_ITEM_COUNT) ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE;
             Text_SetParams(th, 0, color);
-            Text_DrawString(th, GetStringFromIndex(0x308)); // TODO: msgid "Supply"
+            Text_DrawString(th, GetStringFromIndex(MSG_ID(0x308))); // TODO: msgid "Supply"
         }
         else
         {
@@ -690,7 +690,7 @@ void BonusClaim_Loop_SelectTargetKeyHandler(struct BonusClaimProc * proc)
             return;
         }
 
-        StartBonusClaimHelpBox(-1, -1, 0x890, proc);
+        StartBonusClaimHelpBox(-1, -1, MSG_ID(0x890), proc);
         return;
     }
 
@@ -785,7 +785,7 @@ void BonusClaim_DrawItemSentPopup(struct BonusClaimProc * proc)
     Text_SetCursor(th, 0);
 
     itemNameStr = GetItemName(itemId);
-    otherStr = GetStringFromIndexInBuffer(0x883, buf); // TODO: msgid "Sent[.]"
+    otherStr = GetStringFromIndexInBuffer(MSG_ID(0x883), buf); // TODO: msgid "Sent[.]"
 
     width = ((GetStringTextLen(itemNameStr) + GetStringTextLen(otherStr) + 7) / 8) + 4;
     x = 15 - width / 2;

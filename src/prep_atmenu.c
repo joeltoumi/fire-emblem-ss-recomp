@@ -306,10 +306,10 @@ void sub_8096004(struct ProcAtMenu * proc)
 void AtMenu_CtrlLoop(struct ProcAtMenu * proc)
 {
     const int msg_list[] = {
-        0x5B8,
-        0x5B9,
-        0x5BA,
-        0x57F,
+        MSG_ID(0x5B8),
+        MSG_ID(0x5B9),
+        MSG_ID(0x5BA),
+        MSG_ID(0x57F),
     };
 
     int line_old = proc->hand_pos;

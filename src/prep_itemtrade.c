@@ -322,7 +322,7 @@ void PrepItemTrade_Loop_MainKeyHandler(struct PrepMenuTradeProc* proc) {
                 int itemCount;
 
                 if (CheckValidLinkArenaItemSwap(proc->units[proc->selectedItemSlot >> 3], proc->selectedItemSlot & 7, proc->units[proc->cursorItemSlot >> 3], proc->cursorItemSlot & 7) == 0) {
-                    StartPrepErrorHelpbox(-1, -1, 0x88B, proc); // TODO: msgid "If you have no usable[.][NL]weapons, you cannot attack.[.]"
+                    StartPrepErrorHelpbox(-1, -1, MSG_ID(0x88B), proc); // TODO: msgid "If you have no usable[.][NL]weapons, you cannot attack.[.]"
                     return;
                 }
 

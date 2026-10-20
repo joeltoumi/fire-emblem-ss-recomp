@@ -136,10 +136,10 @@ void sub_80B5970(void) {
 //! FE8U = 0x080B5998
 void ArenaUi_WelcomeDialogue(ProcPtr proc) {
     if (UNIT_ARENA_LEVEL(gArenaState.playerUnit) < 5) {
-        StartArenaDialogue(0x8d0, proc);
+        StartArenaDialogue(MSG_ID(0x8D0), proc);
         // TODO: msgid "Welcome to the arena![.][A]"
     } else {
-        StartArenaDialogue(0x8D1, proc);
+        StartArenaDialogue(MSG_ID(0x8D1), proc);
         // TODO: msgid "Welcome to the arena.[.][A][NL]Oh! It's you again.[.][A][NL2][NL]I've lost a lot of gold[.][NL]thanks to you...[A][NL2][NL]If you want to continue,[A][NL]we're going to have to[NL]do things differently.[A][NL2][NL]I'm going to prepare some[.][NL]more challenging foes.[A]"
     }
 
@@ -149,7 +149,7 @@ void ArenaUi_WelcomeDialogue(ProcPtr proc) {
 //! FE8U = 0x080B59CC
 void ArenaUi_WagerGoldDialogue(ProcPtr proc) {
     SetTalkNumber(ArenaGetMatchupGoldValue());
-    StartArenaDialogue(0x8D2, proc);
+    StartArenaDialogue(MSG_ID(0x8D2), proc);
     // TODO: msgid "Would you like to wager[.][NL][G] gold?[Yes]"
     return;
 }
@@ -158,12 +158,12 @@ void ArenaUi_WagerGoldDialogue(ProcPtr proc) {
 void ArenaUi_CheckConfirmation(ProcPtr proc) {
 
     if (GetTalkChoiceResult() != 1) {
-        StartArenaDialogue(0x8D4, proc);
+        StartArenaDialogue(MSG_ID(0x8D4), proc);
         // TODO: msgid "What's that? Bah![.][NL]Get outta here![.][A]"
         Proc_Goto(proc, 2);
     } else {
         if (ArenaGetMatchupGoldValue() > (int)GetPartyGoldAmount()) {
-            StartArenaDialogue(0x8DA, proc);
+            StartArenaDialogue(MSG_ID(0x8DA), proc);
             // TODO: msgid "You don't have the money![.][NL]Try again later.[A]"
             Proc_Goto(proc, 2);
         }
@@ -184,14 +184,14 @@ void ArenaUi_ConfirmWager(ProcPtr proc) {
 
 //! FE8U = 0x080B5A7C
 void ArenaUi_InstructionsDialogue(ProcPtr proc) {
-    StartArenaDialogue(0x8D5, proc);
+    StartArenaDialogue(MSG_ID(0x8D5), proc);
     // TODO: msgid "Fight 'til you drop, or press[.][NL]the B Button to yield.[A]"
     return;
 }
 
 //! FE8U = 0x080B5A90
 void ArenaUi_GoodLuckDialogue(ProcPtr proc) {
-    StartArenaDialogue(0x8D3, proc);
+    StartArenaDialogue(MSG_ID(0x8D3), proc);
     // TODO: msgid "Good luck. Don't get[NL]yourself killed.[A]"
     return;
 }
@@ -245,7 +245,7 @@ void ArenaUi_ResultsDialogue(ProcPtr proc) {
     switch (ArenaGetResult()) {
         case 1:
             SetTalkNumber(ArenaGetMatchupGoldValue() * 2);
-            StartArenaDialogue(0x8D6, proc);
+            StartArenaDialogue(MSG_ID(0x8D6), proc);
             // TODO: msgid "So you won, eh? Here's[NL]your prize. [G] gold.[A]"
 
             SetPartyGoldAmount(partyGold = partyGold + (ArenaGetMatchupGoldValue() * 2));
@@ -253,13 +253,13 @@ void ArenaUi_ResultsDialogue(ProcPtr proc) {
             break;
 
         case 2:
-            StartArenaDialogue(0x8D7, proc);
+            StartArenaDialogue(MSG_ID(0x8D7), proc);
             // TODO: msgid "Ahh, you lost? I'd hoped[NL]for better from you.[A]"
 
             break;
 
         case 3:
-            StartArenaDialogue(0x8D9, proc);
+            StartArenaDialogue(MSG_ID(0x8D9), proc);
             // TODO: msgid "Looks like no one wins.[.][NL]Here's your money back.[.][A]"
             SetPartyGoldAmount(partyGold = partyGold + ArenaGetMatchupGoldValue());
 
@@ -267,7 +267,7 @@ void ArenaUi_ResultsDialogue(ProcPtr proc) {
 
         case 4:
             // _080B5B88
-            StartArenaDialogue(0x8D8, proc);
+            StartArenaDialogue(MSG_ID(0x8D8), proc);
             // TODO: msgid "What? You yield? Well,[NL]your gold is mine, then![A]"
             break;
     }

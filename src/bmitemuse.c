@@ -240,20 +240,20 @@ int GetItemCantUseMsgid(struct Unit* unit, int item)
     case ITEM_ANTITOXIN:
     case ITEM_TORCH:
     case ITEM_VULNERARY_2:
-        return 0x859; // TODO: msgid "There's no need for that."
+        return MSG_ID(0x859); // TODO: msgid "There's no need for that."
 
     case ITEM_CHESTKEY:
     case ITEM_CHESTKEY_BUNDLE:
-        return 0x85E; // TODO: msgid "There's no chest."
+        return MSG_ID(0x85E); // TODO: msgid "There's no chest."
 
     case ITEM_DOORKEY:
-        return 0x85D; // TODO: msgid "There's no door."
+        return MSG_ID(0x85D); // TODO: msgid "There's no door."
 
     case ITEM_LOCKPICK:
         if (UNIT_CATTRIBUTES(gActiveUnit) & CA_THIEF)
-            return 0x861; // TODO: msgid "No doors or chests."
+            return MSG_ID(0x861); // TODO: msgid "No doors or chests."
 
-        return 0x85F; // TODO: msgid "For thieves only."
+        return MSG_ID(0x85F); // TODO: msgid "For thieves only."
 
     case ITEM_HEROCREST:
     case ITEM_KNIGHTCREST:
@@ -275,16 +275,16 @@ int GetItemCantUseMsgid(struct Unit* unit, int item)
         gActiveUnit->level = level;
 
         if (boolval)
-            return 0x85B; // TODO: msgid "Must be above level 10."
+            return MSG_ID(0x85B); // TODO: msgid "Must be above level 10."
 
-        return 0x85A; // TODO: msgid "This can't be used."
+        return MSG_ID(0x85A); // TODO: msgid "This can't be used."
     }
 
     case ITEM_JUNAFRUIT:
-        return 0x85C; // TODO: msgid "Must be above level 10."
+        return MSG_ID(0x85C); // TODO: msgid "Must be above level 10."
 
     default:
-        return 0x85A; // TODO: msgid "This can't be used."
+        return MSG_ID(0x85A); // TODO: msgid "This can't be used."
 
     }
 }
@@ -332,7 +332,7 @@ void DoItemUse(struct Unit* unit, int item)
         break;
 
     case ITEM_STAFF_UNLOCK:
-        DoUsePutTrap(unit, MakeTargetListForUnlock, 0x87A); // TODO: msgid "Select a door to open."
+        DoUsePutTrap(unit, MakeTargetListForUnlock, MSG_ID(0x87A)); // TODO: msgid "Select a door to open."
         break;
 
     case ITEM_STAFF_WARP:
@@ -349,11 +349,11 @@ void DoItemUse(struct Unit* unit, int item)
         break;
 
     case ITEM_MINE:
-        DoUsePutTrap(unit, MakeTargetListForMine, 0x87D); // TODO: msgid "Select an area to trap."
+        DoUsePutTrap(unit, MakeTargetListForMine, MSG_ID(0x87D)); // TODO: msgid "Select an area to trap."
         break;
 
     case ITEM_LIGHTRUNE:
-        DoUsePutTrap(unit, MakeTargetListForLightRune, 0x87E); // TODO: msgid "Select an area to trap."
+        DoUsePutTrap(unit, MakeTargetListForLightRune, MSG_ID(0x87E)); // TODO: msgid "Select an area to trap."
         break;
 
     case ITEM_STAFF_TORCH:
@@ -364,7 +364,7 @@ void DoItemUse(struct Unit* unit, int item)
     case ITEM_NINISS_GRACE:
     case ITEM_THORS_IRE:
     case ITEM_SETS_LITANY:
-        DoUseSpecialDance(unit, MakeTargetListForDanceRing, 0x87F); // TODO: msgid "Select a character to bless."
+        DoUseSpecialDance(unit, MakeTargetListForDanceRing, MSG_ID(0x87F)); // TODO: msgid "Select a character to bless."
         break;
 
     default:
@@ -632,7 +632,7 @@ void DoUseRescueStaff(struct Unit* unit, void(*func)(struct Unit*))
 
     StartSubtitleHelp(
         NewTargetSelection_Specialized(&gSelectInfo_WarpUnit, StaffSelectOnSelect),
-        GetStringFromIndex(0x876)); // TODO: msgid "Select which character to bring next to you."
+        GetStringFromIndex(MSG_ID(0x876))); // TODO: msgid "Select which character to bring next to you."
 }
 
 void DoUseSpecialDance(struct Unit* unit, void(*func)(struct Unit*), int msgHelp)
@@ -650,7 +650,7 @@ void WarpSelect_OnInit(struct WarpSelectProc* proc)
 {
     struct APHandle* ap;
 
-    StartSubtitleHelp(proc, GetStringFromIndex(0x871)); // TODO: msgid "Select warp point."
+    StartSubtitleHelp(proc, GetStringFromIndex(MSG_ID(0x871))); // TODO: msgid "Select warp point."
 
     EnsureCameraOntoPosition(proc,
         GetUnit(gActionData.targetIndex)->xPos,
@@ -782,7 +782,7 @@ void DoUseWarpStaff(struct Unit* unit)
 
     StartSubtitleHelp(
         NewTargetSelection_Specialized(&gSelectInfo_WarpUnit, WarpOnSelectTarget),
-        GetStringFromIndex(0x875)); // TODO: msgid "Select character to warp."
+        GetStringFromIndex(MSG_ID(0x875))); // TODO: msgid "Select character to warp."
 
     PlaySoundEffect(SONG_SE_SYS_WINDOW_SELECT1);
 }
@@ -839,7 +839,7 @@ void DoUseRepairStaff(struct Unit* unit)
 
     StartSubtitleHelp(
         NewTargetSelection(&gSelectInfo_Repair),
-        GetStringFromIndex(0x878)); // TODO: msgid "Select the character whose weapon needs repair."
+        GetStringFromIndex(MSG_ID(0x878))); // TODO: msgid "Select the character whose weapon needs repair."
 
     PlaySoundEffect(SONG_SE_SYS_WINDOW_SELECT1);
 }
@@ -900,11 +900,11 @@ u8 RepairMenuItemSelect(struct MenuProc* menu, struct MenuItemProc* menuItem)
         int item = GetUnit(gActionData.targetIndex)->items[menuItem->itemNumber];
 
         if (GetItemAttributes(item) & (IA_UNBREAKABLE | IA_HAMMERNE | IA_LOCK_3))
-            msgId = 0x863; // TODO: msgid "Item cannot be repaired."
+            msgId = MSG_ID(0x863); // TODO: msgid "Item cannot be repaired."
         else if (!(GetItemAttributes(item) & (IA_STAFF | IA_WEAPON)))
-            msgId = 0x857; // TODO: msgid "Only weapons, tomes, and[N]staves can be repaired."
+            msgId = MSG_ID(0x857); // TODO: msgid "Only weapons, tomes, and[N]staves can be repaired."
         else if (GetItemUses(item) == GetItemMaxUses(item))
-            msgId = 0x856; // TODO: msgid "There's nothing to repair."
+            msgId = MSG_ID(0x856); // TODO: msgid "There's nothing to repair."
 
         if (msgId != 0)
             MenuFrozenHelpBox(menu, msgId);
@@ -926,7 +926,7 @@ void DoUseHealStaff(struct Unit* unit, void(*func)(struct Unit*))
 
     StartSubtitleHelp(
         NewTargetSelection(&gSelectInfo_Heal),
-        GetStringFromIndex(0x874)); // TODO: msgid "Select a character to restore HP to."
+        GetStringFromIndex(MSG_ID(0x874))); // TODO: msgid "Select a character to restore HP to."
 }
 
 void DoUseRestoreStaff(struct Unit* unit, void(*func)(struct Unit*))
@@ -937,7 +937,7 @@ void DoUseRestoreStaff(struct Unit* unit, void(*func)(struct Unit*))
 
     StartSubtitleHelp(
         NewTargetSelection(&gSelectInfo_Restore),
-        GetStringFromIndex(0x877)); // TODO: msgid "Select a character to restore to normal."
+        GetStringFromIndex(MSG_ID(0x877))); // TODO: msgid "Select a character to restore to normal."
 }
 
 int RestoreMapSelect_Init(ProcPtr proc)
@@ -959,7 +959,7 @@ void DoUseBarrierStaff(struct Unit* unit)
 
     StartSubtitleHelp(
         NewTargetSelection(&gSelectInfo_Barrier),
-        GetStringFromIndex(0x879)); // TODO: msgid "Select which character's resistance to bolster."
+        GetStringFromIndex(MSG_ID(0x879))); // TODO: msgid "Select which character's resistance to bolster."
 }
 
 int BarrierMapSelect_Init(ProcPtr proc)
@@ -981,7 +981,7 @@ void DoUseAttackStaff(struct Unit* unit, void(*func)(struct Unit*))
 
     StartSubtitleHelp(
         NewTargetSelection(&gSelectInfo_OffensiveStaff),
-        GetStringFromIndex(0x87B)); // TODO: msgid "Select a unit to use the staff on."
+        GetStringFromIndex(MSG_ID(0x87B))); // TODO: msgid "Select a unit to use the staff on."
 }
 
 int AttackStaffMapSelect_Init(ProcPtr proc)
@@ -1016,7 +1016,7 @@ void sub_8029D6C(void)
 {
     StartSubtitleHelp(
         NewTargetSelection_Specialized(&gSelectInfo_WarpUnit, StaffSelectOnSelect),
-        GetStringFromIndex(0x876)); // TODO: msgid "Select which character to bring next to you."
+        GetStringFromIndex(MSG_ID(0x876))); // TODO: msgid "Select which character to bring next to you."
 }
 
 void TorchSelect_OnInit(struct WarpSelectProc* proc)
@@ -1024,7 +1024,7 @@ void TorchSelect_OnInit(struct WarpSelectProc* proc)
     gBmSt.gameStateBits |= GMAP_STATE_BIT0;
 
     StartSubtitleHelp(proc,
-        GetStringFromIndex(0x87C)); // TODO: msgid "Select an area to light up."
+        GetStringFromIndex(MSG_ID(0x87C))); // TODO: msgid "Select an area to light up."
 
     if (IsCameraNotWatchingPosition(gActiveUnit->xPos, gActiveUnit->yPos))
         EnsureCameraOntoPosition(proc, gActiveUnit->xPos, gActiveUnit->yPos);

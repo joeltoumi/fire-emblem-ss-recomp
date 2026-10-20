@@ -136,7 +136,7 @@ void PrepItemUseJuna_OnDraw(struct ProcPrepItemUseJunaFruit *proc, int x, int y,
      *
      * why hardcoded?
      */
-    const char *str = GetStringFromIndex(0x1F);
+    const char *str = GetStringFromIndex(MSG_ID(0x01F));
     int icon = GetItemIconId(item);
     int width = GetStringTextLen(str);
 

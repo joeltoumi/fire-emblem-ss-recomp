@@ -996,7 +996,7 @@ void SaveMenuDrawSubSelBoxExt(int msgId, bool draw_en)
         Text_DrawString(&gSaveMenuSubBoxText, str);
 
         Text_SetCursor(&gSaveMenuSubBoxText, 0x2c);
-        Text_DrawString(&gSaveMenuSubBoxText, GetStringFromIndex(0x142)); // TODO: msgid "Cancel"
+        Text_DrawString(&gSaveMenuSubBoxText, GetStringFromIndex(MSG_ID(0x142))); // TODO: msgid "Cancel"
 
         PutText(&gSaveMenuSubBoxText, TILEMAP_LOCATED(gBG1TilemapBuffer, 7, 17));
     }
@@ -1009,12 +1009,12 @@ void SaveMenuDrawSubSelBoxExt(int msgId, bool draw_en)
 
 int CONST_DATA SaveMenuSubSelBoxTexts[] = {
     0x0000, // ""
-    0x0143, // "Start[.]"
-    0x0144, // "Copy"
-    0x0140, // "Erase[.]"
-    0x0143, // "Start[.]"
-    0x0143, // "Start[.]"
-    0x0145, // "Save"
+    MSG_ID(0x143), // "Start[.]"
+    MSG_ID(0x144), // "Copy"
+    MSG_ID(0x140), // "Erase[.]"
+    MSG_ID(0x143), // "Start[.]"
+    MSG_ID(0x143), // "Start[.]"
+    MSG_ID(0x145), // "Save"
 };
 
 //! FE8U = 0x080AB83C

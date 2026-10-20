@@ -564,11 +564,11 @@ const s16 SioTacticianIndexMap[] = {
 };
 
 const int gLinkArenaStatusMsg[] = {
-    0x76D, // Not Linked
-    0x76E, // Connecting
-    0x76F, // Link Error
-    0x770, // Done
-    0x770, // Done
+    MSG_ID(0x76D), // Not Linked
+    MSG_ID(0x76E), // Connecting
+    MSG_ID(0x76F), // Link Error
+    MSG_ID(0x770), // Done
+    MSG_ID(0x770), // Done
 };
 
 
@@ -1214,10 +1214,10 @@ void NameSelect_DrawName(struct ProcTactician * proc)
 
     ClearText(&Texts_0203DAB0);
 
-    Text_DrawString(&Texts_0203DAB0, GetStringFromIndex(0x141)); // TODO: msgid "Back"
+    Text_DrawString(&Texts_0203DAB0, GetStringFromIndex(MSG_ID(0x141))); // TODO: msgid "Back"
     Text_SetCursor(&Texts_0203DAB0, 38);
 
-    Text_DrawString(&Texts_0203DAB0, GetStringFromIndex(0x146)); // TODO: msgid "Entry"
+    Text_DrawString(&Texts_0203DAB0, GetStringFromIndex(MSG_ID(0x146))); // TODO: msgid "Entry"
     PutText(&Texts_0203DAB0, TILEMAP_LOCATED(gBG0TilemapBuffer, 11, 12));
 
     BG_EnableSyncByMask(BG0_SYNC_BIT);

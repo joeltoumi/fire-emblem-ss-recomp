@@ -135,9 +135,9 @@ void PromoTrainee_Talk1(struct ProcPromoTraineeEvent *proc)
     u8 i;
 
     const u32 msgs[3] = { 
-        0xC44,  /* [ToggleSmile]Wow... Would you look at[NL]these muscles![A][ToggleSmile] */
-        0xC48,  /* [ToggleSmile]I'm ready to fight now![.][A][ToggleSmile] */
-        0xC4D   /* [ToggleSmile]Oh, my... Look at this![.][A][ToggleSmile] */
+        MSG_ID(0xC44),  /* [ToggleSmile]Wow... Would you look at[NL]these muscles![A][ToggleSmile] */
+        MSG_ID(0xC48),  /* [ToggleSmile]I'm ready to fight now![.][A][ToggleSmile] */
+        MSG_ID(0xC4D)   /* [ToggleSmile]Oh, my... Look at this![.][A][ToggleSmile] */
     };
 
     switch (proc->pid) {
@@ -175,9 +175,9 @@ void PromoTrainee_Talk2(struct ProcPromoTraineeEvent *proc)
     u8 i;
 
     const u32 msgs[3] = {
-        0xC45,  /* [ToggleSmile]I had no idea how much[NL]stronger I'd gotten...[A][ToggleSmile] */
-        0xC49,  /* [ToggleSmile]This armor used to be too[.][NL]heavy for me to wear...[.][A][ToggleSmile] */
-        0xC4E   /* [ToggleSmile]Magic used to seem so hard,[.][NL]but I...I think I've got it.[A][ToggleSmile] */
+        MSG_ID(0xC45),  /* [ToggleSmile]I had no idea how much[NL]stronger I'd gotten...[A][ToggleSmile] */
+        MSG_ID(0xC49),  /* [ToggleSmile]This armor used to be too[.][NL]heavy for me to wear...[.][A][ToggleSmile] */
+        MSG_ID(0xC4E)   /* [ToggleSmile]Magic used to seem so hard,[.][NL]but I...I think I've got it.[A][ToggleSmile] */
     };
 
     switch (proc->pid) {
@@ -204,9 +204,9 @@ void PromoTrainee_Talk3(struct ProcPromoTraineeEvent *proc)
     u8 i;
 
     const u32 msgs[3] = {
-        0xC46,  /* [ToggleSmile]Why, I bet I could take on my[.][NL]dad or just about anyone![.][A][ToggleSmile] */
-        0xC4A,  /* [ToggleSmile]But now, it's no problem![.][NL]I've come a long way.[.][A][ToggleSmile] */
-        0xC4F   /* [ToggleSmile]I've turned a corner in my[NL]education. I'm a real mage![.][A][ToggleSmile] */
+        MSG_ID(0xC46),  /* [ToggleSmile]Why, I bet I could take on my[.][NL]dad or just about anyone![.][A][ToggleSmile] */
+        MSG_ID(0xC4A),  /* [ToggleSmile]But now, it's no problem![.][NL]I've come a long way.[.][A][ToggleSmile] */
+        MSG_ID(0xC4F)   /* [ToggleSmile]I've turned a corner in my[NL]education. I'm a real mage![.][A][ToggleSmile] */
     };
 
     switch (proc->pid) {
@@ -233,9 +233,9 @@ void PromoTrainee_Talk4(struct ProcPromoTraineeEvent *proc)
     u8 i;
 
     const u32 msgs[3] = {
-        0xC47,  /* [ToggleSmile]I knew if I worked at it, I'd[.][NL]become a great warrior![.][A][ToggleSmile] */
-        0xC4B,  /* [ToggleSmile]That's right. I'm a real[NL]soldier now![A][ToggleSmile] */
-        0xC50   /* [ToggleSmile]But I'm not going to stop[.][NL]studying...[.][A][ToggleSmile] */
+        MSG_ID(0xC47),  /* [ToggleSmile]I knew if I worked at it, I'd[.][NL]become a great warrior![.][A][ToggleSmile] */
+        MSG_ID(0xC4B),  /* [ToggleSmile]That's right. I'm a real[NL]soldier now![A][ToggleSmile] */
+        MSG_ID(0xC50)   /* [ToggleSmile]But I'm not going to stop[.][NL]studying...[.][A][ToggleSmile] */
     };
 
     switch (proc->pid) {
@@ -262,8 +262,8 @@ void PromoTrainee_Talk5(struct ProcPromoTraineeEvent *proc) {
 
     const u32 msgs[3] = {
         -1,
-        0xC4C,  /* [ToggleSmile]But I'm not about to stop.[NL]I'm just getting started![.][A][ToggleSmile] */
-        0xC51   /* [ToggleSmile]Not until I've become a[.][NL]great sage, like my teacher.[A][ToggleSmile] */
+        MSG_ID(0xC4C),  /* [ToggleSmile]But I'm not about to stop.[NL]I'm just getting started![.][A][ToggleSmile] */
+        MSG_ID(0xC51)   /* [ToggleSmile]Not until I've become a[.][NL]great sage, like my teacher.[A][ToggleSmile] */
     };
 
     switch (proc->pid) {

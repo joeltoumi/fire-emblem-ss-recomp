@@ -178,11 +178,11 @@ inline int GetItemRequiredExp(int item) {
 }
 
 inline const u8* GetItemEffectiveness(int item) {
-    return GetItemData(ITEM_INDEX(item))->pEffectiveness;
+    return GBA_GET(const u8 *, GetItemData(ITEM_INDEX(item))->pEffectiveness);
 }
 
 inline const struct ItemStatBonuses* GetItemStatBonuses(int item) {
-    return GetItemData(ITEM_INDEX(item))->pStatBonuses;
+    return GBA_GET(const struct ItemStatBonuses *, GetItemData(ITEM_INDEX(item))->pStatBonuses);
 }
 
 inline int GetItemIconId(int item) {
@@ -597,8 +597,8 @@ s8 IsUnitEffectiveAgainst(struct Unit* actor, struct Unit* target) {
 char* GetItemDisplayRangeString(int item) {
     int rangeTextIdLookup[10] = {
         // TODO: TEXT ID CONSTANTS
-        0x522, 0x523, 0x524, 0x525, 0x526, // 0-Mag/2, 1, 1-2, 1-3, 2
-        0x527, 0x528, 0x529, 0x52A, 0x52B, // 2-3, 3-10, 3-15, Total, --
+        MSG_ID(0x522), MSG_ID(0x523), MSG_ID(0x524), MSG_ID(0x525), MSG_ID(0x526), // 0-Mag/2, 1, 1-2, 1-3, 2
+        MSG_ID(0x527), MSG_ID(0x528), MSG_ID(0x529), MSG_ID(0x52A), MSG_ID(0x52B), // 2-3, 3-10, 3-15, Total, --
     };
 
     switch (GetItemEncodedRange(item)) {
@@ -661,8 +661,8 @@ int GetWeaponLevelFromExp(int wexp) {
 char* GetItemDisplayRankString(int item) {
     int rankTextIdLookup[] = {
         // TODO: TEXT ID CONSTANTS
-        0x52C, 0x52D, 0x52E, 0x52F, // --, E, D, C
-        0x530, 0x531, 0x532, 0x533, // B, A, S, Prf
+        MSG_ID(0x52C), MSG_ID(0x52D), MSG_ID(0x52E), MSG_ID(0x52F), // --, E, D, C
+        MSG_ID(0x530), MSG_ID(0x531), MSG_ID(0x532), MSG_ID(0x533), // B, A, S, Prf
     };
 
     // reuse of the same variable for different purposes :/
@@ -679,7 +679,7 @@ char* GetItemDisplayRankString(int item) {
 int GetDisplayRankStringFromExp(int wexp) {
     u8 rankTextIdLookup[] = {
         // TODO: TEXT ID CONSTANTS
-        0x14, 0x1D, 0x1C, 0x1B, 0x1A, 0x19, 0x18
+        MSG_ID(0x014), MSG_ID(0x01D), MSG_ID(0x01C), MSG_ID(0x01B), MSG_ID(0x01A), MSG_ID(0x019), MSG_ID(0x018)
     };
 
     return rankTextIdLookup[GetWeaponLevelFromExp(wexp)];
@@ -688,9 +688,9 @@ int GetDisplayRankStringFromExp(int wexp) {
 char * GetWeaponTypeDisplayString(int wpnType) {
     int wtypeTextIdLookup[] = {
         // TODO: TEXT ID CONSTANTS
-        0x505, 0x506, 0x507, 0x508, // Sword, Lance, Axe, Box
-        0x509, 0x50A, 0x50B, 0x50C, // Staff, Anima, Light, Dark
-        0x50D, 0x50E, 0x50F,        // Item, Bllsta, Dragon
+        MSG_ID(0x505), MSG_ID(0x506), MSG_ID(0x507), MSG_ID(0x508), // Sword, Lance, Axe, Box
+        MSG_ID(0x509), MSG_ID(0x50A), MSG_ID(0x50B), MSG_ID(0x50C), // Staff, Anima, Light, Dark
+        MSG_ID(0x50D), MSG_ID(0x50E), MSG_ID(0x50F),        // Item, Bllsta, Dragon
     };
 
 #if BUGFIX

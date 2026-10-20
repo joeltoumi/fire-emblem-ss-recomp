@@ -171,13 +171,13 @@ int ExecTrap(ProcPtr proc, struct Unit * unit, int exec_type)
         case TRAP_FIRE_THIEF:
             RemoveTrap(GetTrapAt(unit->xPos, unit->yPos));
             PlaySoundEffect(SONG_B1);
-            NewPopup2_PlanA(proc, -1, GetStringFromIndex(0x20));    /* Disabled trap. */
+            NewPopup2_PlanA(proc, -1, GetStringFromIndex(MSG_ID(0x020)));    /* Disabled trap. */
             break;
 
         case TRAP_MINE_ASSASSIN:
             RemoveTrap(GetTrapAt(unit->xPos, unit->yPos));
             PlaySoundEffect(SONG_B1);
-            NewPopup2_PlanA(proc, -1, GetStringFromIndex(0x21));    /* Recovered mine. */
+            NewPopup2_PlanA(proc, -1, GetStringFromIndex(MSG_ID(0x021)));    /* Recovered mine. */
             UnitAddItem(unit, MakeNewItem(ITEM_MINE));
             break;
     }

@@ -449,9 +449,9 @@ PROC_LABEL(1),
 
 /* Apparently these should belongs to sio_bat? */
 const struct LinkArenaRuleInfo gLinkArenaRuleData[] = {
-    { 0x776, 14, 17, 0x77B, 0x77C },
-    { 0x777, 16, 22, 0x779, 0x77A },
-    { 0x778, 14, 17, 0x77B, 0x77C },
+    { MSG_ID(0x776), 14, MSG_ID(0x011), 0x77B, 0x77C },
+    { MSG_ID(0x777), 16, MSG_ID(0x016), 0x779, 0x77A },
+    { MSG_ID(0x778), 14, MSG_ID(0x011), 0x77B, 0x77C },
 };
 
 CONST_DATA struct FaceVramEntry gUnknown_085A9864[] = {

@@ -607,14 +607,14 @@ void DrawDungeonRecordUiLabels(struct Text* th) {
     struct DungeonUiTextLutEntry* iter;
 
     struct DungeonUiTextLutEntry uiTextLut[9] = {
-        { 0x205, 13,  5 }, // Current[.]
-        { 0x206, 23,  5 }, // Record
-        { 0x207,  3,  7 }, // # Cleared
-        { 0x208,  3,  9 }, // Monsters
-        { 0x209,  3, 11 }, // Exp[.]
-        { 0x20A,  3, 13 }, // Units Used
-        { 0x20B,  3, 15 }, // Turns[.]
-        { 0x20C,  3, 17 }, // Time
+        { MSG_ID(0x205), 13,  5 }, // Current[.]
+        { MSG_ID(0x206), 23,  5 }, // Record
+        { MSG_ID(0x207),  3,  7 }, // # Cleared
+        { MSG_ID(0x208),  3,  9 }, // Monsters
+        { MSG_ID(0x209),  3, 11 }, // Exp[.]
+        { MSG_ID(0x20A),  3, 13 }, // Units Used
+        { MSG_ID(0x20B),  3, 15 }, // Turns[.]
+        { MSG_ID(0x20C),  3, 17 }, // Time
         { },
     };
 
@@ -739,7 +739,7 @@ struct Text* DrawTimeText(struct Text* th, int time, s8 xBase, s8 yBase, u8 colo
 
     xOffset = xBase + 0xFB;
 
-    str = GetStringFromIndex(0x20D); // :[.]
+    str = GetStringFromIndex(MSG_ID(0x20D)); // :[.]
 
     InitText(th, 1);
     Text_SetParams(th, 2, colorId);
@@ -762,7 +762,7 @@ struct Text* DrawTimeText(struct Text* th, int time, s8 xBase, s8 yBase, u8 colo
 
     xOffset = xBase + 0xFE;
 
-    str = GetStringFromIndex(0x20D); // :[.]
+    str = GetStringFromIndex(MSG_ID(0x20D)); // :[.]
 
     InitText(th, 1);
     Text_SetParams(th, 2, colorId);
@@ -810,7 +810,7 @@ struct Text* DrawTimeText_WithReset(struct Text* th, int time, s8 xBase, s8 yBas
 
     xOffset = xBase + 0xFB;
 
-    str = GetStringFromIndex(0x20D); // :[.]
+    str = GetStringFromIndex(MSG_ID(0x20D)); // :[.]
 
     if (th->chr_position != 0xFFFF) {
         ClearText(th);
@@ -840,7 +840,7 @@ struct Text* DrawTimeText_WithReset(struct Text* th, int time, s8 xBase, s8 yBas
 
     xOffset = xBase + 0xFE;
 
-    str = GetStringFromIndex(0x20D); // :[.]
+    str = GetStringFromIndex(MSG_ID(0x20D)); // :[.]
 
     if (th->chr_position != 0xFFFF) {
         ClearText(th);

@@ -330,7 +330,7 @@ void sub_8090238(u8 key)
                 Text_SetCursor(&gUnknown_0200E150, 0);
                 Text_SetColor(&gUnknown_0200E150, 0);
 
-                Text_DrawString(&gUnknown_0200E150, GetStringFromIndex(0x000004FD));
+                Text_DrawString(&gUnknown_0200E150, GetStringFromIndex(MSG_ID(0x4FD)));
 
                 if ((i == 5) && (j != 0))
                 {
@@ -1006,7 +1006,7 @@ void sub_8090D80(struct UnitListScreenProc * proc)
     ClearText(&gUnknown_0200E140);
     Text_SetCursor(&gUnknown_0200E140, 4);
     Text_SetColor(&gUnknown_0200E140, 0);
-    Text_DrawString(&gUnknown_0200E140, GetStringFromIndex(0x4E5));
+    Text_DrawString(&gUnknown_0200E140, GetStringFromIndex(MSG_ID(0x4E5)));
     PutText(&gUnknown_0200E140, TILEMAP_LOCATED(gBG2TilemapBuffer, 3, 5));
 
     for (i = 0; i < 20; i++)
@@ -1142,7 +1142,7 @@ void UnitList_TogglePrepDeployState(struct UnitListScreenProc * proc)
 
     if ((unit->state & US_BIT25) != 0)
     {
-        StartPrepErrorHelpbox(0, proc->unk_2c * 16 + 56, 0xC52, proc);
+        StartPrepErrorHelpbox(0, proc->unk_2c * 16 + 56, MSG_ID(0xC52), proc);
         return;
     }
 
@@ -1150,13 +1150,13 @@ void UnitList_TogglePrepDeployState(struct UnitListScreenProc * proc)
     {
         if (CheckInLinkArena() && !CanUnitBeDeployedLinkArena(unit))
         {
-            StartPrepErrorHelpbox(0, proc->unk_2c * 16 + 56, 0x88A, proc);
+            StartPrepErrorHelpbox(0, proc->unk_2c * 16 + 56, MSG_ID(0x88A), proc);
             return;
         }
 
         if (CheckInLinkArena() && !sub_8097E38(unit))
         {
-            StartPrepErrorHelpbox(0, proc->unk_2c * 16 + 56, 0x889, proc);
+            StartPrepErrorHelpbox(0, proc->unk_2c * 16 + 56, MSG_ID(0x889), proc);
             return;
         }
 
@@ -2201,7 +2201,7 @@ void UnitList_PutRow(struct UnitListScreenProc * proc, u8 unitNum, u16 * tm, u8 
             {
                 PutDrawText(
                     &gUnknown_0200E098[row][1], tm + y * 0x20 + 17,
-                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 0, 0, GetStringFromIndex(0x00000537));
+                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 0, 0, GetStringFromIndex(MSG_ID(0x537)));
             }
             else
             {
@@ -2220,15 +2220,15 @@ void UnitList_PutRow(struct UnitListScreenProc * proc, u8 unitNum, u16 * tm, u8 
             switch (gSortedUnits[unitNum]->unit->state & US_SOLOANIM)
             {
                 case US_SOLOANIM_1:
-                    PutDrawText(&gUnknown_0200E098[row][2], tm + y * 0x20 + 24, 4, 8, 0, GetStringFromIndex(0xBF));
+                    PutDrawText(&gUnknown_0200E098[row][2], tm + y * 0x20 + 24, 4, 8, 0, GetStringFromIndex(MSG_ID(0x0BF)));
                     break;
 
                 case US_SOLOANIM_2:
-                    PutDrawText(&gUnknown_0200E098[row][2], tm + y * 0x20 + 24, 4, 8, 0, GetStringFromIndex(0xc0));
+                    PutDrawText(&gUnknown_0200E098[row][2], tm + y * 0x20 + 24, 4, 8, 0, GetStringFromIndex(MSG_ID(0x0C0)));
                     break;
 
                 case 0:
-                    PutDrawText(&gUnknown_0200E098[row][2], tm + y * 0x20 + 24, 1, 4, 0, GetStringFromIndex(0xBE));
+                    PutDrawText(&gUnknown_0200E098[row][2], tm + y * 0x20 + 24, 1, 4, 0, GetStringFromIndex(MSG_ID(0x0BE)));
                     break;
             }
 
@@ -2306,7 +2306,7 @@ void UnitList_PutRow(struct UnitListScreenProc * proc, u8 unitNum, u16 * tm, u8 
             {
                 PutDrawText(
                     &gUnknown_0200E098[row][0], tm + y * 0x20 + 10,
-                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 0, 0, GetStringFromIndex(0x537));
+                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 0, 0, GetStringFromIndex(MSG_ID(0x537)));
             }
             else
             {
@@ -2348,7 +2348,7 @@ void UnitList_PutRow(struct UnitListScreenProc * proc, u8 unitNum, u16 * tm, u8 
             {
                 PutDrawText(
                     &gUnknown_0200E098[row][1], tm + y * 0x20 + 17,
-                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 2, 0, GetStringFromIndex(0x536));
+                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 2, 0, GetStringFromIndex(MSG_ID(0x536)));
             }
 
             PutNumberOrBlank(
@@ -2458,7 +2458,7 @@ void UnitList_PutRow(struct UnitListScreenProc * proc, u8 unitNum, u16 * tm, u8 
             {
                 PutDrawText(
                     &gUnknown_0200E098[row][num], tm + y * 0x20 + 9 + num * 6,
-                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 0, 0, GetStringFromIndex(0x536));
+                    inactive ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE, 0, 0, GetStringFromIndex(MSG_ID(0x536)));
             }
 
             break;
