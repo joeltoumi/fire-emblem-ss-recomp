@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "ctc.h"
 #include "proc.h"
 #include "soundwrapper.h"
@@ -196,11 +199,24 @@ void PrepareHealthAndSafetyScreen(struct ProcOpAnimHS * proc)
     SetPrimaryHBlankHandler(NULL);
     SetDispEnable(0, 0, 0, 0, 0);
 
+#ifdef REGION_EU
+    // EU 0x080ccb28: blending off, then the screen in the player's language.
+    SetBlendConfig(2, 0, 0, 0);
+    {
+        int lang = GetLang();
+        Decompress(EU_ROM_PTR(gEuImgTable_HealthSafety, lang), (void *)VRAM);
+        Decompress(EU_ROM_PTR(gEuTsaTable_HealthSafety, lang * 2 + 0), gGenericBuffer);
+        CallARM_FillTileRect(gBG1TilemapBuffer, gGenericBuffer, 0);
+        Decompress(EU_ROM_PTR(gEuTsaTable_HealthSafety, lang * 2 + 1), gGenericBuffer);
+        CallARM_FillTileRect(gBG0TilemapBuffer, gGenericBuffer, 0);
+    }
+#else
     Decompress(Img_OpAnimHealthSafetyScreen, (void *)VRAM);
     Decompress(Tsa_OpAnimHealthSafetyScreenBG1, gGenericBuffer);
     CallARM_FillTileRect(gBG1TilemapBuffer, gGenericBuffer, 0);
     Decompress(Tsa_OpAnimHealthSafetyScreenBG0, gGenericBuffer);
     CallARM_FillTileRect(gBG0TilemapBuffer, gGenericBuffer, 0);
+#endif
 
     CpuFastFill16(0, gPaletteBuffer, 0x400);
     EnablePaletteSync();

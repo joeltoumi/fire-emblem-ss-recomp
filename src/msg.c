@@ -90,6 +90,9 @@ void SetMsgTerminator(signed char * str)
 
 char * GetStringFromIndex(int index)
 {
+#ifdef PLATFORM_PC
+    index = Port_LocalizeMsg(index);
+#endif
     if (index == sActiveMsg)
         return sMsgString.buffer1;
     CallARM_DecompText(gMsgTable[index], sMsgString.buffer1);
@@ -100,6 +103,9 @@ char * GetStringFromIndex(int index)
 
 char * GetStringFromIndexInBuffer(int index, char *buffer)
 {
+#ifdef PLATFORM_PC
+    index = Port_LocalizeMsg(index);
+#endif
     CallARM_DecompText(gMsgTable[index], buffer);
     SetMsgTerminator(buffer);
     return buffer;

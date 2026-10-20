@@ -39,19 +39,25 @@ file(GLOB FE8_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.c")
 list(FILTER FE8_GAME_SOURCES EXCLUDE REGEX "/src/msg_data\\.c$")
 file(GLOB FE8_PORT_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/port/game/*.c")
 
-# Absolute symbols: the ROM data the game reads in place, and the GBA memory
-# regions.
+# Absolute symbols: the ROM data the game reads in place, the RAM variables
+# that stay at their GBA address, and the GBA memory regions.
 set(FE8_SYMBOL_LISTS
     "${CMAKE_SOURCE_DIR}/port/data/rom_symbols_${FE8_REGION}.txt"
     "${CMAKE_SOURCE_DIR}/port/data/ram_symbols_${FE8_REGION}.txt"
     "${CMAKE_SOURCE_DIR}/port/data/hardware_symbols.txt")
+if(FE8_REGION STREQUAL "eu")
+    # Data only the European version has (per-language tables).
+    file(GLOB FE8_EU_ONLY_LISTS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/port/data/eu_only/*.txt")
+    list(APPEND FE8_SYMBOL_LISTS ${FE8_EU_ONLY_LISTS})
+endif()
 set(FE8_ABS_SYMBOLS "${CMAKE_BINARY_DIR}/gen/abs_symbols.S")
 add_custom_command(
     OUTPUT "${FE8_ABS_SYMBOLS}"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/gen"
     COMMAND ${Python3_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/port/gen_abs_symbols.py"
             "${FE8_ABS_SYMBOLS}" ${FE8_SYMBOL_LISTS}
-    DEPENDS ${FE8_SYMBOL_LISTS} "${CMAKE_SOURCE_DIR}/tools/port/gen_abs_symbols.py"
+    DEPENDS ${FE8_SYMBOL_LISTS} "${CMAKE_SOURCE_DIR}/port/data/native_symbols.txt"
+            "${CMAKE_SOURCE_DIR}/tools/port/gen_abs_symbols.py"
     VERBATIM)
 
 add_library(fe8_game STATIC ${FE8_GAME_SOURCES} ${FE8_PORT_GAME_SOURCES} "${FE8_ABS_SYMBOLS}")

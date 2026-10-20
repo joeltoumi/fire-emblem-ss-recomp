@@ -1,0 +1,3 @@
+# EU-only ROM data (see include/port/eu.h): name EU-address
+gEuImgTable_HealthSafety   08b1891c
+gEuTsaTable_HealthSafety   08b18930

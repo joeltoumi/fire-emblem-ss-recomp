@@ -1,0 +1,5 @@
+# Addresses in the EU ROM that tools/port/map_rom.py can't find on its own,
+# read from the EU code by hand (US address -> EU address).
+# name                  EU        where it was read
+gUdefREDAs              03001cc8  # literal pool of AutoGenerateUnitdef (EU 0x08086abc)
+gUnknown_03001D50       03001d50  # literal pool of ClassIntro_Init (EU 0x080b3620)

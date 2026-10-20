@@ -1,0 +1,7 @@
+# ROM symbols the port defines natively (not read from the ROM).
+ProcScr_EkrDragon_08758720
+ProcScr_ManimShiftingSineWaveScanlineBuf
+gUnknown_08AA704C
+gUnknown_08AA705C
+gUnknown_08AA707C
+ProcScr_OpAnim

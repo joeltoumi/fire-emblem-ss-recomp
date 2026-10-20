@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "ap.h"
 #include "fontgrp.h"
 #include "hardware.h"
@@ -68,7 +71,13 @@ void AgbMain()
 
     SetInterrupt_LCDVBlank(OnVBlank);
     GmDataInit();
+#ifdef REGION_EU
+    // EU 0x08000aca: the language comes from the save file.
+    if (EuLoadLanguage() > EU_LANG_ITALIAN)
+        SetLang(EU_LANG_ENGLISH);
+#else
     SetLang(LANG_ENGLISH);
+#endif
     ResetText();
     StartGame();
 

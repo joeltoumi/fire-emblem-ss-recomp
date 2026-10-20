@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Find the addresses of the decomp's ROM symbols in another version's ROM.
 
-    map_rom.py US_RELOCS.elf OTHER.gba ROM_SYMBOLS_US.txt OUT.txt [--report R.txt]
+    map_rom.py US_RELOCS.elf OTHER.gba --map SYMBOLS_US.txt OUT.txt [--map ...] [--report R.txt]
 
 US_RELOCS.elf is the US build linked with --emit-relocs (see docs/PORT.md).
 The other ROM shares most code and data with the US one, moved around. The
@@ -19,8 +19,11 @@ mapping is found in steps:
   5. one that is still not found but lies between two symbols that moved by
      the same amount moved by that amount.
 
-Every symbol of ROM_SYMBOLS_US.txt must end up mapped; the ones that are
-not are listed in the report (and the tool fails).
+RAM symbols are mapped from the literal pools of the matched code (the same
+word in both versions), or by their neighbours.
+
+Every symbol of the lists must end up mapped; the ones that are not are
+listed in the report (and the tool fails).
 """
 import argparse
 import bisect
@@ -34,6 +37,10 @@ from elftools.elf.elffile import ELFFile
 ROM = 0x08000000
 R_ARM_ABS32 = 2
 R_ARM_THM_CALL = 10
+
+
+def is_ram(a):
+    return 0x02000000 <= a < 0x02040000 or 0x03000000 <= a < 0x03008000
 
 
 def u32(b, o):
@@ -64,8 +71,11 @@ class Us:
         self.funcs_by_addr = {}
         points = set()
         names = defaultdict(list)
+        ram_points = set()
         for s in elf.get_section_by_name(".symtab").iter_symbols():
             v = s["st_value"]
+            if is_ram(v) and s["st_info"]["type"] != "STT_SECTION":
+                ram_points.add(v)
             if not (ROM <= v < ROM + len(self.data)) or s["st_info"]["type"] == "STT_SECTION":
                 continue
             if s["st_info"]["type"] == "STT_FUNC":
@@ -78,6 +88,7 @@ class Us:
                 points.add(v)
             names[v & ~1].append(s.name)
         self.points = sorted(points)
+        self.ram_points = sorted(ram_points)
         self.names = names
         self.mask = bytearray(len(self.data))  # 1 = differs per build
         for a, t in self.relocs.items():
@@ -119,6 +130,7 @@ class Mapper:
         self.other = other
         self.map = {}  # US address -> other address (exact points)
         self.votes = defaultdict(Counter)
+        self.ram_votes = defaultdict(Counter)  # US RAM symbol -> Counter(delta)
 
     def other_ok(self, a):
         return ROM <= a < ROM + len(self.other)
@@ -155,6 +167,12 @@ class Mapper:
                 tgt = u32(self.us.data, r - self.us.base)
                 if ROM <= tgt < ROM + len(self.us.data) and self.other_ok(ot):
                     self.vote(tgt & ~1, u32(self.other, ot - ROM) & ~1)
+                elif is_ram(tgt) and self.other_ok(ot):
+                    v = u32(self.other, ot - ROM)
+                    if is_ram(v):
+                        pts = self.us.ram_points
+                        sym = pts[max(bisect.bisect_right(pts, tgt) - 1, 0)]
+                        self.ram_votes[sym][v - tgt] += 1
             elif t == R_ARM_THM_CALL:
                 tu = decode_bl(self.us.data, r - self.us.base, r)
                 to = decode_bl(self.other, ot - ROM, ot) if self.other_ok(ot) else None
@@ -185,6 +203,7 @@ class Mapper:
         # the hit where the neighbours moved to, or where the calls go.
         self.resort()
         still = []
+        self.fuzzy = []  # mapped by the calls to them, but their code differs
         for a, name, n in unmatched_funcs:
             size = us.funcs_by_addr[a]
             guess = a + self.delta_near(a)
@@ -200,28 +219,22 @@ class Mapper:
                 self.map[a] = pick
                 if pick in hits:
                     self.follow(a, a + size, pick)
+                else:
+                    self.fuzzy.append(a)
             else:
                 still.append((a, name, n))
         self.unmatched_funcs = still
         # 2/3. data: settle votes, follow mapped data, repeat.
-        while True:
-            added = 0
-            for ua, c in list(self.votes.items()):
-                if ua in self.map:
-                    continue
-                oa, n = c.most_common(1)[0]
-                if n * 2 <= sum(c.values()):
-                    continue
-                self.map[ua] = oa
-                added += 1
-                # a pointer into the middle of an object maps the object too
-                start = self.containing(ua)
-                end = us.extent(start)
-                if start not in self.map:
-                    self.map[start] = oa - (ua - start)
-                self.follow(start, end, self.map[start])
-            if not added:
-                break
+        self.settle()
+        # Functions whose code differs: their literal pools, lined up.
+        self.resort()
+        self.weak_votes = defaultdict(Counter)
+        for a in self.fuzzy:
+            self.align_literals(a)
+        for ua, c in self.weak_votes.items():
+            if ua not in self.map and not self.votes.get(ua):
+                self.votes[ua] = c
+        self.settle()
         self.resort()
         # 4. symbols nothing pointed to: by bytes, near the neighbours' delta.
         for ua in sorted(wanted):
@@ -256,6 +269,85 @@ class Mapper:
                     self.map[ua] = ua + self.map[a] - a
         self.resort()
 
+    def settle(self):
+        while True:
+            added = 0
+            for ua, c in list(self.votes.items()):
+                if ua in self.map:
+                    continue
+                oa, n = c.most_common(1)[0]
+                if n * 2 <= sum(c.values()):
+                    continue
+                self.map[ua] = oa
+                added += 1
+                # a pointer into the middle of an object maps the object too
+                start = self.containing(ua)
+                end = self.us.extent(start)
+                if start not in self.map:
+                    self.map[start] = oa - (ua - start)
+                self.follow(start, end, self.map[start])
+            if not added:
+                break
+
+    def align_literals(self, a):
+        """Votes from a function whose code differs in the other ROM.
+
+        Its literal pools hold mostly the same pointers in the same order:
+        the ones already mapped line the two lists up, and an unmapped US
+        pointer between two lined-up ones takes the other ROM's word at the
+        same place."""
+        us = self.us
+        size = us.funcs_by_addr[a]
+        ot = self.map[a]
+        i = bisect.bisect_right(self.sorted_keys, ot - (self.map[a] - a))
+        # the other version's function ends where the next mapped one starts
+        nxt = [self.map[k] for k in self.sorted_keys[i:i + 4] if self.map[k] > ot]
+        ot_end = min(nxt + [ot + size * 2])
+        ulits = [u32(us.data, r - us.base) for r in us.relocs_in(a, a + size)
+                 if us.relocs[r] == R_ARM_ABS32]
+        olits = [u32(self.other, o - ROM) for o in range(ot, ot_end, 4)
+                 if ROM <= u32(self.other, o - ROM) < ROM + len(self.other)]
+        ulits = [x for x in ulits if ROM <= x < ROM + len(us.data)]
+        trans = [self.map.get(x & ~1) for x in ulits]
+        # anchors: mapped US literals found in order in the other list
+        j = 0
+        anchors = [(-1, -1)]
+        for k, t in enumerate(trans):
+            if t is None:
+                continue
+            for jj in range(j, len(olits)):
+                if olits[jj] & ~1 == t:
+                    anchors.append((k, jj))
+                    j = jj + 1
+                    break
+        anchors.append((len(ulits), len(olits)))
+        for (k0, j0), (k1, j1) in zip(anchors, anchors[1:]):
+            if k1 - k0 == j1 - j0:
+                for d in range(1, k1 - k0):
+                    if trans[k0 + d] is None:
+                        self.weak_votes[ulits[k0 + d] & ~1][olits[j0 + d] & ~1] += 1
+
+    def map_ram(self, wanted):
+        """RAM addresses: from the literal pools of the matched code."""
+        out = {}
+        for ua in wanted:
+            c = self.ram_votes.get(ua)
+            if c:
+                d, n = c.most_common(1)[0]
+                if n * 2 > sum(c.values()):
+                    out[ua] = ua + d
+        # unreferenced: between two that moved by the same amount
+        keys = sorted(out)
+        for ua in wanted:
+            if ua in out:
+                continue
+            i = bisect.bisect_right(keys, ua)
+            if 0 < i < len(keys):
+                a, b = keys[i - 1], keys[i]
+                if out[a] - a == out[b] - b:
+                    out[ua] = ua + out[a] - a
+        return out
+
     def containing(self, a):
         i = bisect.bisect_right(self.us.points, a) - 1
         return self.us.points[i] if i >= 0 else a
@@ -265,37 +357,59 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("elf")
     ap.add_argument("rom")
-    ap.add_argument("symbols")
-    ap.add_argument("out")
+    ap.add_argument("--map", nargs=2, action="append", metavar=("IN", "OUT"), required=True,
+                    help="a 'name address' list of US symbols (ROM or RAM) and where to write theirs")
+    ap.add_argument("--fixes", help="'name address' list of addresses found by hand")
+    ap.add_argument("--guess", action="store_true",
+                    help="give the symbols not found the address their predecessor's move implies "
+                         "(listed as guessed in the report) instead of failing")
     ap.add_argument("--report")
     args = ap.parse_args()
+    fixes = {}
+    if args.fixes:
+        for line in open(args.fixes):
+            row = line.split("#", 1)[0].split()
+            if row:
+                fixes[row[0]] = int(row[1], 16)
 
     us = Us(args.elf)
     other = open(args.rom, "rb").read()
-    syms = []
-    for line in open(args.symbols):
-        name, addr = line.split()
-        syms.append((name, int(addr, 16)))
+    lists = []
+    for path, out in args.map:
+        syms = []
+        for line in open(path):
+            name, addr = line.split()
+            syms.append((name, int(addr, 16)))
+        lists.append((syms, out))
     m = Mapper(us, other)
-    m.run({a for _, a in syms})
+    m.run({a for syms, _ in lists for _, a in syms if not is_ram(a)})
+    ram = m.map_ram({a for syms, _ in lists for _, a in syms if is_ram(a)})
 
-    missing = []
-    with open(args.out, "w") as f:
-        for name, a in syms:
-            if a in m.map:
-                f.write(f"{name} {m.map[a]:08x}\n")
-            else:
-                missing.append((name, a))
     rep = sys.stderr if not args.report else open(args.report, "w")
     print(f"functions: {len(us.funcs) - len(m.unmatched_funcs)}/{len(us.funcs)} matched", file=rep)
     for a, name, n in m.unmatched_funcs:
         guess = a + m.delta_near(a)
         print(f"  func {name} {a:08x} hits={n} near={guess:08x} size={us.funcs_by_addr[a]:x}", file=rep)
-    print(f"symbols: {len(syms) - len(missing)}/{len(syms)} mapped", file=rep)
-    for name, a in missing:
-        print(f"  missing {name} {a:08x}", file=rep)
-    return 1 if missing else 0
-
+    failed = False
+    for syms, out in lists:
+        missing = []
+        with open(out, "w") as f:
+            for name, a in syms:
+                got = fixes.get(name)
+                if got is None:
+                    got = ram.get(a) if is_ram(a) else m.map.get(a)
+                if got is None and args.guess and not is_ram(a):
+                    missing.append((name, a))
+                    got = a + m.delta_near(a)
+                if got is not None:
+                    f.write(f"{name} {got:08x}\n")
+                else:
+                    missing.append((name, a))
+        print(f"{out}: {len(syms) - len(missing)}/{len(syms)} mapped", file=rep)
+        for name, a in missing:
+            print(f"  {'guessed' if args.guess else 'missing'} {name} {a:08x}", file=rep)
+        failed |= bool(missing) and not args.guess
+    return 1 if failed else 0
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -47,6 +47,10 @@ extern void *gPortIntrVector;
 
 void Port_Log(const char *fmt, ...);
 
+/* The message to read for a message index: in the European version the
+ * message table holds every language in turn (port/game/eu_language.c). */
+int Port_LocalizeMsg(int index);
+
 #ifdef __cplusplus
 }
 #endif

@@ -1,0 +1,571 @@
+functions: 8027/8515 matched
+  func ColorFadeSetupFromColorToBlack 08001860 hits=0 near=08001844 size=84
+  func ColorFadeSetupFromBlack 080018e4 hits=0 near=080018c8 size=80
+  func ColorFadeSetupFromColorToWhite 08001964 hits=0 near=08001948 size=84
+  func ColorFadeSetupFromWhite 080019e8 hits=0 near=080019cc size=84
+  func sub_8001A6C 08001a6c hits=0 near=08001a50 size=ec
+  func RunProcessRecursive 08002e28 hits=0 near=08002df4 size=5c
+  func ProcCmd_CALL_ROUTINE_ARG 08003130 hits=0 near=080030fc size=1e
+  func sub_8003C44 08003c44 hits=0 near=08003c0c size=38
+  func Text_DrawNumberOrBlank 08004144 hits=0 near=08004104 size=3c
+  func DrawSpecialCharGlyph 08004a34 hits=0 near=080049f4 size=5c
+  func PutTime 08004c68 hits=0 near=08004c58 size=f2
+  func PutFaceTm 08005894 hits=0 near=08005884 size=8e
+  func StartFaceChibiSpr 08005b04 hits=0 near=08005af0 size=64
+  func PutFaceOnBackGround 08006738 hits=0 near=08006724 size=ae
+  func StartTalkFaceMove 08007a58 hits=0 near=08007a64 size=58
+  func GameControl_ChapterSwitch 08009d98 hits=0 near=08009d90 size=48
+  func GetStrPrefix 0800a048 hits=0 near=0800a0a8 size=118
+  func InsertPrefix 0800a160 hits=0 near=0800a1c0 size=68
+  func SetMsgTerminator 0800a1c8 hits=0 near=0800a228 size=78
+  func sub_800B198 0800b198 hits=0 near=0800b288 size=1f0
+  func sub_800B388 0800b388 hits=0 near=0800b478 size=1ec
+  func sub_800B574 0800b574 hits=0 near=0800b664 size=1f0
+  func sub_800B764 0800b764 hits=0 near=0800b854 size=7c
+  func EventSetFogVisionExt 0800baa8 hits=0 near=0800bb30 size=50
+  func TriggerMapChanges 0800baf8 hits=0 near=0800bb80 size=4e
+  func UntriggerMapChange 0800bb48 hits=0 near=0800bbd0 size=50
+  func Event83_WmSetCamera 0800be38 hits=0 near=0800bebc size=14
+  func Event86_WmScrollCamera 0800bed4 hits=0 near=0800bf5c size=64
+  func Event87_WmScrollCameraOntoNode 0800bf38 hits=0 near=0800bfbc size=9e
+  func Event88_WmScrollCameraOntoUnit 0800bfd8 hits=0 near=0800c050 size=ac
+  func Event89_WmScrollWait 0800c084 hits=2 near=0800c0f4 size=34
+  func Event8C_WmSetCursor_Unsure 0800c0d4 hits=0 near=0800c144 size=1c
+  func EventA3_WmShowUnitFaded 0800c5bc hits=0 near=0800c62c size=3a
+  func EventA4_WmHideUnitFaded 0800c5f8 hits=0 near=0800c668 size=3a
+  func EventA7_WmUnitSetPosition 0800c68c hits=0 near=0800c6fc size=34
+  func EventA8_WmUnitMoveFree 0800c6c0 hits=0 near=0800c72c size=94
+  func EventA9_WmUnitMovePaths 0800c754 hits=0 near=0800c7cc size=60
+  func EventAA_WmUnitPauseMove 0800c7b4 hits=0 near=0800c82c size=30
+  func EventAB_WmUnitResumeMove 0800c7e4 hits=0 near=0800c85c size=30
+  func EventAC_WmUnitMoveWait 0800c814 hits=0 near=0800c88c size=46
+  func EventB4_WmDisplayBigMap 0800c950 hits=0 near=0800c9c4 size=2e
+  func EventB6_WmMoveBigMap 0800c9a0 hits=0 near=0800ca14 size=4e
+  func EventBB_ 0800ca9c hits=0 near=0800cb08 size=3e
+  func EventBC_MarkPoint 0800cadc hits=0 near=0800cb48 size=6c
+  func EventBD_ 0800cb48 hits=2 near=0800cbb0 size=28
+  func EventBE_ 0800cb70 hits=2 near=0800cbd8 size=3c
+  func EventC4_WmShowPortrait 0800cc8c hits=0 near=0800ccf4 size=5c
+  func EventCC_ 0800cdf8 hits=0 near=0800ce54 size=2e
+  func SlotQueuePop 0800d544 hits=0 near=0800d5a0 size=44
+  func Event01_End 0800d5a4 hits=0 near=0800d5f8 size=cc
+  func Event02_EvBitAndIdMod 0800d670 hits=0 near=0800d6ac size=72
+  func Event03_CheckEvBitOrId 0800d6e4 hits=0 near=0800d714 size=70
+  func Event07_SlotQueueOperations 0800d918 hits=0 near=0800d938 size=64
+  func Event0A_Call 0800d9b8 hits=0 near=0800d9d8 size=74
+  func Event0D_AsmCall 0800db00 hits=0 near=0800db00 size=36
+  func Event0E_STAL 0800db38 hits=0 near=0800db34 size=a6
+  func Event0F_CounterOps 0800dbe0 hits=0 near=0800dbd4 size=b8
+  func Event12_StartBGM 0800dd74 hits=0 near=0800dd64 size=3c
+  func Event13_BgmFadeIn 0800ddb0 hits=0 near=0800dd9c size=64
+  func Event14_BgmOverideRestore 0800de14 hits=0 near=0800ddfc size=5e
+  func Event16_ 0800ded4 hits=0 near=0800debc size=4c
+  func Event18_ColorFade 0800dfbc hits=0 near=0800dfa4 size=b2
+  func Event1B_TEXTSHOW 0800e3c8 hits=0 near=0800e3c8 size=154
+  func Event1E_ 0800e6b4 hits=0 near=0800e6c4 size=c8
+  func Event21_TextBg 0800e8cc hits=0 near=0800e8d8 size=1b6
+  func Event25_ChangeMap 0800f17c hits=0 near=0800f18c size=90
+  func Event26_CameraControl 0800f20c hits=0 near=0800f218 size=c8
+  func Event27_MapChange 0800f2d4 hits=0 near=0800f2cc size=116
+  func Event29_SetFogVision 0800f3fc hits=0 near=0800f3f8 size=2e
+  func Event2A_MoveToChapter 0800f42c hits=0 near=0800f428 size=e0
+  func EventLoadUnitWithMovement 0800f5b8 hits=0 near=0800f5ac size=e0
+  func EventLoadUnitSliently 0800f698 hits=0 near=0800f68c size=6c
+  func LoadUnit_800F704 0800f704 hits=0 near=0800f6f8 size=1a2
+  func sub_800F8A8 0800f8a8 hits=0 near=0800f89c size=6a
+  func GetUnitDefinitionFromEventScr 0800f914 hits=0 near=0800f908 size=204
+  func Event2B_ConfigLoadUnit 0800fb18 hits=0 near=0800faac size=6a
+  func Event2C_LoadUnits 0800fb84 hits=0 near=0800fb10 size=10c
+  func ModifyMoveUnitFlag 0800fcd8 hits=0 near=0800fc60 size=34
+  func Event2F_MoveUnit 0800fd8c hits=0 near=0800fd14 size=198
+  func Event32_SpawnSingleUnit 0800fff8 hits=0 near=0800ff68 size=118
+  func Event33_CheckUnitVarious 08010110 hits=0 near=0801007c size=188
+  func Event35_UnitClassChanging 080104b0 hits=0 near=08010418 size=8c
+  func Event36_CheckInArea 0801053c hits=0 near=080104ac size=68
+  func Event39_ChangeAiScript 08010644 hits=0 near=080105a8 size=a0
+  func Event3A_DisplayPopup 080106e4 hits=0 near=08010640 size=64
+  func Event3B_DisplayCursor 0801079c hits=0 near=080106f0 size=b4
+  func Event3C_MoveCursor 08010850 hits=0 near=080107a0 size=5c
+  func Event3F_ScriptBattle 08010a58 hits=0 near=080109a8 size=f0
+  func WaitEventPromoteDone 08010b48 hits=2 near=08010a98 size=2e
+  func Event40_PromoteUnit 08010b78 hits=0 near=08010ac0 size=74
+  func Event41_Warp 08010bec hits=0 near=08010b30 size=84
+  func Event42_EarthQuake 08010c70 hits=0 near=08010ba8 size=7e
+  func NewGoldNumPopup_unused 080115dc hits=0 near=08011534 size=48
+  func ChangeAiForPositions 08011d60 hits=0 near=08011d4c size=94
+  func StartScriptBattleAnim 08011ef0 hits=0 near=08011ed4 size=6c
+  func StartEventBattle 08011f5c hits=0 near=08011f40 size=278
+  func NewShinningStonefx 08012ae0 hits=0 near=08012aac size=44
+  func CheckShinningStonefxExists 08012b24 hits=12 near=08012af0 size=18
+  func StartEventEarthQuake 08012c34 hits=0 near=08012bf4 size=54
+  func sub_80145C8 080145c8 hits=0 near=08014588 size=d8
+  func sub_8014804 08014804 hits=0 near=080147c4 size=78
+  func MatRotA 08015160 hits=0 near=08015134 size=4c
+  func MatRotB 080151ac hits=0 near=08015180 size=48
+  func MatRotC 080151f4 hits=0 near=080151c8 size=48
+  func sub_80155C4 080155c4 hits=0 near=08015594 size=44
+  func CamMove_OnInit 08015c1c hits=0 near=08015bf4 size=94
+  func DrawItemMenuLineLong 080168e0 hits=0 near=08016ae0 size=c6
+  func sub_801A570 0801a570 hits=0 near=0801a830 size=d0
+  func DebugContinueMenuInit 0801c0fc hits=0 near=0801c3c0 size=9c
+  func StartupDebugMenu_WorldMapEffect 0801c1dc hits=0 near=0801c4a0 size=48
+  func StartupDebugMenu_ChapterSelectIdle 0801c224 hits=0 near=0801c4e8 size=24
+  func StartupDebugMenu_ChapterSelectEffect 0801c248 hits=0 near=0801c50c size=88
+  func sub_801C2D0 0801c2d0 hits=3 near=0801c594 size=14
+  func sub_801C2E4 0801c2e4 hits=3 near=0801c5a8 size=14
+  func PlayerPhase_PrepareAction 0801d084 hits=0 near=0801d344 size=1c0
+  func EnsureCameraOntoActiveUnitPosition 0801d31c hits=0 near=0801d5d8 size=28
+  func MakeNew6CBMXFADE2 0801ddf0 hits=0 near=0801e0ac size=28
+  func SendToConvoyMenu_Selected 0801e1fc hits=0 near=0801e4b8 size=54
+  func SendToConvoyMenu_Selected2 0801e250 hits=0 near=0801e50c size=44
+  func MenuItemPanelProcIdle 0801e4f4 hits=0 near=0801e7b0 size=190
+  func PhaseIntro_InitGraphics 0801f2cc hits=0 near=0801f588 size=dc
+  func NewPopup2_PlanD 0801fc68 hits=0 near=0801ff3c size=108
+  func GameOverScreen_Init 080212c0 hits=0 near=08021600 size=134
+  func StartEventWarpAnim_unused 08021da4 hits=0 near=08022108 size=54
+  func MapMenu_SuspendCommand 080225d0 hits=0 near=08022928 size=28
+  func WeaponSelectMenu_Draw 08022d34 hits=0 near=0802308c size=50
+  func VisitCommandEffect 080230c0 hits=0 near=08023418 size=30
+  func PlayCommandEffect 080231d0 hits=0 near=08023528 size=d4
+  func ItemSubMenu_EquipItem 080237f8 hits=0 near=08023b4c size=40
+  func ItemSubMenu_DiscardItem 0802386c hits=0 near=08023bc0 size=74
+  func BallistaRangeMenu_Draw 08023950 hits=0 near=08023ca4 size=50
+  func StaffCommandEffect 08023acc hits=0 near=08023e20 size=70
+  func TalkCommandEffect 08023cc4 hits=0 near=08024018 size=3c
+  func SupportCommandEffect 08023d64 hits=0 near=080240b8 size=3c
+  func ArenaCommandEffect 08024144 hits=0 near=08024498 size=48
+  func StealCommandEffect 080241dc hits=0 near=08024530 size=40
+  func StealMapSelect_Init 0802421c hits=0 near=08024570 size=20
+  func StealItemMenuCommand_Draw 08024348 hits=0 near=0802469c size=54
+  func StealItemMenuCommand_Effect 0802439c hits=0 near=080246f0 size=3c
+  func SummonCommandUsability 080243d8 hits=0 near=0802472c size=de
+  func RescueSelection_OnConstruction 0802467c hits=0 near=080249c8 size=20
+  func DropSelection_OnConstruction 080246c0 hits=0 near=08024a0c size=1c
+  func GiveSelection_OnInit 080246e0 hits=0 near=08024a2c size=20
+  func TakeSelection_OnInit 08024724 hits=0 near=08024a70 size=20
+  func TradeTargetSelection_OnInit 08024768 hits=0 near=08024ab4 size=20
+  func TalkSupportSelection_OnInit 080247b0 hits=0 near=08024afc size=20
+  func RefreshMapSelect_Init 080247f4 hits=0 near=08024b40 size=1e
+  func SummonSelection_OnInit 08024868 hits=0 near=08024bb4 size=1a
+  func sub_8024888 08024888 hits=0 near=08024bd4 size=1a
+  func PickSelection_OnInit 080248a8 hits=0 near=08024bf4 size=1c
+  func MakeGorgonEggHatchTargetList 08025a64 hits=0 near=08025db0 size=b2
+  func SMS_DisplayOne 08027f28 hits=0 near=08028258 size=ec
+  func DoUseRescueStaff 08029568 hits=0 near=080298b0 size=40
+  func WarpSelect_OnInit 080295e8 hits=0 near=08029930 size=b4
+  func WarpSelect_OnIdle 0802969c hits=0 near=080299e4 size=134
+  func DoUseWarpStaff 0802987c hits=0 near=08029bbc size=58
+  func DoUseRepairStaff 080299b8 hits=0 near=08029cf8 size=50
+  func RepairMenuItemDraw 08029a84 hits=0 near=08029dc4 size=5c
+  func RepairMenuItemSelect 08029ae0 hits=0 near=08029e20 size=ac
+  func DoUseHealStaff 08029b8c hits=0 near=08029ecc size=3c
+  func DoUseRestoreStaff 08029bc8 hits=0 near=08029f08 size=3c
+  func DoUseBarrierStaff 08029c34 hits=0 near=08029f74 size=3c
+  func DoUseAttackStaff 08029ca0 hits=0 near=08029fe0 size=3c
+  func sub_8029D6C 08029d6c hits=0 near=0802a0ac size=2c
+  func TorchSelect_OnInit 08029d98 hits=0 near=0802a0d8 size=58
+  func TorchSelect_OnIdle 08029df0 hits=0 near=0802a130 size=e8
+  func BattleRoll2RN 0802a558 hits=0 near=0802a890 size=2c
+  func TradeMenu_HelpBox_OnLoop 0802dc04 hits=0 near=0802df54 size=d4
+  func GameCtrl_DeclareCompletedChapter 080314b0 hits=0 near=08031804 size=24
+  func BATTLE_HandleItemDrop 080328d0 hits=0 near=08032c8c size=a4
+  func AddPointToPathArrowProc 08032a94 hits=0 near=08032e84 size=84
+  func GetPointAlongPath 08032b18 hits=0 near=08032f00 size=70
+  func PathContainsNoCycle 08032da0 hits=0 near=08033168 size=86
+  func UpdatePathArrowWithCursor 08032eb4 hits=0 near=08033278 size=1b8
+  func PointInCameraBounds 08033148 hits=0 near=08033508 size=44
+  func DrawPathArrow 0803318c hits=0 near=08033548 size=bc
+  func PrepHelpPrompt_Init 08033548 hits=0 near=08033904 size=2c
+  func PrepScreen_StartUnitSwap 08033c10 hits=0 near=08033fd4 size=80
+  func PrepScreen_UnitSwapIdle 08033c90 hits=0 near=08034054 size=148
+  func SetupDungeonRecordUi 08038240 hits=0 near=08038600 size=208
+  func AiFindTargetInReachNeglectWallByFunc 0803aa40 hits=0 near=0803ad5c size=11c
+  func AiCountNearbyUnits 0803b390 hits=0 near=0803b670 size=8c
+  func AiCountNearbyAlliedUnits 0803b4b8 hits=0 near=0803b790 size=a0
+  func AiGetUnitStealItemSlot 0803b7c8 hits=0 near=0803ba90 size=40
+  func AiTryMoveTowardsNeglectWall 0803bbf4 hits=0 near=0803be80 size=1ec
+  func AiGetUnitClosestValidPosition 0803bde0 hits=0 near=0803c06c size=16a
+  func AiBallistaRideExit 0803f82c hits=0 near=0803fa7c size=17c
+  func SioMain_Loop 08041dc4 hits=0 near=08042004 size=374
+  func sub_80423B0 080423b0 hits=0 near=080425f0 size=1b8
+  func sub_8042F98 08042f98 hits=0 near=080431dc size=48
+  func sub_80433C0 080433c0 hits=0 near=08043604 size=f4
+  func sub_80437C0 080437c0 hits=0 near=08043a04 size=fe
+  func SioTeamList_SetupGfx 08043904 hits=0 near=08043b48 size=204
+  func SioTeamList_804429C 0804429c hits=0 near=080444f4 size=86
+  func SioTeamList_8044324 08044324 hits=0 near=08044580 size=8a
+  func SioTeamList_StartEraseTeamSubMenu 080443b0 hits=0 near=08044618 size=80
+  func Tactician_InitScreen 08044768 hits=0 near=080449d0 size=200
+  func Tactician_MoveHand 080449e8 hits=0 near=08044c58 size=58
+  func NameSelect_DrawName 080450ac hits=0 near=08045250 size=5c
+  func SioPostBattle_Init 08045640 hits=0 near=080457e4 size=1b8
+  func sub_8045DC0 08045dc0 hits=0 near=08045f84 size=140
+  func sub_8045F48 08045f48 hits=0 near=0804612c size=254
+  func sub_804619C 0804619c hits=0 near=08046384 size=98
+  func sub_8046234 08046234 hits=0 near=08046420 size=a0
+  func sub_80462D4 080462d4 hits=0 near=080464c0 size=d4
+  func sub_80463A8 080463a8 hits=0 near=08046594 size=b4
+  func sub_8046704 08046704 hits=0 near=080468f0 size=a8
+  func sub_80467AC 080467ac hits=0 near=08046998 size=8c
+  func sub_8046838 08046838 hits=0 near=08046a24 size=174
+  func sub_80469C4 080469c4 hits=0 near=08046bc4 size=2a0
+  func SioResult_Init 08047008 hits=0 near=08047230 size=204
+  func SioResult_NewHS_Init 08047324 hits=0 near=0804755c size=24c
+  func SioRuleSettings_Init 08047780 hits=0 near=080479cc size=1a8
+  func SioRuleSettings_Loop_Main 08047928 hits=0 near=08047b88 size=12c
+  func SioMenu_LoadGraphics 08047b34 hits=0 near=08047da0 size=12c
+  func SioMenu_RestartGraphicsMaybe 08047d88 hits=0 near=08047ffc size=170
+  func XMapTransfer_80482E0 080482e0 hits=0 near=0804855c size=116
+  func PutXMapProgressPercent 080484d8 hits=0 near=08048754 size=4c
+  func sub_80486E8 080486e8 hits=0 near=08048964 size=46
+  func XMapTransfer_8048730 08048730 hits=0 near=080489ac size=6c
+  func LAPointsBox_LoadBoxes 08048988 hits=0 near=08048c04 size=e0
+  func sub_80490EC 080490ec hits=0 near=08049374 size=14a
+  func sub_8049238 08049238 hits=0 near=080494c0 size=34
+  func sub_804A7C0 0804a7c0 hits=0 near=0804aa40 size=154
+  func sub_804B71C 0804b71c hits=0 near=0804b9a0 size=50
+  func sub_804BC84 0804bc84 hits=0 near=0804bf04 size=a8
+  func sub_804BDFC 0804bdfc hits=0 near=0804c07c size=8c
+  func sub_804C260 0804c260 hits=0 near=0804c4e0 size=58
+  func LATitleBanner_Init 0804c3ec hits=0 near=0804c66c size=90
+  func NameEntrySpriteDraw_Loop 0804cccc hits=0 near=0804cf54 size=c4
+  func StartNameEntrySpriteDraw 0804cd90 hits=0 near=0804d018 size=40
+  func LAPhaseIntro_Init 0804d2a4 hits=0 near=0804d554 size=d8
+  func sub_804D80C 0804d80c hits=0 near=0804dae8 size=28
+  func sub_804D8DC 0804d8dc hits=0 near=0804dbc4 size=64
+  func MultiBootStartMaster 0804de60 hits=0 near=0804e144 size=c2
+  func ekrGaugeMain 08051284 hits=0 near=08051578 size=840
+  func NewEfxHpBar 08052304 hits=0 near=080525bc size=e8
+  func EfxHpBarResire_SetAnotherSide 08052788 hits=0 near=08052a38 size=a4
+  func NewEfxHpBarLive 08052a0c hits=0 near=08052cbc size=d8
+  func EfxNoDamageYureMain 08052ca0 hits=0 near=08052f50 size=ec
+  func efxHitQuake_Loop 08053bbc hits=0 near=08053e64 size=352
+  func NewEfxFlashBgRed 08053f4c hits=0 near=080541f4 size=40
+  func NewEfxFlashBgDirectly 08053fc4 hits=0 near=0805427c size=20
+  func EfxFlashBgMain 08053fe4 hits=0 near=080542ac size=38
+  func EfxFlashRestorePalSync 0805401c hits=9 near=080542b4 size=14
+  func NewEfxWhiteOUT 08054030 hits=5 near=080542c8 size=24
+  func EfxWhiteOutMain1 08054054 hits=2 near=080542ec size=5c
+  func EfxWhiteOutMain2 080540b0 hits=2 near=08054348 size=70
+  func EfxWhiteOutRestorePalSync 08054120 hits=9 near=080543b8 size=14
+  func EfxWhiteInMain1 08054158 hits=2 near=08054430 size=5c
+  func EfxWhiteInMain2 080541b4 hits=2 near=0805448c size=70
+  func EfxWhiteInRestorePalSync 08054224 hits=9 near=080544fc size=14
+  func NewEfxBlackOUT 08054238 hits=5 near=08054510 size=24
+  func EfxBlackOutMain1 0805425c hits=2 near=08054534 size=5c
+  func EfxBlackOutMain2 080542b8 hits=2 near=08054590 size=70
+  func EfxBlackOutRestorePalSync 08054328 hits=9 near=08054600 size=14
+  func NewEfxBlackIN 0805433c hits=5 near=08054614 size=24
+  func EfxBlackInMain1 08054360 hits=2 near=08054638 size=5c
+  func EfxBlackInMain2 080543bc hits=2 near=08054694 size=70
+  func EfxBlackInRestorePalSync 0805442c hits=9 near=08054704 size=14
+  func NewEfxFlashUnitEffectEnd 080548e0 hits=0 near=08054bb8 size=50
+  func sub_8055A64 08055a64 hits=0 near=08055d30 size=d4
+  func UnitKakudaiMain 08056b70 hits=0 near=08056e20 size=1a6
+  func GetSpellAnimId 08057ff8 hits=0 near=08058274 size=1a8
+  func FilterBattleAnimCharacterPalette 08058960 hits=0 near=08058bc0 size=52
+  func sub_805AFA0 0805afa0 hits=0 near=0805b1c4 size=7c
+  func StartSpellAnimation 0805b3cc hits=0 near=0805b5f0 size=30
+  func efxRestRSTMain 0805b454 hits=0 near=0805b678 size=94
+  func EfxRestWINMain 0805b670 hits=0 near=0805b894 size=b4
+  func sub_805BB24 0805bb24 hits=0 near=0805bd54 size=60
+  func EfxCircleWINMain 0805bb84 hits=0 near=0805bdb4 size=fc
+  func Loop6C_efxMagicQUAKE 0805bcc4 hits=0 near=0805bee4 size=1cc
+  func EfxDummymagicMain 0805beb4 hits=0 near=0805c0d0 size=54
+  func EfxTeonoSeMain 0805c21c hits=0 near=0805c438 size=46
+  func efxHazymoonOBJ3_Loop 080607d8 hits=0 near=080609f4 size=60
+  func efxLive_Loop_Main 0806104c hits=0 near=08061268 size=10a
+  func efxRelive_Loop_Main 08061180 hits=0 near=0806139c size=13a
+  func efxRecover_Loop_Main 080612e4 hits=0 near=08061500 size=13a
+  func efxReblow_Loop_Main 08061448 hits=0 near=08061664 size=14a
+  func efxLunaSCR_Loop 08063c40 hits=0 near=08063e5c size=bc
+  func efxLunaOBJ_Loop_B 080640d0 hits=0 near=080642ec size=9c
+  func efxLunaOBJ_Loop_C 0806416c hits=0 near=08064394 size=84
+  func efxLunaOBJ_Loop_D 080641f0 hits=0 near=08064418 size=9c
+  func efxExcalibur_Loop_Main 08064344 hits=0 near=0806456c size=19c
+  func efxExcaliburSCR_Loop 08064720 hits=0 near=08064948 size=b0
+  func efxIvaldiBG1_Loop 08065a10 hits=0 near=08065c38 size=70
+  func efxIvaldiBG2_Loop 08065aec hits=0 near=08065d0c size=68
+  func efxIvaldiBG3_Loop 08065bb8 hits=0 near=08065dd0 size=80
+  func efxIvaldiBG4_Loop 08065ca0 hits=0 near=08065eb4 size=e4
+  func efxMaohFlashBG1_Loop 08066758 hits=0 near=08066968 size=88
+  func efxMaohFlashBG2_Loop 0806683c hits=0 near=08066a48 size=a0
+  func efxMaohFlashBG4_Loop 08066a94 hits=0 near=08066c9c size=80
+  func efxMaohFlashEyeROBJ2_Loop 08066d7c hits=12 near=08066f7c size=34
+  func efxMaohFlashEyeLOBJ2_Loop 08066e74 hits=12 near=08067074 size=34
+  func sub_8066EA8 08066ea8 hits=3 near=080670a8 size=20
+  func StartSubSpell_efxMaohFlashEyeOBJ1 08066ec8 hits=0 near=080670c8 size=c8
+  func efxMaohFlashEyeOBJ1_Loop 08066f90 hits=12 near=08067190 size=34
+  func StartSubSpell_efxMaohFlashEyeFire1OBJ1 08066fc4 hits=0 near=080671c4 size=e4
+  func efxMaohFlashEyeFire1OBJ1_Loop 080670a8 hits=12 near=080672a8 size=34
+  func StartSubSpell_efxMaohFlashEyeFire2OBJ1 080670dc hits=0 near=080672dc size=e4
+  func efxMaohFlashEyeFire2OBJ1_Loop 080671c0 hits=12 near=080673c0 size=34
+  func efxMaohFlashThunderOBJ_Loop 08067244 hits=0 near=0806742c size=1bc
+  func StartSubSpell_efxMaohFlashThunderOBJ2 08067400 hits=0 near=080675e8 size=a0
+  func efxMaohFlashThunderOBJ2_Loop 080674a0 hits=12 near=08067688 size=34
+  func StartSpellAnimStone 080674d4 hits=30 near=080676bc size=3c
+  func efxNaglfar_Loop_Main 08067bb8 hits=0 near=08067d50 size=20c
+  func efxNaglfarOBJ_Loop 08068208 hits=12 near=080683a0 size=34
+  func efxDarkGradoBG01_Loop 08069100 hits=0 near=08069298 size=1b0
+  func efxDarkGradoBG02_Loop_A 0806935c hits=0 near=080694f4 size=6e
+  func EfxMagfcastBGMain 0806d294 hits=0 near=0806d458 size=8c
+  func EfxSRankWeaponEffectSCRMain 0806dab0 hits=0 near=0806dc88 size=84
+  func EfxChillEffectBGCOL_Loop 0806e158 hits=0 near=0806e32c size=96
+  func EkrDragonQuakeMain 080703c4 hits=0 near=08070588 size=1a4
+  func EkrPalModifyUnused 080711c0 hits=0 near=08071360 size=ee
+  func BanimUpdateSpriteRotScale 0807180c hits=0 near=0807199c size=184
+  func EfxPlaySEwithCmdCtrl 08071b6c hits=0 near=08071cec size=6ea
+  func EfxPartsofScroll2Main 08074638 hits=0 near=080747b0 size=86
+  func EfxTriangleQUAKEMain 080758d4 hits=0 near=08075a88 size=17c
+  func EkrDragonBodyAnimeMain 0807707c hits=0 near=08077310 size=14c
+  func EfxSelfThunderBGMain 0807819c hits=0 near=08078434 size=78
+  func MuCtr_StartDefinedMove 08079d74 hits=0 near=08079fec size=68
+  func MuCtr_StartMoveTowards 08079ddc hits=0 near=0807a054 size=9c
+  func MuCtr_InitDefinedMove 08079e78 hits=0 near=0807a0f0 size=10c
+  func MoveUnitExt 08079fa8 hits=0 near=0807a214 size=6c
+  func AdjustNewUnitPosition 0807a4e8 hits=0 near=0807a750 size=15c
+  func GenerateSummonUnitDef 0807ad1c hits=0 near=0807af48 size=2b2
+  func CheckCanSummon 0807affc hits=0 near=0807b1f8 size=58
+  func sub_807B054 0807b054 hits=3 near=0807b250 size=1c
+  func SelectSummonPos 0807b090 hits=0 near=0807b290 size=130
+  func sub_807BCA8 0807bca8 hits=0 near=0807be88 size=ac
+  func ProcMAExpBar_OnDraw 0807c02c hits=0 near=0807c208 size=b0
+  func MapLatonaShiningfx_Loop2 0807d440 hits=0 near=0807d704 size=22
+  func ManimLevelUp_StartLevelUpText 0807f48c hits=0 near=0807f750 size=b0
+  func ManimLevelUp_EndLevelUpText 0807f53c hits=46 near=0807f878 size=a
+  func sub_8082268 08082268 hits=0 near=080825a4 size=44
+  func sub_80822AC 080822ac hits=0 near=080825e8 size=44
+  func sub_80822F0 080822f0 hits=0 near=0808262c size=48
+  func PrepareSineWaveScanlineBufExt 08082338 hits=0 near=08082674 size=58
+  func sub_80829A4 080829a4 hits=0 near=08082ce0 size=80
+  func EvCheck0B_AREA 08083aa4 hits=0 near=08083dd8 size=80
+  func TryCallSelectEvents 0808445c hits=0 near=0808477c size=54
+  func Command_EirikaMode 08086564 hits=0 near=08086894 size=1c
+  func Command_EphraimMode 08086580 hits=0 near=080868b0 size=1c
+  func sub_808683C 0808683c hits=0 near=08086b70 size=ec
+  func StartMuralBackgroundAlt 08086c50 hits=0 near=08086f70 size=98
+  func DisplayBwl 08086fac hits=0 near=080872cc size=110
+  func DisplayPage0 08087184 hits=0 near=080874f4 size=300
+  func StatScreen_InitDisplay 080884b0 hits=0 near=08088834 size=1c0
+  func HbPopulate_SSStatus 08088a2c hits=0 near=08088dc4 size=dc
+  func HbPopulate_SSPower 08088b08 hits=0 near=08088ea0 size=38
+  func HbPopulate_SSCharacter 08088bd4 hits=0 near=08088f68 size=2c
+  func HbMoveCtrl_OnIdle 08089088 hits=0 near=08089418 size=c8
+  func sub_80898C4 080898c4 hits=0 near=08089c5c size=bc
+  func PutUnitMapUiStatus 0808c388 hits=0 near=0808c7b8 size=d4
+  func InitPlayerPhaseInterface 0808cfc4 hits=0 near=0808d3f8 size=178
+  func GoalDisplay_Init 0808d288 hits=0 near=0808d6c8 size=1f4
+  func MenuButtonDisp_Init 0808d870 hits=0 near=0808dd4c size=30
+  func ChapterStatus_Init 0808df24 hits=0 near=0808e40c size=278
+  func DrawChapterStatusStatValues 0808e43c hits=0 near=0808e92c size=70
+  func ChapterStatus_DrawText 0808e4ac hits=0 near=0808e9a0 size=15c
+  func StatusScreenSpriteDraw_Init 0808e7b4 hits=0 near=0808ecb8 size=64
+  func StatusScreenSpriteDraw_Loop 0808e818 hits=0 near=0808ed24 size=1c0
+  func CgTextInterpreter_Loop_Main 0808f8b4 hits=0 near=0808fe1c size=5f0
+  func sub_8090418 08090418 hits=0 near=08090998 size=fc
+  func UnitListScreenSprites_Main 08090784 hits=0 near=08090cfc size=3c0
+  func sub_80917D8 080917d8 hits=0 near=08091d50 size=2dc
+  func sub_8091AEC 08091aec hits=0 near=08092048 size=114
+  func AtMenu_AddPrepScreenSupportMenuItem 08095498 hits=0 near=08095a3c size=6c
+  func InitPrepScreenMainMenu 08095524 hits=0 near=08095ac8 size=14e
+  func Prep_DrawChapterGoal 08095a44 hits=0 near=08095fec size=94
+  func AtMenu_Reinitialize 08095c84 hits=0 near=08096234 size=238
+  func SallyCir_Loop 080979dc hits=0 near=08097fa0 size=c2
+  func StartSallyCirProc 08097aac hits=0 near=08098064 size=20
+  func DrawFundsSprite_Init 08098448 hits=0 near=08098a00 size=2c
+  func sub_80996E8 080996e8 hits=0 near=08099cac size=3b8
+  func StartPrepItemUse 08099de8 hits=3 near=0809a3ac size=18
+  func StartPrepItemSupply 08099e00 hits=3 near=0809a3cc size=18
+  func StartPrepSell 08099e18 hits=3 near=0809a3e4 size=18
+  func StartPrepItemListScreen 08099e30 hits=3 near=0809a3fc size=18
+  func ProcPrepUnit_OnInit 0809ae3c hits=0 near=0809b698 size=40
+  func sub_809B478 0809b478 hits=0 near=0809bcdc size=48
+  func sub_809B520 0809b520 hits=0 near=0809bd90 size=16
+  func PrepItemTrade_Loop_MainKeyHandler 0809bb34 hits=0 near=0809c3a4 size=2f0
+  func PrepItemUse_PostPromotion 0809cc60 hits=0 near=0809d4d0 size=3a
+  func StartPrepItemUseScreen 0809ccfc hits=2 near=0809d570 size=18
+  func PrepItemSupply_Loop_UnitInvKeyHandler 0809e974 hits=0 near=0809f208 size=108
+  func PrepItemList_Loop_UnitInvKeyHandler 0809fc24 hits=0 near=080a04b4 size=130
+  func WmSell_OnLoop_MainKeyHandler 080a0424 hits=0 near=080a0cb4 size=14c
+  func SupportScreen_SetupUnits 080a0c40 hits=0 near=080a14d0 size=27e
+  func DrawSupportScreenText 080a0fe8 hits=0 near=080a1878 size=d4
+  func DrawSupportBannerSprites_Init 080a10d0 hits=0 near=080a1960 size=2c
+  func SupportScreen_SetupGraphics 080a1270 hits=0 near=080a1b0c size=2e4
+  func SupportSubScreen_SetupGraphics 080a2274 hits=0 near=080a2b1c size=1d4
+  func SaveMenu_InitScreen 080a8cd4 hits=0 near=080a960c size=230
+  func SaveMenu_LoadExtraMenuGraphics 080a8f04 hits=0 near=080a9848 size=88
+  func SaveMenuScrollBackToMain 080a9a18 hits=0 near=080aa364 size=50
+  func sub_80A9E1C 080a9e1c hits=0 near=080aa774 size=1fc
+  func SaveMenu_ReloadScreenFormDifficulty 080aa30c hits=0 near=080aac70 size=14c
+  func sub_80AA614 080aa614 hits=0 near=080aaf8c size=44
+  func sub_80AA658 080aa658 hits=0 near=080aafd0 size=44
+  func sub_80AA7EC 080aa7ec hits=0 near=080ab164 size=1ec
+  func sub_80AAB78 080aab78 hits=0 near=080ab4f0 size=4c
+  func SaveDrawCursor_Loop 080ab340 hits=0 near=080abcb8 size=1b4
+  func SaveMenuDrawSubSelBoxExt 080ab7bc hits=0 near=080ac11c size=80
+  func DifficultySelect_Loop_KeyHandler 080ac288 hits=0 near=080acbd8 size=154
+  func DrawDifficultySprites_Loop 080ac588 hits=0 near=080aced8 size=f8
+  func ConfigSysHandCursorShadowEnabled 080ad594 hits=0 near=080adedc size=20
+  func SetSysBrownBoxWidth 080adc68 hits=0 near=080ae5b0 size=28
+  func BmBgfxSetLoopEN 080ae7a4 hits=0 near=080af0c8 size=20
+  func SoundRoomUi_Init 080af524 hits=0 near=080afe48 size=2d0
+  func sub_80AFF30 080aff30 hits=0 near=080b0868 size=e8
+  func BonusClaim_Loop_MainKeyHandler 080b0d38 hits=0 near=080b1674 size=25c
+  func BonusClaim_StartSelectTargetSubMenu 080b1020 hits=0 near=080b195c size=1c4
+  func BonusClaim_Loop_SelectTargetKeyHandler 080b1288 hits=0 near=080b1bc4 size=c8
+  func BonusClaim_DrawItemSentPopup 080b13bc hits=0 near=080b1cfc size=22c
+  func Config_Init 080b1a08 hits=0 near=080b2348 size=288
+  func Config_Loop_KeyHandler 080b220c hits=0 near=080b2b4c size=258
+  func ClassIntro_Init 080b2b8c hits=0 near=080b34cc size=264
+  func ClassIntroLetter_Init 080b2f58 hits=0 near=080b38bc size=1a
+  func ClassStatsDisplay_Init 080b3efc hits=0 near=080b4848 size=94
+  func Shop_EntryDialogue 080b432c hits=0 near=080b4cd4 size=24
+  func Shop_HandleEntryDialoguePrompt 080b4350 hits=0 near=080b4cf8 size=56
+  func Shop_BuyDialogue 080b43a8 hits=0 near=080b4d50 size=14
+  func Shop_Loop_BuyKeyHandler 080b44a8 hits=0 near=080b4e50 size=188
+  func Shop_TryAddItemToInventory 080b464c hits=0 near=080b4ff4 size=64
+  func Shop_NoSendToConvoyDialogue 080b46cc hits=0 near=080b5074 size=30
+  func Shop_SendToConvoyDialogue 080b471c hits=0 near=080b50c4 size=14
+  func Shop_ConvoyFullDialogue 080b474c hits=0 near=080b50f4 size=14
+  func Shop_AnythingElseDialogue 080b4760 hits=0 near=080b5104 size=14
+  func Shop_SellDialogue 080b4774 hits=0 near=080b5118 size=14
+  func Shop_Loop_SellKeyHandler 080b47b4 hits=0 near=080b5158 size=17c
+  func Shop_SellAnythingElseDialogue 080b49b8 hits=0 near=080b535c size=14
+  func Shop_AnythingElseRestartDialogue 080b49cc hits=0 near=080b5370 size=1c
+  func Shop_AnythingElseContinueDialogue 080b49e8 hits=0 near=080b5388 size=10
+  func Shop_ExitShopDialogue 080b49f8 hits=0 near=080b539c size=28
+  func Shop_PrepEntryDialogue 080b4a40 hits=0 near=080b53e4 size=14
+  func ArenaUi_WelcomeDialogue 080b5998 hits=0 near=080b6338 size=34
+  func ArenaUi_WagerGoldDialogue 080b59cc hits=0 near=080b6370 size=20
+  func ArenaUi_CheckConfirmation 080b59ec hits=0 near=080b6390 size=4c
+  func ArenaUi_InstructionsDialogue 080b5a7c hits=0 near=080b6420 size=14
+  func ArenaUi_GoodLuckDialogue 080b5a90 hits=0 near=080b6434 size=14
+  func ArenaUi_ResultsDialogue 080b5b18 hits=0 near=080b64bc size=84
+  func SoloEndingBattleDisp_Init 080b6d24 hits=0 near=080b76c8 size=1ac
+  func PairedEndingBattleDisp_Init 080b6f34 hits=0 near=080b78dc size=2a8
+  func TurnRecord_SetupText 080b770c hits=0 near=080b80c0 size=f4
+  func WorldMap_GenerateRandomMonsters 080b9d14 hits=0 near=080ba698 size=a4
+  func _WmMergeMonsters 080b9db8 hits=32 near=080ba734 size=a
+  func WorldMap_WaitMonsterMerging 080b9dc4 hits=6 near=080ba740 size=1a
+  func GMScreenVSync_Loop 080ba628 hits=0 near=080bafa4 size=b4
+  func GmapUnit_Loop 080bac78 hits=0 near=080bb5ac size=15c
+  func MapUnitC_SetBlendEnabled 080bafe0 hits=0 near=080bb8f4 size=28
+  func sub_80BB744 080bb744 hits=0 near=080bc058 size=52
+  func GmapScreen2_Loop 080bb798 hits=0 near=080bc0ac size=20c
+  func sub_80BCAB8 080bcab8 hits=0 near=080bd3e0 size=f2
+  func sub_80BCBAC 080bcbac hits=0 near=080bd4d4 size=14e
+  func GmMuPrim_80BDA78 080bda78 hits=0 near=080be34c size=188
+  func sub_80BE3E8 080be3e8 hits=0 near=080becbc size=22
+  func GMapPI_Init 080befb8 hits=0 near=080bf88c size=90
+  func StartWorldMapPlayerInterface 080bf048 hits=0 near=080bf91c size=f4
+  func GmTmConfront_Loop_MoveUnitPositions 080c0610 hits=0 near=080c0ee4 size=e0
+  func GmTmConfront_StartAnim 080c06f0 hits=0 near=080c0fbc size=c8
+  func WorldmapStatus_GetCharDescription 080c0a10 hits=0 near=080c12fc size=34
+  func WorldmapStatus_InitGfx 080c0cf4 hits=0 near=080c15dc size=fc
+  func WorldmapStatus_PutTimeAndGold 080c0ebc hits=0 near=080c17b0 size=44
+  func GmapTimeMons_ExecMonsterMergeMu 080c1920 hits=0 near=080c2204 size=138
+  func GmapRmUpdateExt_ScrollPosition 080c1e8c hits=0 near=080c2770 size=8a
+  func GmapRmBorder1_PutSprite2 080c27a8 hits=0 near=080c3088 size=5a
+  func GmapRmBorder1_NationMergeIn 080c2804 hits=0 near=080c30e4 size=c0
+  func GmapRmBorder1_NationMergeOut 080c28dc hits=0 near=080c31bc size=88
+  func DrawWmNationHighLightMapGfx 080c2aac hits=0 near=080c338c size=28
+  func StartWorldMapMinimapCore 080c3dac hits=0 near=080c4698 size=d4
+  func sub_80C4C60 080c4c60 hits=0 near=080c5554 size=70
+  func sub_80C4CD0 080c4cd0 hits=0 near=080c55d8 size=84
+  func sub_80C4DA0 080c4da0 hits=0 near=080c56cc size=78
+  func sub_80C4F60 080c4f60 hits=0 near=080c5898 size=bc
+  func sub_80C5104 080c5104 hits=0 near=080c5a4c size=a4
+  func Title_SetupMainGraphics 080c56f4 hits=0 near=080c6044 size=154
+  func OpAnimInit 080c6a54 hits=0 near=080ccb10 size=fc
+  func GameIntroNintendoFadeIN 080cc098 hits=0 near=08009a64 size=64
+  func PrepareHealthAndSafetyScreen 080cc1f8 hits=0 near=080ccb28 size=fc
+  func GameIntroHealthSafetyWaitButton 080cc32c hits=0 near=080ccc80 size=104
+  func LoadBattleSpritesForBranchScreen 080cd014 hits=0 near=080cd9a8 size=1c0
+  func PutGuideBottomBarText 080ce148 hits=0 near=080ceac4 size=78
+  func Guide_Init 080cecb0 hits=0 near=080cf638 size=260
+  func Guide_MainLoop 080cefd4 hits=0 near=080cf970 size=474
+  func _sprintf_r 080d1cc0 hits=0 near=080d2944 size=3c
+  func sprintf 080d1cfc hits=0 near=080d2980 size=40
+  func strstr 080d1dcc hits=0 near=080d29d4 size=42
+port/data/rom_symbols_eu.txt: 11330/11410 mapped
+  guessed Img6_EfxLvupBG 085c3698
+  guessed AnimScr_085C74AC 085c74ac
+  guessed AnimSprite_NoDamageD 085c77a8
+  guessed AnimSprite_NoDamageF 085c7868
+  guessed AnimSprite_NoDamage10 085c78c8
+  guessed AnimSprite_NoDamage11 085c7934
+  guessed AnimSprite_NoDamage13 085c7a0c
+  guessed AnimSprite_NoDamage15 085c7afc
+  guessed AnimSprite_NoDamage16 085c7b74
+  guessed AnimSprite_NoDamage17 085c7bec
+  guessed AnimSprite_NoDamage19 085c7cdc
+  guessed AnimSprite_NoDamage1A 085c7d54
+  guessed AnimSprite_MissD 085c7f64
+  guessed AnimSprite_MissF 085c7ff4
+  guessed AnimSprite_Miss10 085c803c
+  guessed AnimSprite_Miss11 085c8084
+  guessed AnimSprite_Miss13 085c8114
+  guessed AnimSprite_Miss14 085c815c
+  guessed Img_StatscreenObjs 08a02274
+  guessed chap_title_10 08a0cf74
+  guessed chap_title_11 08a0d288
+  guessed chap_title_12 08a0d9c4
+  guessed chap_title_13 08a0dd50
+  guessed chap_title_14 08a0e068
+  guessed chap_title_23 08a0e434
+  guessed chap_title_25 08a0ed90
+  guessed chap_title_26 08a0f10c
+  guessed chap_title_27 08a0f48c
+  guessed chap_title_16 08a0fb30
+  guessed chap_title_18 08a1022c
+  guessed chap_title_19 08a105a4
+  guessed chap_title_20 08a10858
+  guessed chap_title_21 08a10be4
+  guessed chap_title_blank 08a10fe0
+  guessed chap_title_36 08a110dc
+  guessed chap_title_38 08a11634
+  guessed chap_title_39 08a118ec
+  guessed chap_title_40 08a11b9c
+  guessed chap_title_41 08a11e58
+  guessed chap_title_42 08a12110
+  guessed chap_title_43 08a123bc
+  guessed chap_title_44 08a12668
+  guessed chap_title_45 08a12918
+  guessed chap_title_46 08a12bd8
+  guessed chap_title_47 08a12e58
+  guessed chap_title_48 08a130f0
+  guessed chap_title_49 08a13388
+  guessed chap_title_50 08a1361c
+  guessed chap_title_51 08a138b4
+  guessed chap_title_52 08a13b4c
+  guessed chap_title_53 08a13de4
+  guessed chap_title_54 08a14074
+  guessed chap_title_55 08a14304
+  guessed chap_title_70 08a1459c
+  guessed chap_title_72 08a14a60
+  guessed chap_title_73 08a14cc0
+  guessed chap_title_74 08a14f28
+  guessed chap_title_75 08a1512c
+  guessed chap_title_76 08a153b8
+  guessed chap_title_86 08a16040
+  guessed chap_title_57 08a1613c
+  guessed chap_title_56 08a16238
+  guessed gGfx_PlayerInterfaceFontTiles 08a167c8
+  guessed gGfx_PlayerInterfaceNumbers 08a16d6c
+  guessed gGfx_StatusText 08a16dec
+  guessed gGfx_OpSubtitle_02 08aa3ae4
+  guessed gGfx_OpSubtitle_03 08aa3d7c
+  guessed gGfx_OpSubtitle_04 08aa435c
+  guessed gGfx_OpSubtitle_05 08aa5344
+  guessed gGfx_OpSubtitle_06 08aa5954
+  guessed gTsa_OpSubtitle_02 08aa6098
+  guessed gTsa_OpSubtitle_03 08aa6170
+  guessed gTsa_OpSubtitle_04 08aa629c
+  guessed gTsa_OpSubtitle_06 08aa6674
+  guessed gGfx_TitleMainBackground_1 08aa7760
+  guessed gGfx_TitleMainBackground_2 08aa9708
+  guessed gTsa_TitleMainBackground 08aaae90
+  guessed Tsa_OpAnimHealthSafetyScreenBG1 08b118c4
+  guessed Tsa_OpAnimHealthSafetyScreenBG0 08b11c0c
+  guessed Img_OpAnimHealthSafetyScreen 08b11d0c
+port/data/ram_symbols_eu.txt: 176/176 mapped
