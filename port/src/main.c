@@ -78,6 +78,12 @@ extern unsigned char __start_fe8_data[];
 extern unsigned char __stop_fe8_data[];
 extern unsigned char __start_fe8_bss[];
 extern unsigned char __stop_fe8_bss[];
+// EWRAM_DATA / IWRAM_DATA variables: GBA RAM the game never initializes,
+// cleared at every start like the rest of RAM.
+extern unsigned char __start_ewram_data[] __attribute__((weak));
+extern unsigned char __stop_ewram_data[] __attribute__((weak));
+extern unsigned char __start_iwram_data[] __attribute__((weak));
+extern unsigned char __stop_iwram_data[] __attribute__((weak));
 static unsigned char* sInitialData;
 
 static jmp_buf sResetJump;
@@ -150,6 +156,8 @@ int Port_Main(int argc, char** argv)
         Port_FlushSave();
         Port_RawCopy(__start_fe8_data, sInitialData, dataSize);
         Port_RawZero(__start_fe8_bss, (size_t)(__stop_fe8_bss - __start_fe8_bss));
+        Port_RawZero(__start_ewram_data, (size_t)(__stop_ewram_data - __start_ewram_data));
+        Port_RawZero(__start_iwram_data, (size_t)(__stop_iwram_data - __start_iwram_data));
         Port_MemReset();
         Port_DmaReset();
         Port_ApuReset();

@@ -22,15 +22,15 @@ enum Page {
 };
 
 const char* const kPageNames[PAGE_COUNT] = {
-    "Guardados rápidos",
-    "Controles",
-    "Vídeo",
-    "Sonido y velocidad",
-    "Mando táctil",
+    "Quick saves",
+    "Controls",
+    "Video",
+    "Sound and speed",
+    "Touch controls",
 };
 
 const char* const kInputLabels[PORT_INPUT_COUNT] = {
-    "A", "B", "Select", "Start", "Derecha", "Izquierda", "Arriba", "Abajo", "R", "L", "Avance rápido",
+    "A", "B", "Select", "Start", "Right", "Left", "Up", "Down", "R", "L", "Fast forward",
 };
 
 enum CaptureDevice {
@@ -139,21 +139,21 @@ void KeyboardLabel(const PortBinding& b, char* out, size_t size)
 const char* ButtonName(SDL_GamepadButton button)
 {
     switch (button) {
-    case SDL_GAMEPAD_BUTTON_SOUTH: return "Abajo (A/Cruz)";
-    case SDL_GAMEPAD_BUTTON_EAST: return "Derecha (B/Círculo)";
-    case SDL_GAMEPAD_BUTTON_WEST: return "Izquierda (X/Cuadrado)";
-    case SDL_GAMEPAD_BUTTON_NORTH: return "Arriba (Y/Triángulo)";
+    case SDL_GAMEPAD_BUTTON_SOUTH: return "South (A/Cross)";
+    case SDL_GAMEPAD_BUTTON_EAST: return "East (B/Circle)";
+    case SDL_GAMEPAD_BUTTON_WEST: return "West (X/Square)";
+    case SDL_GAMEPAD_BUTTON_NORTH: return "North (Y/Triangle)";
     case SDL_GAMEPAD_BUTTON_BACK: return "Select";
-    case SDL_GAMEPAD_BUTTON_GUIDE: return "Guía";
+    case SDL_GAMEPAD_BUTTON_GUIDE: return "Guide";
     case SDL_GAMEPAD_BUTTON_START: return "Start";
     case SDL_GAMEPAD_BUTTON_LEFT_STICK: return "L3";
     case SDL_GAMEPAD_BUTTON_RIGHT_STICK: return "R3";
     case SDL_GAMEPAD_BUTTON_LEFT_SHOULDER: return "L1";
     case SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER: return "R1";
-    case SDL_GAMEPAD_BUTTON_DPAD_UP: return "Cruceta ^";
-    case SDL_GAMEPAD_BUTTON_DPAD_DOWN: return "Cruceta v";
-    case SDL_GAMEPAD_BUTTON_DPAD_LEFT: return "Cruceta <";
-    case SDL_GAMEPAD_BUTTON_DPAD_RIGHT: return "Cruceta >";
+    case SDL_GAMEPAD_BUTTON_DPAD_UP: return "D-pad ^";
+    case SDL_GAMEPAD_BUTTON_DPAD_DOWN: return "D-pad v";
+    case SDL_GAMEPAD_BUTTON_DPAD_LEFT: return "D-pad <";
+    case SDL_GAMEPAD_BUTTON_DPAD_RIGHT: return "D-pad >";
     default: {
         const char* name = SDL_GetGamepadStringForButton(button);
         return name ? name : "?";
@@ -166,8 +166,8 @@ const char* AxisName(SDL_GamepadAxis axis, int sign)
     switch (axis) {
     case SDL_GAMEPAD_AXIS_LEFTX: return sign < 0 ? "Stick <" : "Stick >";
     case SDL_GAMEPAD_AXIS_LEFTY: return sign < 0 ? "Stick ^" : "Stick v";
-    case SDL_GAMEPAD_AXIS_RIGHTX: return sign < 0 ? "Stick D <" : "Stick D >";
-    case SDL_GAMEPAD_AXIS_RIGHTY: return sign < 0 ? "Stick D ^" : "Stick D v";
+    case SDL_GAMEPAD_AXIS_RIGHTX: return sign < 0 ? "R stick <" : "R stick >";
+    case SDL_GAMEPAD_AXIS_RIGHTY: return sign < 0 ? "R stick ^" : "R stick v";
     case SDL_GAMEPAD_AXIS_LEFT_TRIGGER: return "L2";
     case SDL_GAMEPAD_AXIS_RIGHT_TRIGGER: return "R2";
     default: return "?";
@@ -219,7 +219,7 @@ void PageStates()
     const float thumbH = 64.0f * sScale;
     const float thumbW = thumbH * 1.5f;
 
-    ImGui::TextWrapped("Guarda la partida en cualquier momento. F5 guarda y F8 carga la última ranura usada.");
+    ImGui::TextWrapped("Save your game at any moment. F5 saves and F8 loads the last slot used.");
     ImGui::Spacing();
     for (int slot = 1; slot <= PORT_STATE_SLOTS; slot++) {
         char info[64] = "";
@@ -235,29 +235,29 @@ void PageStates()
         ImGui::EndGroup();
         ImGui::SameLine();
         ImGui::BeginGroup();
-        ImGui::Text("Ranura %d", slot);
-        ImGui::TextDisabled("%s", used ? info : "Vacía");
-        if (ImGui::Button("Guardar")) {
+        ImGui::Text("Slot %d", slot);
+        ImGui::TextDisabled("%s", used ? info : "Empty");
+        if (ImGui::Button("Save")) {
             char error[128];
             char msg[160];
             if (sHost.saveState(slot, error, sizeof(error)))
-                snprintf(msg, sizeof(msg), "Guardado en la ranura %d.", slot);
+                snprintf(msg, sizeof(msg), "Saved to slot %d.", slot);
             else
-                snprintf(msg, sizeof(msg), "No se pudo guardar: %s", error);
+                snprintf(msg, sizeof(msg), "Could not save: %s", error);
             SetStatus(msg);
         }
         ImGui::SameLine();
         ImGui::BeginDisabled(!used);
-        if (ImGui::Button("Cargar")) {
+        if (ImGui::Button("Load")) {
             char error[128];
             if (sHost.loadState(slot, error, sizeof(error))) {
                 char msg[64];
-                snprintf(msg, sizeof(msg), "Estado %d cargado", slot);
+                snprintf(msg, sizeof(msg), "State %d loaded", slot);
                 sHost.toast(msg);
                 Close();
             } else {
                 char msg[160];
-                snprintf(msg, sizeof(msg), "No se pudo cargar: %s", error);
+                snprintf(msg, sizeof(msg), "Could not load: %s", error);
                 SetStatus(msg);
             }
         }
@@ -272,11 +272,11 @@ void PageControls()
 {
     PortConfig& cfg = Config();
 
-    ImGui::TextWrapped("Elige una casilla y pulsa la tecla o el botón nuevo.");
+    ImGui::TextWrapped("Pick a box, then press the new key or button.");
     if (ImGui::BeginTable("bindings", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingStretchProp)) {
-        ImGui::TableSetupColumn("Botón", ImGuiTableColumnFlags_WidthStretch, 1.0f);
-        ImGui::TableSetupColumn("Teclado", ImGuiTableColumnFlags_WidthStretch, 1.0f);
-        ImGui::TableSetupColumn("Mando", ImGuiTableColumnFlags_WidthStretch, 1.6f);
+        ImGui::TableSetupColumn("Button", ImGuiTableColumnFlags_WidthStretch, 1.0f);
+        ImGui::TableSetupColumn("Keyboard", ImGuiTableColumnFlags_WidthStretch, 1.0f);
+        ImGui::TableSetupColumn("Gamepad", ImGuiTableColumnFlags_WidthStretch, 1.6f);
         ImGui::TableHeadersRow();
         for (int i = 0; i < PORT_INPUT_COUNT; i++) {
             char label[96];
@@ -298,9 +298,9 @@ void PageControls()
         ImGui::EndTable();
     }
     ImGui::Spacing();
-    if (ImGui::SliderInt("Zona muerta del stick", &cfg.stickDeadzone, 5, 95, "%d %%"))
+    if (ImGui::SliderInt("Stick dead zone", &cfg.stickDeadzone, 5, 95, "%d %%"))
         sHost.applyConfig();
-    if (ImGui::Button("Restablecer controles")) {
+    if (ImGui::Button("Reset controls")) {
         PortConfig_DefaultBindings(&cfg);
         sHost.applyConfig();
     }
@@ -310,16 +310,16 @@ void PageVideo()
 {
     PortConfig& cfg = Config();
     bool changed = false;
-    static const char* const kFilters[PORT_FILTER_COUNT] = { "Ninguno", "LCD (rejilla de píxeles)", "CRT (líneas de barrido)" };
+    static const char* const kFilters[PORT_FILTER_COUNT] = { "None", "LCD (pixel grid)", "CRT (scanlines)" };
 
 #ifndef __ANDROID__
-    changed |= ImGui::Checkbox("Pantalla completa", &cfg.fullscreen);
+    changed |= ImGui::Checkbox("Fullscreen", &cfg.fullscreen);
 #endif
-    changed |= ImGui::Checkbox("Escalado entero (píxeles idénticos)", &cfg.integerScaling);
-    changed |= ImGui::Checkbox("Filtro suave (bilineal)", &cfg.smoothScaling);
-    changed |= ImGui::Combo("Efecto", &cfg.filter, kFilters, PORT_FILTER_COUNT);
-    changed |= ImGui::Checkbox("Sincronización vertical (VSync)", &cfg.vsync);
-    Hint("Con VSync la imagen no se corta, pero puede añadir algo de retraso.");
+    changed |= ImGui::Checkbox("Integer scaling (even pixels)", &cfg.integerScaling);
+    changed |= ImGui::Checkbox("Smooth filter (bilinear)", &cfg.smoothScaling);
+    changed |= ImGui::Combo("Effect", &cfg.filter, kFilters, PORT_FILTER_COUNT);
+    changed |= ImGui::Checkbox("Vertical sync (VSync)", &cfg.vsync);
+    Hint("VSync stops tearing, but can add a little latency.");
     if (changed)
         sHost.applyConfig();
 }
@@ -327,16 +327,16 @@ void PageVideo()
 void PageSoundSpeed()
 {
     PortConfig& cfg = Config();
-    static const char* const kModes[] = { "Mantener pulsado", "Activar / desactivar" };
+    static const char* const kModes[] = { "Hold", "Toggle" };
     int mode = cfg.fastForwardToggle ? 1 : 0;
 
-    if (ImGui::SliderInt("Volumen", &cfg.volume, 0, 100, "%d %%"))
+    if (ImGui::SliderInt("Volume", &cfg.volume, 0, 100, "%d %%"))
         sHost.applyConfig();
     ImGui::Spacing();
-    ImGui::SeparatorText("Avance rápido");
-    if (ImGui::SliderInt("Velocidad", &cfg.fastForwardSpeed, 2, 10, "x%d"))
+    ImGui::SeparatorText("Fast forward");
+    if (ImGui::SliderInt("Speed", &cfg.fastForwardSpeed, 2, 10, "x%d"))
         sHost.applyConfig();
-    if (ImGui::Combo("Botón", &mode, kModes, 2)) {
+    if (ImGui::Combo("Button", &mode, kModes, 2)) {
         cfg.fastForwardToggle = mode == 1;
         sHost.applyConfig();
     }
@@ -344,27 +344,27 @@ void PageSoundSpeed()
     KeyboardLabel(cfg.bindings[PORT_INPUT_FAST_FORWARD], key, sizeof(key));
     GamepadLabel(cfg.bindings[PORT_INPUT_FAST_FORWARD], pad, sizeof(pad));
     char hint[256];
-    snprintf(hint, sizeof(hint), "Tecla: %s · Mando: %s (se cambian en Controles).", key, pad);
+    snprintf(hint, sizeof(hint), "Key: %s · Gamepad: %s (change them in Controls).", key, pad);
     Hint(hint);
 }
 
 void PageTouch()
 {
     PortConfig& cfg = Config();
-    static const char* const kModes[] = { "Automático", "Siempre", "Nunca" };
+    static const char* const kModes[] = { "Automatic", "Always", "Never" };
 
-    if (ImGui::Combo("Mostrar", &cfg.touchControls, kModes, 3))
+    if (ImGui::Combo("Show", &cfg.touchControls, kModes, 3))
         sHost.applyConfig();
-    Hint("Automático: aparece al tocar la pantalla y se oculta al usar un mando.");
-    if (ImGui::SliderInt("Opacidad", &cfg.touchOpacity, 0, 100, "%d %%"))
+    Hint("Automatic: shown when you touch the screen, hidden when you use a gamepad.");
+    if (ImGui::SliderInt("Opacity", &cfg.touchOpacity, 0, 100, "%d %%"))
         sHost.applyConfig();
     ImGui::Spacing();
-    if (ImGui::Button("Editar posición y tamaño...")) {
+    if (ImGui::Button("Edit position and size...")) {
         sEditing = true;
         sEditSelected = -1;
     }
     ImGui::SameLine();
-    if (ImGui::Button("Restablecer disposición")) {
+    if (ImGui::Button("Reset layout")) {
         PortConfig_DefaultTouchLayout(&cfg);
         sHost.applyConfig();
     }
@@ -419,39 +419,39 @@ void EditorWindow()
     PortConfig& cfg = Config();
     const ImGuiViewport* vp = ImGui::GetMainViewport();
     static const char* const kInputs[PORT_INPUT_GBA_COUNT] = {
-        "A", "B", "Select", "Start", "Derecha", "Izquierda", "Arriba", "Abajo", "R", "L",
+        "A", "B", "Select", "Start", "Right", "Left", "Up", "Down", "R", "L",
     };
 
     ImGui::SetNextWindowPos(ImVec2(vp->WorkPos.x + vp->WorkSize.x * 0.5f, vp->WorkPos.y + vp->WorkSize.y * 0.22f),
                             ImGuiCond_Always, ImVec2(0.5f, 0.0f));
     ImGui::SetNextWindowBgAlpha(0.85f);
-    ImGui::Begin("Editar mando táctil", NULL,
+    ImGui::Begin("Edit touch controls", NULL,
                  ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse |
                      ImGuiWindowFlags_NoSavedSettings);
-    ImGui::TextUnformatted("Arrastra los botones para moverlos.");
+    ImGui::TextUnformatted("Drag the buttons to move them.");
     if (sEditSelected >= 0) {
         PortTouchButton& b = cfg.touch[sEditSelected];
         float size = b.r * 100.0f;
         ImGui::SetNextItemWidth(160.0f * sScale);
-        if (ImGui::SliderFloat("Tamaño", &size, 2.0f, 25.0f, "%.1f"))
+        if (ImGui::SliderFloat("Size", &size, 2.0f, 25.0f, "%.1f"))
             b.r = size / 100.0f;
         if (b.input >= 0) {
             ImGui::SetNextItemWidth(160.0f * sScale);
-            ImGui::Combo("Función", &b.input, kInputs, PORT_INPUT_GBA_COUNT);
+            ImGui::Combo("Function", &b.input, kInputs, PORT_INPUT_GBA_COUNT);
         } else {
-            ImGui::TextDisabled("Este botón abre el menú.");
+            ImGui::TextDisabled("This button opens the menu.");
         }
     } else {
-        ImGui::TextDisabled("Toca un botón para cambiar su tamaño o su función.");
+        ImGui::TextDisabled("Tap a button to change its size or function.");
     }
     ImGui::SetNextItemWidth(160.0f * sScale);
-    ImGui::SliderInt("Opacidad", &cfg.touchOpacity, 5, 100, "%d %%");
-    if (ImGui::Button("Hecho")) {
+    ImGui::SliderInt("Opacity", &cfg.touchOpacity, 5, 100, "%d %%");
+    if (ImGui::Button("Done")) {
         sEditing = false;
         sHost.applyConfig();
     }
     ImGui::SameLine();
-    if (ImGui::Button("Restablecer")) {
+    if (ImGui::Button("Reset")) {
         PortConfig_DefaultTouchLayout(&cfg);
         sEditSelected = -1;
     }
@@ -470,14 +470,14 @@ void CaptureWindow()
                  ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar |
                      ImGuiWindowFlags_NoSavedSettings);
     if (sCapture == CAPTURE_KEYBOARD) {
-        ImGui::Text("Pulsa una tecla para «%s».", kInputLabels[sCaptureInput]);
-        ImGui::TextDisabled("Esc cancela, Supr la deja sin tecla.");
+        ImGui::Text("Press a key for \"%s\".", kInputLabels[sCaptureInput]);
+        ImGui::TextDisabled("Esc cancels, Delete leaves it unbound.");
     } else {
         const int left = 5 - (int)((SDL_GetTicksNS() - sCaptureStartNs) / 1000000000ull);
-        ImGui::Text("Pulsa un botón o mueve un stick para «%s».", kInputLabels[sCaptureInput]);
-        ImGui::TextDisabled("Se cancela en %d s.", left > 0 ? left : 0);
+        ImGui::Text("Press a button or move a stick for \"%s\".", kInputLabels[sCaptureInput]);
+        ImGui::TextDisabled("Cancels in %d s.", left > 0 ? left : 0);
     }
-    if (ImGui::Button("Cancelar"))
+    if (ImGui::Button("Cancel"))
         sCapture = CAPTURE_NONE;
     ImGui::SameLine();
     if (ImGui::Button("Quitar")) {
@@ -508,7 +508,7 @@ void MainWindow()
 
     // Left: sections. Right: the selected page.
     ImGui::BeginChild("nav", ImVec2(170.0f * sScale, 0), ImGuiChildFlags_Borders | ImGuiChildFlags_NavFlattened);
-    if (ImGui::Selectable("Continuar", false))
+    if (ImGui::Selectable("Resume", false))
         Close();
     ImGui::Separator();
     for (int i = 0; i < PAGE_COUNT; i++) {
@@ -518,7 +518,7 @@ void MainWindow()
         }
     }
     ImGui::Separator();
-    if (ImGui::Selectable("Salir del juego", false)) {
+    if (ImGui::Selectable("Quit game", false)) {
         Close();
         sHost.quit();
     }

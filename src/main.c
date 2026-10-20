@@ -86,5 +86,8 @@ void AgbMain()
     {
         ExecMainUpdate();
         SoftResetIfKeyComboPressed();
+#ifdef PLATFORM_PC
+        Port_HostFrameBoundary();
+#endif
     };
 }

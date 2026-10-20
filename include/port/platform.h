@@ -35,6 +35,10 @@ void Port_DmaSet(unsigned int channel, const void *src, void *dst, unsigned int 
 /* Called after the game writes save memory, so the host can persist it. */
 void Port_SramWritten(void);
 
+/* Called by AgbMain's loop after each main update: the C stack is always the
+ * same there, so the host can take or restore save states. */
+void Port_HostFrameBoundary(void);
+
 /* Sound (port/game/m4a_asm.c): the next 16 samples DMA 1/2 would feed to
  * FIFO A/B. Returns 0 when there is nothing to play. */
 int Port_SoundFifoBlock(const signed char **fifoA, const signed char **fifoB);

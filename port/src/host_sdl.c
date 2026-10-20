@@ -347,7 +347,7 @@ static void DrawScene(bool touchPad)
 
 static void StatePath(int slot, char* out, size_t size)
 {
-    SDL_snprintf(out, size, "%sstate%s_%d.mzs", sPrefPath ? sPrefPath : "", sRegionSuffix, slot);
+    SDL_snprintf(out, size, "%sstate%s_%d.fe8state", sPrefPath ? sPrefPath : "", sRegionSuffix, slot);
 }
 
 // File: the port's state image followed by a 240x160 thumbnail (ABGR8888).
@@ -382,7 +382,7 @@ static bool LoadState(int slot, char* error, size_t errorSize)
     StatePath(slot, path, sizeof(path));
     void* buf = SDL_LoadFile(path, &len);
     if (!buf) {
-        SDL_snprintf(error, errorSize, "ranura vacia");
+        SDL_snprintf(error, errorSize, "empty slot");
         return false;
     }
     const size_t size = Port_StateSize();
@@ -396,7 +396,7 @@ static bool LoadState(int slot, char* error, size_t errorSize)
     if (r != PORT_STATE_OK) {
         Port_Log("state %s: %s", path, Port_StateResultText(r));
         SDL_snprintf(error, errorSize, "%s",
-                     r == PORT_STATE_OTHER_BUILD ? "es de otra version del juego" : "archivo no valido");
+                     r == PORT_STATE_OTHER_BUILD ? "made by another version of the game" : "not a save state");
         return false;
     }
     sStateSlot = slot;
@@ -536,9 +536,9 @@ void Port_HostFrameBoundary(void)
         const bool load = sPendingState < 0;
         sPendingState = 0;
         if (load ? LoadState(slot, error, sizeof(error)) : SaveState(slot, error, sizeof(error)))
-            Toast(load ? "Estado %d cargado" : "Estado %d guardado", slot);
+            Toast(load ? "State %d loaded" : "State %d saved", slot);
         else
-            Toast("Estado %d: %s", slot, error);
+            Toast("State %d: %s", slot, error);
     }
     if (sMenuRequested) {
         sMenuRequested = false;

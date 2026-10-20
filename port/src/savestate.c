@@ -6,7 +6,8 @@
 //     memory (SRAM) is not included: loading a state never touches the
 //     player's real save file;
 //   - every game global: include/port/native.h puts the game's data and bss
-//     in the sections fe8_data / fe8_bss;
+//     in the sections fe8_data / fe8_bss, except EWRAM_DATA / IWRAM_DATA
+//     variables, which keep their own sections (ewram_data / iwram_data);
 //   - the port's own hardware state (PORT_STATE: DMA channels, sound chip).
 //
 // States are only taken and restored at a frame boundary (see
@@ -18,7 +19,7 @@
 #include "port_assets.h"
 
 #define STATE_MAGIC "FE8STATE"
-#define STATE_VERSION 1
+#define STATE_VERSION 2
 
 // Bounds of the sections, made by the linker.
 extern unsigned char __start_fe8_data[];
@@ -27,6 +28,10 @@ extern unsigned char __start_fe8_bss[];
 extern unsigned char __stop_fe8_bss[];
 extern unsigned char __start_fe8_state[];
 extern unsigned char __stop_fe8_state[];
+extern unsigned char __start_ewram_data[] __attribute__((weak));
+extern unsigned char __stop_ewram_data[] __attribute__((weak));
+extern unsigned char __start_iwram_data[] __attribute__((weak));
+extern unsigned char __stop_iwram_data[] __attribute__((weak));
 
 typedef struct Region {
     unsigned char* data;
@@ -57,6 +62,8 @@ static size_t Regions(Region* out)
     out[n++] = (Region){ __start_fe8_data, (size_t)(__stop_fe8_data - __start_fe8_data) };
     out[n++] = (Region){ __start_fe8_bss, (size_t)(__stop_fe8_bss - __start_fe8_bss) };
     out[n++] = (Region){ __start_fe8_state, (size_t)(__stop_fe8_state - __start_fe8_state) };
+    out[n++] = (Region){ __start_ewram_data, (size_t)(__stop_ewram_data - __start_ewram_data) };
+    out[n++] = (Region){ __start_iwram_data, (size_t)(__stop_iwram_data - __start_iwram_data) };
     return n;
 }
 
