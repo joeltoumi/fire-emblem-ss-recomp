@@ -200,7 +200,7 @@ extern const char gUnknown_080D7954[];
 
 // extern ??? gMsgHuffmanTable
 // extern ??? gMsgHuffmanTableRoot
-extern const u8 *const gMsgTable[];
+extern GBA_PTR(const u8 *) const gMsgTable[];
 
 extern u16 gPal_StoneShatterAnim[];
 extern u8 gImg_StoneShatterAnim[];

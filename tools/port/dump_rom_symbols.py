@@ -19,6 +19,13 @@ from pathlib import Path
 
 NM = "arm-none-eabi-nm"
 
+# Sources that only hold event data (see main).
+EVENT_DATA_OBJS = ["events_info", "events_wm", "events_trapdata", "events_shoplist", "events_udefs",
+                   "data_battlequotes"]
+# Sources whose event scripts (Event*) are read from the ROM; their code and
+# other data stay native. The port compiles these with PORT_ROM_EVENT_SCRIPTS.
+EVENT_SCRIPT_OBJS = ["events_script", "events_script_utils", "eventscr", "bmtrade", "sio_battlemap", "sio_event"]
+
 
 def nm(path, *args):
     out = subprocess.run([NM, *args, str(path)], check=True, capture_output=True, text=True).stdout
@@ -49,13 +56,20 @@ def main():
     # The texts: src/msg_data.c is generated from texts/ (the English script
     # the decomp ships); the port uses the ROM's own text instead.
     objs.append(root / "src" / "msg_data.o")
+    # The chapter events, unit definitions and battle quotes are C data in
+    # the decomp, but they hold GBA pointers (and, on other versions of the
+    # game, other message ids): the port reads them from the ROM too.
+    objs += [root / "src" / f"{n}.o" for n in EVENT_DATA_OBJS]
     seen = set()
     rows = []
-    for obj in objs:
+    for obj in objs + [root / "src" / f"{n}.o" for n in EVENT_SCRIPT_OBJS]:
+        scripts_only = obj.stem in EVENT_SCRIPT_OBJS
         for parts in nm(obj, "-g", "--defined-only"):
             _, kind, name = parts[-3:]
             # Linker bookkeeping labels (__data_start...) clash with the host's.
             if kind in "aA" or name in seen or name.startswith("__"):
+                continue
+            if scripts_only and not (kind in "dD" and name.startswith("Event")):
                 continue
             addr = addrs.get(name)
             if addr is None or not 0x08000000 <= addr < 0x0A000000:

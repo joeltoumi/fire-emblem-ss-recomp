@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "event.h"
 #include "eventinfo.h"
 #include "eventscript.h"
@@ -851,6 +854,16 @@ void DisplayEventMapAnim(ProcPtr parent, int val)
     DrawEventMapAnimMaskfx(0, 0);
     ApplyPalette(Pal_EventMapAnimMaskfx, 0);
 
+#ifdef REGION_EU
+    // EU 0x0808605e: the label in the player's language.
+    if (0 == val) {
+        Decompress(EU_ROM_PTR(gEuImgTable_Congratulations, GetLang()), BG_CHR_ADDR(0xA00));
+        ApplyPalette(Pal_Congratulations, 0x12);
+    } else {
+        Decompress(EU_ROM_PTR(gEuImgTable_MapClear, GetLang()), BG_CHR_ADDR(0xA00));
+        ApplyPalette(Pal_MapClear, 0x12);
+    }
+#else
     if (0 == val) {
         Decompress(Img_Congratulations, BG_CHR_ADDR(0xA00));
         ApplyPalette(Pal_Congratulations, 0x12);
@@ -858,6 +871,7 @@ void DisplayEventMapAnim(ProcPtr parent, int val)
         Decompress(Img_MapClear, BG_CHR_ADDR(0xA00));
         ApplyPalette(Pal_MapClear, 0x12);
     }
+#endif
 
     BG_EnableSyncByMask(3);
     gPaletteBuffer[PAL_BACKDROP_OFFSET] = 0;

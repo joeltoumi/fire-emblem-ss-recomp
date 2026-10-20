@@ -32,7 +32,7 @@ static char* sPrefPath;
 static char sRegionSuffix[8]; // "" for US, "_eu" / "_jp" otherwise
 static char sSavePath[1024];
 static char sConfigPath[1024];
-static const char* sRomArgPath; // mf [path/to/rom.gba]
+static const char* sRomArgPath; // fe8 [path/to/rom.gba]
 
 static PortConfig sConfig;
 static bool sFastForwardHeld;
@@ -559,14 +559,14 @@ bool Port_HostInit(const PortHostConfig* cfg)
         return false;
     }
 
-    sPrefPath = SDL_GetPrefPath("fire-emblem-ss-recomp", "mf");
+    sPrefPath = SDL_GetPrefPath("fire-emblem-ss-recomp", "fe8");
     // Each region keeps its own save and ROM copy: on PC all builds share this
     // folder. The US build keeps the original names.
     const char* suffix = SDL_strcmp(Port_RomRegionName(), "US") == 0 ? "" : Port_RomRegionName();
     SDL_snprintf(sRegionSuffix, sizeof(sRegionSuffix), "%s%s", suffix[0] ? "_" : "", suffix);
     for (char* c = sRegionSuffix; *c; c++)
         *c = (char)SDL_tolower(*c);
-    SDL_snprintf(sSavePath, sizeof(sSavePath), "%smf%s.sav", sPrefPath ? sPrefPath : "", sRegionSuffix);
+    SDL_snprintf(sSavePath, sizeof(sSavePath), "%sfe8%s.sav", sPrefPath ? sPrefPath : "", sRegionSuffix);
     SDL_snprintf(sConfigPath, sizeof(sConfigPath), "%ssettings.ini", sPrefPath ? sPrefPath : "");
     PortConfig_Defaults(&sConfig);
     if (!PortConfig_Load(&sConfig, sConfigPath))
@@ -907,7 +907,7 @@ uint8_t* Port_HostLoadRom(size_t* size, const char* error)
         SDL_strlcpy(region, Port_RomRegionName(), sizeof(region));
         for (char* c = region; *c; c++)
             *c = (char)SDL_tolower(*c);
-        SDL_snprintf(nextToExe, sizeof(nextToExe), "%smf_%s.gba",
+        SDL_snprintf(nextToExe, sizeof(nextToExe), "%sfe8_%s.gba",
                      SDL_GetBasePath() ? SDL_GetBasePath() : "", region);
     }
 

@@ -9,6 +9,9 @@
 #include "constants/msg.h"
 
 #include "sio.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 //! FE8U = 0x08046E5C
 void DrawLinkArenaRankIcon(u16 * tm, u32 base)
@@ -102,10 +105,19 @@ void SioResult_Init(struct SioResultProc * proc)
 
     StartMuralBackgroundExt(proc, 0, 0x12, 2, 0);
 
+#ifdef REGION_EU
+    // EU 0x08047230: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaRankIcons, GetLang()), GetBackgroundTileDataOffset(BG_1) + BG_CHR_ADDR(0x78));
+#else
     Decompress(Img_LinkArenaRankIcons, GetBackgroundTileDataOffset(BG_1) + BG_CHR_ADDR(0x78));
+#endif
     ApplyPalette(Pal_LinkArenaRankIcons, 6);
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_TacticianSelObj, OBJ_CHR_ADDR(0x240));
+#endif
     ApplyPalettes(Pal_TacticianSelObj, 0x13, 4);
 
     CallARM_FillTileRect(TILEMAP_LOCATED(gBG2TilemapBuffer, 1, 4), Tsa_SioResultRankings, TILEREF(0x0, 1));
@@ -250,10 +262,19 @@ void SioResult_NewHS_Init(struct SioResultProc * proc)
 
     StartMuralBackgroundExt(proc, 0, 0, 0, 0);
 
+#ifdef REGION_EU
+    // EU 0x0804755c: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaRankIcons, GetLang()), GetBackgroundTileDataOffset(BG_1) + BG_CHR_ADDR(0x78));
+#else
     Decompress(Img_LinkArenaRankIcons, GetBackgroundTileDataOffset(BG_1) + BG_CHR_ADDR(0x78));
+#endif
     ApplyPalette(Pal_LinkArenaRankIcons, 6);
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_TacticianSelObj, OBJ_CHR_ADDR(0x240));
+#endif
     Decompress(gUnknown_085ACEFC, OBJ_CHR_ADDR(0x300));
     ApplyPalette(Pal_LinkArenaActiveBannerFx, 0x13);
 

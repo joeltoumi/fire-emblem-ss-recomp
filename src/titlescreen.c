@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "hardware.h"
 #include "ctc.h"
@@ -235,7 +238,12 @@ void Title_SetupMainGraphics(struct TitleScreenProc * proc)
         break;
 
     case 4:
+#ifdef REGION_EU
+        // EU 0x080c6160: "Press Start" in the player's language.
+        Decompress(EU_ROM_PTR(gEuGfxTable_TitlePressStart, GetLang()), (void*)0x06013000);
+#else
         Decompress(gGfx_SubtitlePressStart, (void*)0x06013000);
+#endif
         ApplyPalettes(gPal_PressStart, 0x10, 4);
         proc->timer = 0;
         Proc_Break(proc);

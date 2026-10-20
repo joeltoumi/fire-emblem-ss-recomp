@@ -10,6 +10,9 @@
 #include "bmcontainer.h"
 
 #include "bmitem.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 // TODO: figure out those two inline functions and where they belong
 
@@ -22,6 +25,15 @@ static inline int GetChapterUnk1C(int arg) {
 }
 
 char* GetItemNameWithArticle(int item, s8 capitalize) {
+#ifdef REGION_EU
+    // EU 0x08016154: French has its own articles, the other languages none.
+    if (GetLang() == EU_LANG_FRENCH)
+        return EuGetItemNameWithFrenchArticle(item, capitalize);
+
+    if (GetLang() != EU_LANG_ENGLISH)
+        return GetItemName(item);
+#endif
+
     switch (GetItemIndex(item)) {
 
     case ITEM_LANCE_REGINLEIF:

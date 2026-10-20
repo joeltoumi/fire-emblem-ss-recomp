@@ -12,6 +12,9 @@
 
 #include "sio.h"
 #include "sio_core.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 extern struct Font Font_0203DB64;
 extern struct Text gSioTexts[];
@@ -34,7 +37,12 @@ void sub_80469C4(struct SioTermProc * proc)
 
     StartMuralBackgroundExt(proc, 0, 0x10, 4, 0);
 
+#ifdef REGION_EU
+    // EU 0x08046bc4: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_TacticianSelObj, OBJ_CHR_ADDR(0x240));
+#endif
 
     SetTextFont(&Font_0203DB64);
     InitSystemTextFont();

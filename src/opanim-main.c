@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "ctc.h"
 #include "proc.h"
 #include "soundwrapper.h"
@@ -22,7 +25,12 @@ void OpAnimInit(struct ProcOpAnim * proc)
 
     Decompress(Img_OpAnimSplitLine, OBJ_VRAM0 + 0x0000);
     Decompress(Img_opanim_unk1, OBJ_VRAM0 + 0x0100);
+#ifdef REGION_EU
+    // EU 0x080c73c6: the names in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_OpAnimEphEirikaName, GetLang()), OBJ_VRAM0 + 0x08C0);
+#else
     Decompress(Img_OpAnimEphEirikaName, OBJ_VRAM0 + 0x08C0);
+#endif
     Decompress(Img_OpAnimDivlEye, OBJ_VRAM0 + 0x1140);
 
     CopyToPalOpAnim(Pal_OpAnimSplitLine, 0x200, 0x20);

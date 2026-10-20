@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "proc.h"
 #include "hardware.h"
 #include "hardware.h"
@@ -717,7 +720,13 @@ int StartGmapRmBorder1(void)
 void DrawWmNationHighLightMapGfx(int chr, int index)
 {
     void * vram = (void *)(0x06010000 + chr * 0x1000);
+#ifdef REGION_EU
+    // EU 0x080c338c: the EU table has one image per language, then the
+    // sprite and the position (7 words per nation).
+    Decompress(EU_ROM_PTR(gEuGfxSet_WmNationMap, index * 7 + GetLang()), vram);
+#else
     Decompress(GfxSet_WmNationMap[index].img, vram);
+#endif
 
     return;
 }

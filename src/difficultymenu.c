@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "bmsave.h"
 #include "hardware.h"
@@ -357,7 +360,12 @@ void InitDifficultySelectScreen(struct DifficultyMenuProc * proc)
     ApplyPalettes(Pal_SaveScreenSprits, 18, 8);
     ApplyPalette(Pal_08A295B4, 2);
 
+#ifdef REGION_EU
+    // EU 0x080aca1e: the sprites in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_DifficultyMenuObjs, GetLang()), (void *)0x06010800);
+#else
     Decompress(Img_DifficultyMenuObjs, (void *)0x06010800);
+#endif
     ApplyPalettes(Pal_DifficultyMenuObjs, 17, 10);
 
     EnablePaletteSync();

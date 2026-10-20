@@ -235,7 +235,7 @@ void BMapVSync_UpdateMapImgAnimations(struct BMVSyncProc* proc) {
     proc->tileGfxAnimClock = proc->tileGfxAnimCurrent->time;
 
     CpuFastCopy(
-        proc->tileGfxAnimCurrent->data,
+        GBA_GET(const void *, proc->tileGfxAnimCurrent->data),
         BG_TILE_ADDR(0x140),
         proc->tileGfxAnimCurrent->size
     );
@@ -256,7 +256,7 @@ void BMapVSync_UpdateMapPalAnimations(struct BMVSyncProc* proc) {
     proc->tilePalAnimClock = proc->tilePalAnimCurrent->time;
 
     CpuCopy16(
-        proc->tilePalAnimCurrent->data,
+        GBA_GET(const void *, proc->tilePalAnimCurrent->data),
         proc->tilePalAnimCurrent->colorStart + (0x10 * BM_BGPAL_6) + gPaletteBuffer,
         proc->tilePalAnimCurrent->colorCount*2
     );
@@ -272,10 +272,10 @@ void BMapVSync_InitMapAnimations(struct BMVSyncProc* proc) {
     proc->tilePalAnimClock = 0;
 
     proc->tileGfxAnimStart = proc->tileGfxAnimCurrent =
-        gChapterDataAssetTable[GetROMChapterStruct(gPlaySt.chapterIndex)->map.objAnimId];
+        CHAPTER_ASSET(GetROMChapterStruct(gPlaySt.chapterIndex)->map.objAnimId);
 
     proc->tilePalAnimStart = proc->tilePalAnimCurrent =
-        gChapterDataAssetTable[GetROMChapterStruct(gPlaySt.chapterIndex)->map.paletteAnimId];
+        CHAPTER_ASSET(GetROMChapterStruct(gPlaySt.chapterIndex)->map.paletteAnimId);
 }
 
 void BMapVSync_OnEnd(struct BMVSyncProc* proc) {
@@ -907,7 +907,7 @@ void ResetMapPaletteAnimations(void) {
 
     if (proc)
         proc->tilePalAnimStart = proc->tilePalAnimCurrent =
-            gChapterDataAssetTable[GetROMChapterStruct(gPlaySt.chapterIndex)->map.paletteAnimId];
+            CHAPTER_ASSET(GetROMChapterStruct(gPlaySt.chapterIndex)->map.paletteAnimId);
 }
 
 void SetWeather(unsigned weatherId) {

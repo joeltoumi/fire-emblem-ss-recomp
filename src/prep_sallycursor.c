@@ -43,6 +43,9 @@
 #include "constants/msg.h"
 #include "constants/terrains.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 // TODO: Implicit declaration?
 int CanShowUnitStatScreen(struct Unit * unit);
@@ -567,7 +570,12 @@ void sub_8033514(ProcPtr proc)
 void PrepHelpPrompt_Init(struct ProcPrepSallyCursor * proc)
 {
     StartHelpPromptSprite(170, 140, 2, proc);
+#ifdef REGION_EU
+    // EU 0x08033904: the button labels in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_PrepHelpButtonSprites, GetLang()), OBJ_CHR_ADDR(0x380));
+#else
     Decompress(Img_PrepHelpButtonSprites, OBJ_CHR_ADDR(0x380));
+#endif
     proc->lastCmd = PREP_MAPMENU_NONE;
     return;
 }
@@ -1082,7 +1090,7 @@ void PrepScreenProc_StartShopScreen(ProcPtr proc)
     struct EventInfo info;
     const struct ChapterEventGroup * evGroup = GetChapterEventDataPointer(gPlaySt.chapterIndex);
 
-    info.listScript = evGroup->locationBasedEvents;
+    info.listScript = GBA_GET(const void *, evGroup->locationBasedEvents);
     info.xPos = gBmSt.playerCursor.x;
     info.yPos = gBmSt.playerCursor.y;
 

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "hardware.h"
 #include "fontgrp.h"
@@ -824,7 +827,12 @@ void StartWorldMapPlayerInterface(struct Proc * parent)
     SetBlendTargetB(0, 0, 1, 1, 1);
     SetBlendBackdropA(0);
 
+#ifdef REGION_EU
+    // EU 0x080bf9a4: the digits and labels in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_GMapPI_LevelNums, GetLang()), gGenericBuffer);
+#else
     Decompress(gGfx_GMapPI_LevelNums, gGenericBuffer);
+#endif
     Copy2dChr(gGenericBuffer, (void *)0x06004660, 13, 2);
     ApplyPalette(gPal_GMapPI_LevelNums, 5);
 

@@ -31,8 +31,8 @@ s8 GmScrollManageExist(void);
 // TODO: Implicit declaration?
 void GetWMCenteredCameraPosition(int, int, s16 *, s16 *);
 
-extern u16 * Events_WM_Beginning[];
-extern u16 * Events_WM_ChapterIntro[];
+extern GBA_PTR(u16 *) Events_WM_Beginning[];
+extern GBA_PTR(u16 *) Events_WM_ChapterIntro[];
 
 struct Proc8A3DD30
 {
@@ -1990,12 +1990,12 @@ void WorldMap_CallBeginningEvent(struct WorldMapMainProc * proc)
 
             gPlaySt.chapterIndex = chIndex;
 
-            if (Events_WM_Beginning[GetROMChapterStruct(chIndex)->gmapEventId] == NULL)
+            if (Events_WM_Beginning[GetROMChapterStruct(chIndex)->gmapEventId] == 0)
                 return;
 
             ResetGmStoryNode();
             proc->gm_icon->merge_next_node = false;
-            CallEvent(Events_WM_Beginning[GetROMChapterStruct(chIndex)->gmapEventId], 0);
+            CallEvent(GBA_GET(u16 *, Events_WM_Beginning[GetROMChapterStruct(chIndex)->gmapEventId]), 0);
         }
     }
 
@@ -2006,9 +2006,9 @@ void WorldMap_CallBeginningEvent(struct WorldMapMainProc * proc)
 //! FE8U = 0x080BA3D4
 void CallChapterWMIntroEvents(ProcPtr proc)
 {
-    if (Events_WM_ChapterIntro[GetROMChapterStruct(gPlaySt.chapterIndex)->gmapEventId] != NULL)
+    if (Events_WM_ChapterIntro[GetROMChapterStruct(gPlaySt.chapterIndex)->gmapEventId] != 0)
     {
-        CallEvent(Events_WM_ChapterIntro[GetROMChapterStruct(gPlaySt.chapterIndex)->gmapEventId], 0);
+        CallEvent(GBA_GET(u16 *, Events_WM_ChapterIntro[GetROMChapterStruct(gPlaySt.chapterIndex)->gmapEventId]), 0);
         StartWMFaceCtrl(proc);
         StartGmapMuEntry(NULL);
     }

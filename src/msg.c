@@ -95,7 +95,7 @@ char * GetStringFromIndex(int index)
 #endif
     if (index == sActiveMsg)
         return sMsgString.buffer1;
-    CallARM_DecompText(gMsgTable[index], sMsgString.buffer1);
+    CallARM_DecompText(GBA_GET(const u8 *, gMsgTable[index]), sMsgString.buffer1);
     SetMsgTerminator(sMsgString.buffer1);
     sActiveMsg = index;
     return sMsgString.buffer1;
@@ -106,7 +106,7 @@ char * GetStringFromIndexInBuffer(int index, char *buffer)
 #ifdef PLATFORM_PC
     index = Port_LocalizeMsg(index);
 #endif
-    CallARM_DecompText(gMsgTable[index], buffer);
+    CallARM_DecompText(GBA_GET(const u8 *, gMsgTable[index]), buffer);
     SetMsgTerminator(buffer);
     return buffer;
 }

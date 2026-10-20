@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "bmunit.h"
 #include "bmitemuse.h"
@@ -99,7 +102,12 @@ void PrepItemScreen_Init(struct PrepItemScreenProc * proc)
 //! FE8U = 0x08098448
 void DrawFundsSprite_Init(struct DrawFundsSpriteProc * proc)
 {
+#ifdef REGION_EU
+    // EU 0x08098a04: in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_PrepFunds, GetLang()), OBJ_CHR_ADDR(0x180));
+#else
     Decompress(Img_PrepFunds, OBJ_CHR_ADDR(0x180));
+#endif
     ApplyPalette(Pal_PrepFunds, proc->pal + 0x10);
     return;
 }

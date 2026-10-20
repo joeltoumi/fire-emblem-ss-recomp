@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "functions.h"
 #include "variables.h"
 #include "hardware.h"
@@ -24,6 +27,19 @@
 #include "constants/songs.h"
 
 EWRAM_OVERLAY(0) struct Text gPrepUnitTexts[0x16] = {};
+
+#ifdef REGION_EU
+// The EU version has one more text after gPrepUnitTexts (EU 0x02013648),
+// for "Pick" when it is drawn apart from "Units left" (see EuHasWidePickBar).
+EWRAM_OVERLAY(0) struct Text gEuPrepUnitPickText = {};
+
+// EU 0x0809adcc/0x0809b0e4: in German, French and Spanish, "Pick" and
+// "Units left" are separate texts and the count moves with the label.
+static bool EuHasWidePickBar(void)
+{
+    return GetLang() == EU_LANG_FRENCH || GetLang() == EU_LANG_GERMAN || GetLang() == EU_LANG_SPANISH;
+}
+#endif
 
 void PrepUnit_DrawUnitListNames(struct ProcPrepUnit *proc, int line)
 {
@@ -133,7 +149,17 @@ void PrepUnit_InitTexts()
     
     InitText(&gPrepUnitTexts[0x13], 7);
     InitText(&gPrepUnitTexts[0x14], 10);
+#ifdef REGION_EU
+    // EU 0x0809ae0e
+    if (EuHasWidePickBar()) {
+        InitText(&gPrepUnitTexts[0x15], 9);
+        InitText(&gEuPrepUnitPickText, 8);
+    } else {
+        InitText(&gPrepUnitTexts[0x15], 12);
+    }
+#else
     InitText(&gPrepUnitTexts[0x15], 12);
+#endif
 }
 
 void PrepUnit_InitGfx()
@@ -150,7 +176,12 @@ void PrepUnit_InitGfx()
     Decompress(gUnknown_08A1B7C8, gGenericBuffer);
     CallARM_FillTileRect(gBG1TilemapBuffer, gGenericBuffer, 0x1000);
 
+#ifdef REGION_EU
+    // EU 0x0809aea2: in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_08A1D510, GetLang()), (void*)0x6010800);
+#else
     Decompress(gUnknown_08A1D510, (void*)0x6010800);
+#endif
     ApplyPalette(Pal_MapBattleInfoNum, 0x19);
     EnablePaletteSync();
 }
@@ -232,8 +263,77 @@ void PrepUnit_DrawUnitItems(struct Unit *unit)
     BG_EnableSyncByMask(BG0_SYNC_BIT);
 }
 
+#ifdef REGION_EU
+// EU 0x0809b0e4: for German, French and Spanish, "Pick" and "Units left"
+// are drawn apart; "Units left" is redrawn (moved) when the count of units
+// left goes from one to two digits or back.
+static void EuPrepUnit_DrawWidePickLeftBar(struct ProcPrepUnit *proc, s8 val)
+{
+    u8 left = proc->max_counter - proc->cur_counter;
+    u8 * last_left = &proc->pad_38[0];
+    int lang = GetLang();
+    int x_tile;
+
+    if (lang == EU_LANG_SPANISH)
+        x_tile = 0x10;
+    else if (lang == EU_LANG_GERMAN)
+        x_tile = 0x11;
+    else
+        x_tile = 0x12;
+
+    if (0 == val) {
+        ClearText(&gEuPrepUnitPickText);
+        PutDrawText(
+            &gEuPrepUnitPickText,
+            TILEMAP_LOCATED(gBG0TilemapBuffer, 0xD, 0x1),
+            TEXT_COLOR_SYSTEM_WHITE,
+            6, 0,
+            GetStringFromIndex(0x5A1)   /* Pick */
+        );
+    }
+
+    if (0 == val || *last_left == 0xFF || (*last_left <= 9) != (left <= 9)) {
+        ClearText(&gPrepUnitTexts[0x15]);
+        TileMap_FillRect(TILEMAP_LOCATED(gBG0TilemapBuffer, 0x18, 0x1), 1, 1, 0);
+
+        PutDrawText(
+            &gPrepUnitTexts[0x15],
+            TILEMAP_LOCATED(gBG0TilemapBuffer, x_tile, 0x1),
+            TEXT_COLOR_SYSTEM_WHITE,
+            left <= 9 ? 11 : 19, 0,
+            GetStringFromIndex(0x5A2)   /* Units Left */
+        );
+
+        *last_left = left;
+    }
+
+    if (left > 9)
+        TileMap_FillRect(TILEMAP_LOCATED(gBG0TilemapBuffer, x_tile, 0x1), 1, 1, 0);
+
+    PutNumberOrBlank(
+        TILEMAP_LOCATED(gBG0TilemapBuffer, left <= 9 ? x_tile : x_tile + 1, 1),
+        proc->cur_counter == proc->max_counter
+            ? TEXT_COLOR_SYSTEM_GRAY
+            : TEXT_COLOR_SYSTEM_BLUE,
+        proc->max_counter - proc->cur_counter
+    );
+
+    if (left > 9)
+        TileMap_FillRect(TILEMAP_LOCATED(gBG0TilemapBuffer, 0x19, 0x1), 3, 1, 0);
+    else
+        TileMap_FillRect(TILEMAP_LOCATED(gBG0TilemapBuffer, 0x18, 0x1), 4, 1, 0);
+}
+#endif
+
 void PrepUnit_DrawPickLeftBar(struct ProcPrepUnit *proc, s8 val)
 {
+#ifdef REGION_EU
+    if (EuHasWidePickBar()) {
+        EuPrepUnit_DrawWidePickLeftBar(proc, val);
+        goto draw_counter;
+    }
+#endif
+
     if (0 == val) {
         ClearText(&gPrepUnitTexts[0x15]);
         PutDrawText(
@@ -263,6 +363,9 @@ void PrepUnit_DrawPickLeftBar(struct ProcPrepUnit *proc, s8 val)
     );
 
     TileMap_FillRect(TILEMAP_LOCATED(gBG0TilemapBuffer, 0x18, 0x1), 4, 1, 0);
+#ifdef REGION_EU
+draw_counter:
+#endif
     PutNumberOrBlank(
         TILEMAP_LOCATED(gBG0TilemapBuffer, 0x19, 1),
         proc->cur_counter == proc->max_counter

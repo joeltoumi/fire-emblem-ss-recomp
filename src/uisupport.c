@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "bmunit.h"
 #include "bmreliance.h"
@@ -395,7 +398,12 @@ void SupportScreen_OnInit(struct SupportScreenProc* proc) {
 
 //! FE8U = 0x080A10D0
 void DrawSupportBannerSprites_Init(struct Proc* proc) {
+#ifdef REGION_EU
+    // EU 0x080a1964: in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_SupportMenu, GetLang()), (void*)0x06017800);
+#else
     Decompress(gGfx_SupportMenu, (void*)0x06017800);
+#endif
     ApplyPalette(gPal_SupportMenu, proc->unk34 + 0x10);
     return;
 }
@@ -523,7 +531,12 @@ void SupportScreen_SetupGraphics(struct SupportScreenProc* proc) {
     Decompress(gUnknown_08A1DB80, gGenericBuffer);
     CallARM_FillTileRect(TILEMAP_LOCATED(gBG1TilemapBuffer, 1, 4), gGenericBuffer, 0x1200);
 
+#ifdef REGION_EU
+    // EU 0x080a1c00: in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_SupportScreenBanner, GetLang()), (void*)0x06013800);
+#else
     Decompress(gGfx_SupportScreenBanner, (void*)0x06013800);
+#endif
     ApplyPalette(gPal_SupportScreenBanner, 0x12);
 
     BG_EnableSyncByMask(7);
@@ -1368,7 +1381,12 @@ void SupportSubScreen_SetupGraphics(struct SubScreenProc* proc) {
     DrawSupportSubScreenUnitPartnerDetails(proc);
     DrawSupportSubScreenRemainingText(proc);
 
+#ifdef REGION_EU
+    // EU 0x080a2c8e: the labels in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_SupportMenu, GetLang()), (void*)0x06017800);
+#else
     Decompress(gGfx_SupportMenu, (void*)0x06017800);
+#endif
     ApplyPalette(gPal_SupportMenu, 0x1A);
     ApplyPalette(Pal_MapBattleInfoNum, 0x12);
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Regenerates port/data/{rom,ram}_symbols_eu.txt from the EU ROM.
+# Regenerates port/data/{rom,ram}_symbols_eu.txt and rom_funcs_eu.txt from the EU ROM.
 #
 #   tools/port/map_eu.sh RELOCS.elf EU.gba
 #
@@ -14,5 +14,6 @@ for f in port/data/eu_fixes/*.txt; do fixes="$fixes --fixes $f"; done
 python3 tools/port/map_rom.py "$1" "$2" --guess $fixes \
     --map port/data/rom_symbols_us.txt port/data/rom_symbols_eu.txt \
     --map port/data/ram_symbols_us.txt port/data/ram_symbols_eu.txt \
+    --map port/data/rom_funcs_us.txt port/data/rom_funcs_eu.txt \
     --report port/data/map_eu_report.txt
 grep -E "symbols_eu.txt:" port/data/map_eu_report.txt

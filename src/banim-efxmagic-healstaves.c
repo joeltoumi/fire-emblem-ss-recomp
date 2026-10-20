@@ -529,7 +529,12 @@ void efxLiveBG_Loop(struct ProcEfxBG * proc)
         u16 ** tsaR = proc->tsar;
 
         // TODO: Is this the correct data type?
+#ifdef PLATFORM_PC
+        // The "lists" are raw TSA frames, 0x4B0 bytes each.
+        sub_805560C(proc->anim, (u16 *)tsaL + ret * 0x258, (u16 *)tsaR + ret * 0x258);
+#else
         sub_805560C(proc->anim, (u16 *)(tsaL + ret * 0x12c), (u16 *)(tsaR + ret * 0x12c));
+#endif
     }
     else
     {

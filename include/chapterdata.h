@@ -117,46 +117,46 @@ struct ROMChapterData {
 
 struct ChapterEventGroup
 {
-    /* 00 */ const void * turnBasedEvents;
-    /* 04 */ const void * characterBasedEvents; // must be 32-Aligned?
-    /* 08 */ const void * locationBasedEvents;
-    /* 0C */ const void * miscBasedEvents;
+    /* 00 */ GBA_PTR(const void *) turnBasedEvents;
+    /* 04 */ GBA_PTR(const void *) characterBasedEvents; // must be 32-Aligned?
+    /* 08 */ GBA_PTR(const void *) locationBasedEvents;
+    /* 0C */ GBA_PTR(const void *) miscBasedEvents;
 
     // select unit -> select destination -> move unit to destination
-    /* 10 */ const void * specialEventsWhenUnitSelected;
-    /* 14 */ const void * specialEventsWhenDestSelected;
-    /* 18 */ const void * specialEventsAfterUnitMoved;
+    /* 10 */ GBA_PTR(const void *) specialEventsWhenUnitSelected;
+    /* 14 */ GBA_PTR(const void *) specialEventsWhenDestSelected;
+    /* 18 */ GBA_PTR(const void *) specialEventsAfterUnitMoved;
 
-    /* 1C */ const void * tutorialEvents;
+    /* 1C */ GBA_PTR(const void *) tutorialEvents;
 
-    /* 20 */ const void * traps;
-    /* 24 */ const void * extraTrapsInHard;
+    /* 20 */ GBA_PTR(const void *) traps;
+    /* 24 */ GBA_PTR(const void *) extraTrapsInHard;
 
-    /* 28 */ const void * playerUnitsInNormal;
-    /* 2C */ const void * playerUnitsInHard;
+    /* 28 */ GBA_PTR(const void *) playerUnitsInNormal;
+    /* 2C */ GBA_PTR(const void *) playerUnitsInHard;
 
-    /* 30 */ const void * playerUnitsChoice1InEncounter;
-    /* 34 */ const void * playerUnitsChoice2InEncounter;
-    /* 38 */ const void * playerUnitsChoice3InEncounter;
+    /* 30 */ GBA_PTR(const void *) playerUnitsChoice1InEncounter;
+    /* 34 */ GBA_PTR(const void *) playerUnitsChoice2InEncounter;
+    /* 38 */ GBA_PTR(const void *) playerUnitsChoice3InEncounter;
 
-    /* 3C */ const void * enemyUnitsChoice1InEncounter;
-    /* 40 */ const void * enemyUnitsChoice2InEncounter;
-    /* 44 */ const void * enemyUnitsChoice3InEncounter;
+    /* 3C */ GBA_PTR(const void *) enemyUnitsChoice1InEncounter;
+    /* 40 */ GBA_PTR(const void *) enemyUnitsChoice2InEncounter;
+    /* 44 */ GBA_PTR(const void *) enemyUnitsChoice3InEncounter;
 
-    /* 48 */ const void * beginningSceneEvents;
-    /* 4C */ const void * endingSceneEvents;
+    /* 48 */ GBA_PTR(const void *) beginningSceneEvents;
+    /* 4C */ GBA_PTR(const void *) endingSceneEvents;
 };
 
 struct MapObjAnimFrm
 {
     /* 00 */ u16 duration;
     /* 04 */ u16 size;
-    /* 08 */ u8 *gfx;
+    /* 08 */ GBA_PTR(u8 *) gfx;
 };
 
 struct MapPaletteAnimFrm
 {
-    /* 00 */ u16 *pal;
+    /* 00 */ GBA_PTR(u16 *) pal;
     /* 04 */ u8 duration;
     /* 05 */ u8 colorNum;
     /* 06 */ u8 colorPos;
@@ -171,11 +171,12 @@ struct MapChangeInfo
     /* 03 */ u8 w;
     /* 04 */ u8 h;
     /* 05 */ u8 paddings[3];
-    /* 08 */ u16 *tiles;
+    /* 08 */ GBA_PTR(u16 *) tiles;
 };
 
 extern struct ROMChapterData CONST_DATA gChapterDataTable[];
-extern const void* gChapterDataAssetTable[];
+extern const GBA_PTR(void *) gChapterDataAssetTable[];
+#define CHAPTER_ASSET(id) GBA_GET(const void *, gChapterDataAssetTable[id])
 
 const struct ROMChapterData* GetROMChapterStruct(unsigned chIndex);
 const void* GetChapterMapPointer(unsigned chIndex);

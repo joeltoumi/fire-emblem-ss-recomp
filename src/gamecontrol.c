@@ -21,6 +21,9 @@
 #include "constants/chapters.h"
 #include "constants/event-flags.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 extern u16 EventScr_8A0035C[];
 extern u16 EventScr_8A00364[];
@@ -46,6 +49,11 @@ struct ProcCmd CONST_DATA gProcScr_GameControl[] =
 
     PROC_15,
     PROC_CALL(GameControl_CallEraseSaveEventWithKeyCombo),
+#ifdef REGION_EU
+    PROC_SLEEP(0),
+    PROC_START_CHILD_BLOCKING(gProcScr_EuSelectLanguage),
+    PROC_SLEEP(15),
+#endif
     PROC_CALL(GameControl_8009A58),
     PROC_REPEAT(GameControl_8009A60_Null),
 

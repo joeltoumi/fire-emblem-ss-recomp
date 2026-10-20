@@ -16,6 +16,9 @@
 #include "sio.h"
 
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 /**
  * Contains various sprite/palette utility procs used in
@@ -91,7 +94,12 @@ void LATitleBanner_Init(struct LinkArenaTitleBannerProc * proc)
     int b = (proc->unk_58 / 3) * 0x800;
 
     Decompress(gUnknown_085B0DE8, (void *)(VRAM + proc->chr));
+#ifdef REGION_EU
+    // EU 0x0804c66c: the titles in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_085AAE0C, GetLang()), gGenericBuffer);
+#else
     Decompress(gUnknown_085AAE0C, gGenericBuffer);
+#endif
 
     sub_804C3AC(gGenericBuffer + (a + b), OBJ_CHR_ADDR(0x200), 10, 2);
 
@@ -1386,10 +1394,24 @@ void LAPhaseIntro_Init(void)
 
     Decompress(Img_PhaseChangeUnk, OBJ_CHR_ADDR(0x200));
     Decompress(Img_PhaseChangeSquares, BG_CHR_ADDR(0x100));
+#ifdef REGION_EU
+    // EU 0x0804d554: the phase names are in the player's language. Each
+    // 20-byte entry of the ROM table holds the four names (by faction), then
+    // where they go (u16, in tiles from BG_CHR_ADDR(0x140)).
+    {
+        const u8 * conf = gEuLAPhaseIntroNames + GetLang() * 20;
+
+        Decompress(EU_ROM_PTR(gEuImgTable_085AE7EC, GetLang()), BG_CHR_ADDR(0x140));
+
+        Decompress(EU_ROM_PTR(conf, gPlaySt.faction), gGenericBuffer);
+        Copy2dChr(gGenericBuffer, BG_CHR_ADDR(0x140) + (*(const u16 *)(conf + 16) & 0x3FF) * CHR_SIZE, 3, 3);
+    }
+#else
     Decompress(gUnknown_085AE7EC, BG_CHR_ADDR(0x140));
 
     Decompress(gUnknown_080DA20C[gPlaySt.faction], gGenericBuffer);
     Copy2dChr(gGenericBuffer, BG_CHR_ADDR(0x14C), 3, 3);
+#endif
 
     ApplyPalette(gUnknown_080DA21C[gPlaySt.faction], 5);
     ApplyPalette(gUnknown_080DA22C[gPlaySt.faction], 0x12);
@@ -1773,7 +1795,12 @@ ProcPtr sub_804D7DC(int x, int y, ProcPtr parent)
 //! FE8U = 0x0804D80C
 void sub_804D80C(void)
 {
+#ifdef REGION_EU
+    // EU 0x0804dae8: the banner in the player's language (table declared in eu_battle.h).
+    Decompress(EU_ROM_PTR(gEuGfxTable_SupportMenu, GetLang()), (void *)(0x06016800));
+#else
     Decompress(gGfx_SupportMenu, (void *)(0x06016800));
+#endif
     ApplyPalette(gPal_SupportMenu, 0x12);
     return;
 }

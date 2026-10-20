@@ -79,7 +79,7 @@ void GenerateSummonUnitDef(void)
     gUnitDef1.yPosition = gActionData.yOther;
 
     gUnitDef1.redaCount = 0;
-    gUnitDef1.redas = NULL;
+    gUnitDef1.redas = 0;
 
     gUnitDef1.genMonster = FALSE;
     gUnitDef1.itemDrop = FALSE;

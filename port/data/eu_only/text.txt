@@ -1,0 +1,26 @@
+# EU-only ROM data (see include/port/eu_text.h): name EU-address
+gEuTextGlyphs_System        08798340
+gEuTextGlyphs_Talk          0879b248
+gEuTextGlyphsTable_Special  08793ddc
+gEuStrPrefix_French         087a2ac0
+gEuImgTable_MiscUiGraphics  087ab704
+gEuImgTable_PhaseChangePlayer  087ac260
+gEuImgTable_PhaseChangeEnemy   087ac274
+gEuImgTable_PhaseChangeOther   087ac288
+gEuImgTable_GameOverText       087ac674
+gEuGameOverTextLayout          080d8708
+gEuImgTable_PrepHelpButtonSprites 087aeee4
+gEuImgTable_DungeonRecordTitle 087afaf0
+gEuTsaTable_DungeonRecordTitle 087afb04
+gEuDungeonRecordLabels         080d8c98
+gEuImgTable_TacticianSelObj    087bf708
+gEuImgTable_085AC604           087bf71c
+gEuTacticianTextConf           080d941c
+gEuImgTable_LinkArenaPlayerBanners 087bf9a0
+gEuImgTable_LinkArenaPlacementRanks 087bf9b4
+gEuImgTable_LinkArenaRankIcons 087bfb34
+gEuImgTable_LinkArenaMenu      087c0108
+gEuImgTable_085AD80C           087c0340
+gEuImgTable_085AAE0C           087c0c78
+gEuImgTable_085AE7EC           087c0e70
+gEuLAPhaseIntroNames           080daf00

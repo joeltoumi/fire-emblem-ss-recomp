@@ -17,6 +17,9 @@
 
 #include "constants/msg.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 extern struct ProcCmd ProcScr_SioTeamList[];
 
@@ -502,11 +505,20 @@ void SioTeamList_SetupGfx(struct SioTeamListProc * proc)
 
     StartMuralBackgroundExt(proc, 0, 0x12, 2, 0);
 
+#ifdef REGION_EU
+    // EU 0x08043b48: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_TacticianSelObj, OBJ_CHR_ADDR(0x240));
+#endif
     CallARM_FillTileRect(TILEMAP_LOCATED(gBG2TilemapBuffer, 9, 4), gUnknown_085ADF40, TILEREF(0x0, 1));
     ApplyPalettes(Pal_TacticianSelObj, 0x13, 4);
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_085AC604, GetLang()), OBJ_CHR_ADDR(0x300));
+#else
     Decompress(gUnknown_085AC604, OBJ_CHR_ADDR(0x300));
+#endif
     ApplyPalettes(gUnknown_08A1BD00, 0x11, 2);
 
     gPaletteBuffer[0x20] = 0;

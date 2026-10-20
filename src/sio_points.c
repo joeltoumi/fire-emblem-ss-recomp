@@ -12,6 +12,9 @@
 #include "sio_core.h"
 #include "sio.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 // clang-format off
 
@@ -191,7 +194,12 @@ void LAPointsBox_LoadBoxes(struct LAPointsBoxProc * proc)
     int i;
     int oam2;
 
+#ifdef REGION_EU
+    // EU 0x08048c04: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_085AD80C, GetLang()), (void *)(0x06002800));
+#else
     Decompress(gUnknown_085AD80C, (void *)(0x06002800));
+#endif
     ApplyPalettes(Pal_TacticianSelObj, 2, 4);
 
     SetTextFont(NULL);

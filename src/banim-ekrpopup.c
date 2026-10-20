@@ -18,20 +18,20 @@ EWRAM_OVERLAY(banim) int gEkrPopupEnded = false;
 void PutBanimBgIMG(int index)
 {
     int _i = index * 3;
-    LZ77UnCompVram(gBattleBGDataTable[_i], (void *)BG_VRAM + 0x8000);
+    LZ77UnCompVram(GBA_GET(u16 *, gBattleBGDataTable[_i]), (void *)BG_VRAM + 0x8000);
 }
 
 void PutBanimBgTSA(int index)
 {
     int _i = index * 3 + 1;
-    LZ77UnCompWram(gBattleBGDataTable[_i], gEkrTsaBuffer);
+    LZ77UnCompWram(GBA_GET(u16 *, gBattleBGDataTable[_i]), gEkrTsaBuffer);
     EfxTmCpyBG(gEkrTsaBuffer, gBG3TilemapBuffer, 0x1E, 0x14, 0x6, 0x0);
 }
 
 void PutBanimBgPAL(int index)
 {
     int _i = index * 3 + 2;
-    LZ77UnCompWram(gBattleBGDataTable[_i], PAL_BG(0x6));
+    LZ77UnCompWram(GBA_GET(u16 *, gBattleBGDataTable[_i]), PAL_BG(0x6));
 }
 
 void PutBanimBG(int index)

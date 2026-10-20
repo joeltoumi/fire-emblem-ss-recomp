@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "soundwrapper.h"
 #include "m4a.h"
@@ -144,7 +147,13 @@ void GmTmConfront_StartAnim(struct GmapTmConfrontProc * proc)
     s16 x;
     s16 y;
 
+#ifdef REGION_EU
+    // EU 0x080c0fbc: the word in the player's language, centered by a
+    // per-language offset.
+    Decompress(EU_ROM_PTR(gEuImgTable_WorldmapSkirmish, GetLang()), (void *)0x06013000);
+#else
     Decompress(gImg_WorldmapSkirmish, (void *)0x06013000);
+#endif
 
     x_ = 0;
 
@@ -158,7 +167,11 @@ void GmTmConfront_StartAnim(struct GmapTmConfrontProc * proc)
 
     x_ = x_ / 2;
     x = x_ - gGMData.xCamera;
+#ifdef REGION_EU
+    x += gEuSkirmishXOffsets[GetLang()];
+#else
     x -= 20;
+#endif
 
     y = (y - 12);
     y -= gGMData.yCamera;

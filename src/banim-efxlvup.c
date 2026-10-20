@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "proc.h"
 #include "anime.h"
 #include "ekrbattle.h"
@@ -335,9 +338,21 @@ void NewEfxlvupbg(struct Anim * anim)
     proc->timer = 0;
     proc->frame = 0;
     proc->frame_config = FrameConfig_EfxLvupBG;
+#ifdef REGION_EU
+    // EU 0x08074a52: the frames in the player's language.
+    {
+        static u16 * tsa_lut[ARRAY_COUNT(TsaLut_EfxLvupBG)];
+        static u16 * img_lut[ARRAY_COUNT(ImgLut_EfxLvupBG)];
+
+        proc->tsal = EuLoadRomPtrList(tsa_lut, EU_ROM_PTR(gEuTsaLutTable_EfxLvupBG, GetLang()), ARRAY_COUNT(tsa_lut));
+        proc->tsar = proc->tsal;
+        proc->img = EuLoadRomPtrList(img_lut, EU_ROM_PTR(gEuImgLutTable_EfxLvupBG, GetLang()), ARRAY_COUNT(img_lut));
+    }
+#else
     proc->tsal = TsaLut_EfxLvupBG;
     proc->tsar = TsaLut_EfxLvupBG;
     proc->img = ImgLut_EfxLvupBG;
+#endif
 
     SpellFx_RegisterBgPal(Pal_EfxLvupBG, 0x20);
     SpellFx_SetSomeColorEffect();
@@ -399,10 +414,22 @@ void NewEfxLvupBG2(struct Anim * anim)
     proc->timer = 0;
     proc->frame = 0;
     proc->frame_config = FrameConfig_EfxLvupBG2;
+#ifdef REGION_EU
+    // EU 0x08074b12: the frames in the player's language.
+    {
+        static u16 * tsa_lut[ARRAY_COUNT(TsaLut_EfxLvupBG2)];
+
+        proc->tsal = EuLoadRomPtrList(tsa_lut, EU_ROM_PTR(gEuTsaLutTable_EfxLvupBG2, GetLang()), ARRAY_COUNT(tsa_lut));
+        proc->tsar = proc->tsal;
+    }
+
+    SpellFx_RegisterBgGfx(EU_ROM_PTR(gEuImgTable_EfxLvupBG2, GetLang()), 0x2000);
+#else
     proc->tsal = TsaLut_EfxLvupBG2;
     proc->tsar = TsaLut_EfxLvupBG2;
 
     SpellFx_RegisterBgGfx(Img_EfxLvupBG2, 0x2000);
+#endif
     SpellFx_RegisterBgPal(Pal_EfxLvupBG2, 0x20);
 }
 

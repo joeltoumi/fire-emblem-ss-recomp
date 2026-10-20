@@ -147,13 +147,11 @@ __typeof__(gFontClassChgMenu) gFontClassChgMenu; // GBA 0x03005360, 0x18 bytes o
 __typeof__(gGenericProc) gGenericProc; // GBA 0x030005b0, 0x20 bytes on the GBA, 0x40 natively
 __typeof__(gLCDControlBuffer) gLCDControlBuffer; // GBA 0x03003080, 0x6c bytes on the GBA, 0x6c natively
 __typeof__(gLinkArenaSt) gLinkArenaSt; // GBA 0x0203da24, 0xee bytes on the GBA, 0xee natively
-__typeof__(gLoadUnitBuffer) gLoadUnitBuffer; // GBA 0x0203efb8, element 0x14 bytes on the GBA, 0x18 natively
 __typeof__(gLoadedUnitBuffer) gLoadedUnitBuffer; // GBA 0x03000434, 0x4 bytes on the GBA, 0x8 natively
 __typeof__(gMovMapFillState) gMovMapFillState; // GBA 0x03004e60, 0xc bytes on the GBA, 0x18 natively
 __typeof__(gOamHiPutIt) gOamHiPutIt; // GBA 0x03003744, 0x4 bytes on the GBA, 0x8 natively
-__typeof__(gUdefs) gUdefs; // GBA 0x03001ce8, element 0x14 bytes on the GBA, 0x18 natively
-__typeof__(gUnitDef1) gUnitDef1; // GBA 0x03001c38, 0x14 bytes on the GBA, 0x18 natively
-__typeof__(gUnitDefEggHatching) gUnitDefEggHatching; // GBA 0x03001c68, 0x14 bytes on the GBA, 0x18 natively
+__typeof__(gUnitDef1) gUnitDef1; // GBA 0x03001c38, 0x14 bytes on the GBA, 0x14 natively
+__typeof__(gUnitDefEggHatching) gUnitDefEggHatching; // GBA 0x03001c68, 0x14 bytes on the GBA, 0x14 natively
 __typeof__(gUnk_Opinfo_0201DB00) gUnk_Opinfo_0201DB00; // GBA 0x0201db00, 0x28 bytes on the GBA, 0x40 natively
 __typeof__(gUnk_Sio_02001180) gUnk_Sio_02001180; // GBA 0x02001180, 0x4 bytes on the GBA, 0x8 natively
 __typeof__(gUnk_Sio_02001184) gUnk_Sio_02001184; // GBA 0x02001184, 0x4 bytes on the GBA, 0x8 natively

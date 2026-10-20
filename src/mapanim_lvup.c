@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "bmunit.h"
 #include "bmbattle.h"
 #include "hardware.h"
@@ -168,7 +171,12 @@ void ManimLevelUp_StartLevelUpText(struct ManimLevelUpProc * proc)
     int ix, iy;
     int x, y;
 
+#ifdef REGION_EU
+    // EU 0x0807f75e: the label in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_ManimLevelUpText, GetLang()), OBJ_VRAM0 + 0x1C0 * CHR_SIZE);
+#else
     Decompress(Img_ManimLevelUpText, OBJ_VRAM0 + 0x1C0 * CHR_SIZE);
+#endif
     ApplyPalettes(Pal_ManimLevelUp, 0x10 + 3, 3);
 
     ix = SCREEN_TILE_X(gManimSt.actor[proc->actor_id].unit->xPos) * 2;
@@ -180,6 +188,17 @@ void ManimLevelUp_StartLevelUpText(struct ManimLevelUpProc * proc)
     if (SCREEN_TILE_Y(gManimSt.actor[proc->actor_id].unit->yPos) * 2 < 4)
         y = y + 32;
 
+#ifdef REGION_EU
+    // EU 0x0807f7c6: the label's width depends on the language, so do the
+    // x positions near the screen edges.
+    if (SCREEN_TILE_X(gManimSt.actor[proc->actor_id].unit->xPos) * 2 < gEuManimLevelUpTextPos[GetLang()].min_x2)
+        x = gEuManimLevelUpTextPos[GetLang()].x_left;
+
+    if (SCREEN_TILE_X(gManimSt.actor[proc->actor_id].unit->xPos) * 2 > gEuManimLevelUpTextPos[GetLang()].max_x2)
+        x = gEuManimLevelUpTextPos[GetLang()].x_right;
+
+    APProc_Create(EU_ROM_PTR(gEuApTable_ManimLevelUpText, GetLang()), x, y, OAM2_CHR(0x1C0) + OAM2_PAL(0x3), 0, 2);
+#else
     if (SCREEN_TILE_X(gManimSt.actor[proc->actor_id].unit->xPos) * 2 < 4)
         x = 48;
 
@@ -187,6 +206,7 @@ void ManimLevelUp_StartLevelUpText(struct ManimLevelUpProc * proc)
         x = 208;
 
     APProc_Create(gUnknown_089A5A6C, x, y, OAM2_CHR(0x1C0) + OAM2_PAL(0x3), 0, 2);
+#endif
     PlaySoundEffect(SONG_5B);
 }
 

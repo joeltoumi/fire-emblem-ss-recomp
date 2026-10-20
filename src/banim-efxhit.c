@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "anime.h"
 #include "ekrbattle.h"
 #include "efxbattle.h"
@@ -55,6 +58,16 @@ void NewEfxDamageMojiEffectOBJ(struct Anim * anim, int hitted)
     proc->anim = anim;
     proc->timer = 0;
 
+#ifdef REGION_EU
+    // EU 0x0806c82c: the script in the player's language.
+    if (hitted == 0) {
+        proc->terminator = 0x32;
+        anim_scr = EU_ROM_PTR(gEuAnimScrTable_NoDamageMiss, GetLang() * 2 + 0);
+    } else {
+        proc->terminator = 0x32;
+        anim_scr = EU_ROM_PTR(gEuAnimScrTable_NoDamageMiss, GetLang() * 2 + 1);
+    }
+#else
     if (hitted == 0) {
         proc->terminator = 0x32;
         anim_scr = AnimScr_NoDamage;
@@ -62,6 +75,7 @@ void NewEfxDamageMojiEffectOBJ(struct Anim * anim, int hitted)
         proc->terminator = 0x32;
         anim_scr = AnimScr_Miss;
     }
+#endif
 
     val1 = GetAnimPosition(anim) == EKR_POS_L ? 0x6100 : 0x5100;
     proc->sub_proc = NewEkrsubAnimeEmulator(

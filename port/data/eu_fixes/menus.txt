@@ -1,0 +1,76 @@
+# Addresses in the EU ROM that tools/port/map_rom.py can't find on its own,
+# read from the EU code by hand (US address -> EU address).
+# name                        EU        where it was read
+gGfx_TitleMainBackground_1    08b18958  # literal pool of Title_SetupMainGraphics (EU 0x080c6044)
+gGfx_TitleMainBackground_2    08b1a900  # literal pool of Title_SetupMainGraphics (EU 0x080c6044)
+gTsa_TitleMainBackground      08b1c088  # literal pool of Title_SetupMainGraphics (EU 0x080c6044)
+Img_SaveScreenSprits          08af3294  # English entry of the table read by SaveMenu_InitScreen (EU 0x080a960c)
+Img_GameMainMenuObjs          08afa338  # English entry of the table read by SaveMenu_LoadExtraMenuGraphics (EU 0x080a9848)
+gUnknown_08A2C23C             08b02fc8  # literal pool of SaveMenu_InitScreen (EU 0x080a960c)
+Img_DifficultyMenuObjs        08afd024  # English entry of the table read by InitDifficultySelectScreen (EU 0x080ac9c8)
+gUnknown_08A2C908             08b03694  # literal pool of SoundRoomUi_Init (EU 0x080afe48)
+Img_PlayStatusSprites         08b05d7c  # English entry of the table read by SoundRoomUi_Init (EU 0x080afe48)
+Pal_PlayStatusSprites         08b0a618  # literal pool of SoundRoomUi_Init (EU 0x080afe48)
+Img_SoundRoomUiElements       08b03848  # English entry of the table read by SoundRoomUi_Init (EU 0x080afe48)
+Pal_SoundRoomUiElements       08b05d1c  # literal pool of SoundRoomUi_Init (EU 0x080afe48)
+Pal_ConfigUiSprites           08a99820  # literal pool of Config_Init (EU 0x080b2348)
+Img_ConfigUiSprites           08a988f8  # English entry of the table read by Config_Init (EU 0x080b2348)
+Img_ConfigUiIcons             08a992d4  # literal pool of Config_Init (EU 0x080b2348)
+Tsa_ConfigUiFrame             08a9973c  # literal pool of Config_Init (EU 0x080b2348)
+Img_FinScreen                 090c1770  # English entry of the table read by SetupFinScreenGfx (EU 0x080b7dfc)
+Tsa_FinScreen                 090c2b40  # English entry of the table read by SetupFinScreenGfx (EU 0x080b7dfc)
+gGfx_GMapPI_LevelNums         0911c5ec  # English entry of the table read by StartWorldMapPlayerInterface (EU 0x080bf91c)
+gPal_GMapPI_LevelNums         0911cb14  # literal pool of StartWorldMapPlayerInterface (EU 0x080bf91c)
+gGfx_GMapPI_ShopIcons         09119c58  # literal pool of StartWorldMapPlayerInterface (EU 0x080bf91c)
+gPal_GMapPI_ShopIcons         09119c38  # literal pool of StartWorldMapPlayerInterface (EU 0x080bf91c)
+gImg_WorldmapSkirmish         0912fad4  # English entry of the table read by GmTmConfront_StartAnim (EU 0x080c0fbc)
+SpriteAnim_WorldmapSkirmish   0913098c  # literal pool of GmTmConfront_StartAnim (EU 0x080c0fbc)
+gUnknown_08A986C0             0911a898  # English entry of the table read by WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98BF8             0911c1c8  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98CFC             0911c2cc  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98D58             0911c328  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98D88             0911c358  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98DA0             0911c370  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98DB8             0911c388  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+gUnknown_08A98DCC             0911c39c  # literal pool of WorldmapStatus_InitGfx (EU 0x080c15dc)
+Img_WmHightLightMapFrecia     091220bc  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMapFrecia      09123b88  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap2          09123bf8  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap2           09125dc4  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap3          09125f00  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap3           09127904  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap4          09127968  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap4           09128fc0  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap5          0912901c  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap5           09129328  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap6          0912935c  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap6           0912aca4  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap7          0912acf4  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap7           0912c054  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WmHightLightMap8          0912c08c  # English entry of the nation map table (EU 0x08412444) read at EU 0x080c338c
+Ap_WmHightLightMap8           0912da18  # sprite of the nation map table (EU 0x08412444), EU 0x080c33f6
+Img_WorldmapMinimap           0912dbb4  # English entry of the table read by StartWorldMapMinimapCore (EU 0x080c4698)
+Pal_WorldmapMinimap           0912f9f0  # literal pool of StartWorldMapMinimapCore (EU 0x080c4698)
+gGfx_OpSubtitle_00            091310ec  # English table (EU 0x084129b8) of the opening subtitles, entry 0
+gTsa_OpSubtitle_00            09142b50  # English table (EU 0x084129b8) of the opening subtitles, entry 0
+gGfx_OpSubtitle_01            09135488  # English table (EU 0x084129b8) of the opening subtitles, entry 1
+gTsa_OpSubtitle_01            09143758  # English table (EU 0x084129b8) of the opening subtitles, entry 1
+gGfx_OpSubtitle_02            0913809c  # English table (EU 0x084129b8) of the opening subtitles, entry 2
+gTsa_OpSubtitle_02            0914400c  # English table (EU 0x084129b8) of the opening subtitles, entry 2
+gGfx_OpSubtitle_03            09138e38  # English table (EU 0x084129b8) of the opening subtitles, entry 3
+gTsa_OpSubtitle_03            09144454  # English table (EU 0x084129b8) of the opening subtitles, entry 3
+gGfx_OpSubtitle_04            0913b3c0  # English table (EU 0x084129b8) of the opening subtitles, entry 4
+gTsa_OpSubtitle_04            09144ac4  # English table (EU 0x084129b8) of the opening subtitles, entry 4
+gGfx_OpSubtitle_05            0913fd88  # English table (EU 0x084129b8) of the opening subtitles, entry 5
+gTsa_OpSubtitle_05            091457c8  # English table (EU 0x084129b8) of the opening subtitles, entry 5
+gGfx_OpSubtitle_06            09141a3c  # English table (EU 0x084129b8) of the opening subtitles, entry 6
+gTsa_OpSubtitle_06            09145e1c  # English table (EU 0x084129b8) of the opening subtitles, entry 6
+Pal_08B1756C                  08b90798  # literal pool of sub_80C5104 (EU 0x080c5a4c)
+Pal_08B17B44                  08b91bb8  # literal pool of Guide_Init (EU 0x080cf638)
+Img_08B17864                  08b90d40  # English entry of the table read by Guide_Init (EU 0x080cf638)
+Img_08B177C0                  08b909ec  # English entry of the table read by Guide_Init (EU 0x080cf638)
+Tsa_08B176CC                  08b908f8  # literal pool of Guide_Init (EU 0x080cf638)
+gTsa_SoloEndingNameplate      090c1280  # literal pool of SoloEndingBattleDisp_Init (EU 0x080b76c8)
+gTsa_SoloEndingWindow         090c13a0  # literal pool of SoloEndingBattleDisp_Init (EU 0x080b76c8)
+gTsa_PairedEndingNameplates   090c14e8  # literal pool of PairedEndingBattleDisp_Init (EU 0x080b78dc)
+gTsa_PairedEndingWindow       090c160c  # literal pool of PairedEndingBattleDisp_Init (EU 0x080b78dc)

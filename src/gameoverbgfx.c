@@ -12,6 +12,9 @@
 #include "bmlib.h"
 
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 /**
  * Background effect for the game over screen
  * port from fe6@StanHash
@@ -153,7 +156,12 @@ void GameOverScreen_Init(struct ProcGameOverScreen *proc)
     SetBackgroundTileDataOffset(2, 0);
     SetBackgroundTileDataOffset(3, 0);
 
+#ifdef REGION_EU
+    // EU 0x08021600: "Game Over" in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_GameOverText, GetLang()), BG_CHR_ADDR(BGCHR_GAMEOVER_TEXT));
+#else
     Decompress(Img_GameOverText, BG_CHR_ADDR(BGCHR_GAMEOVER_TEXT));
+#endif
     ApplyPalette(Pal_GameOverText1, BGPAL_GAMEOVER_4);
     Decompress(Img_ChapterIntroFog, BG_CHR_ADDR(BGCHR_BMFX_IMG));
     ApplyPalette(Pal_GameOverText2, BGPAL_GAMEOVER_TEXT);
@@ -161,10 +169,21 @@ void GameOverScreen_Init(struct ProcGameOverScreen *proc)
     BG_SetPosition(0, 0, 0);
     ClearBg0Bg1();
 
+#ifdef REGION_EU
+    {
+        const u32 * layout = gEuGameOverTextLayout + GetLang() * 3;
+
+        CallARM_FillTileRect(
+            TILEMAP_LOCATED(gBG0TilemapBuffer, layout[0], layout[1]),
+            EU_ROM_PTR(layout, 2),
+            TILEREF(BGCHR_GAMEOVER_TEXT, BGPAL_GAMEOVER_TEXT));
+    }
+#else
     CallARM_FillTileRect(
         TILEMAP_LOCATED(gBG0TilemapBuffer, 7, 9),
         Tsa_GameOverFx,
         TILEREF(BGCHR_GAMEOVER_TEXT, BGPAL_GAMEOVER_TEXT));
+#endif
 
     PutScreenFogEffectOverlayed();
     PutScreenFogEffect();

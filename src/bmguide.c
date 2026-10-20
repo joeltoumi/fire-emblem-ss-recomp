@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "eventinfo.h"
 #include "bmshop.h"
@@ -922,8 +925,14 @@ void Guide_Init(ProcPtr proc)
     SetWOutLayers(1, 0, 1, 1, 1);
 
     ApplyPalette(Pal_08B17B44, 0x12);
+#ifdef REGION_EU
+    // EU 0x080cf75e: the sprites in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_Guide_08B17864, GetLang()), (void *)0x06011000);
+    Decompress(EU_ROM_PTR(gEuImgTable_Guide_08B177C0, GetLang()), (void *)0x06011800);
+#else
     Decompress(Img_08B17864, (void *)0x06011000);
     Decompress(Img_08B177C0, (void *)0x06011800);
+#endif
 
     Decompress(Tsa_08B176CC, gGenericBuffer + 0x100);
     CallARM_FillTileRect(gBG2TilemapBuffer, gGenericBuffer + 0x100, 0x1000);

@@ -2558,7 +2558,7 @@ extern u32 AnimScr_TriKnightAtkOBJ[];
 extern u32 AnimScr_TriGenerialLanceAtkOBJ[];
 extern u32 AnimScr_TriGenerialAxeAtkOBJ[];
 extern u32 AnimScr_TriGenerialHandAxeAtkOBJ[];
-extern u16 *gBattleBGDataTable[];
+extern GBA_PTR(u16 *) gBattleBGDataTable[];
 extern CONST_DATA struct ProcCmd ProcScr_ekrPopup[];
 extern CONST_DATA struct ProcCmd ProcScr_ekrPopup2[];
 extern CONST_DATA struct ProcCmd ProcScr_ekrHenseiInit[];

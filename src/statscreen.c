@@ -1,5 +1,8 @@
 
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include <stdlib.h>
 
@@ -1249,9 +1252,21 @@ void DisplayPageNameSprite(int pageid)
         111 + gStatScreen.xDispOff, 1 + gStatScreen.yDispOff,
         sSprite_PageNameBack, 0x4293 + 0xC00);
 
+#ifdef REGION_EU
+    // EU 0x08088248: the page name in the player's language, with its own
+    // position and tile offset.
+    {
+        const struct EuPageNameSprite * sprite = &gEuPageNameSprites[GetLang()][pageid];
+
+        PutSprite(4,
+            sprite->x + gStatScreen.xDispOff, sprite->y + gStatScreen.yDispOff,
+            (const u16 *)(uintptr_t)sprite->sprite, 0x3240 + gEuPageNameChrOffsetLut[pageid] + 0xC00);
+    }
+#else
     PutSprite(4,
         114 + gStatScreen.xDispOff, 0 + gStatScreen.yDispOff,
         sPageNameSpriteLut[pageid], 0x3240 + sPageNameChrOffsetLut[pageid] + 0xC00);
+#endif
 
     colorid = (GetGameClock()/4) % 16;
 
@@ -1540,8 +1555,14 @@ void StatScreen_InitDisplay(struct Proc* proc)
 
     // Load object graphics
 
+#ifdef REGION_EU
+    // EU 0x0808893e: in the player's language.
+    Decompress(
+        EU_ROM_PTR(gEuImgTable_StatscreenObjs, GetLang()), (void*)(VRAM + 0x10000 + 0x240 * 0x20));
+#else
     Decompress(
         Img_StatscreenObjs, (void*)(VRAM + 0x10000 + 0x240 * 0x20));
+#endif
 
     LoadIconPalettes(STATSCREEN_BGPAL_ITEMICONS);
 
@@ -1556,8 +1577,14 @@ void StatScreen_InitDisplay(struct Proc* proc)
 
     LoadIconPalette(1, 0x14);
 
+#ifdef REGION_EU
+    // EU 0x0808897e: in the player's language.
+    Decompress(
+        EU_ROM_PTR(gEuImgTable_StatscreenEquipmentText, GetLang()), (void*)(VRAM + 0x60 * 0x20));
+#else
     Decompress(
         Img_StatscreenEquipmentText, (void*)(VRAM + 0x60 * 0x20));
+#endif
 
     gStatScreen.mu = NULL;
 

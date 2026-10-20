@@ -487,85 +487,11 @@ functions: 8027/8515 matched
   func _sprintf_r 080d1cc0 hits=0 near=080d2944 size=3c
   func sprintf 080d1cfc hits=0 near=080d2980 size=40
   func strstr 080d1dcc hits=0 near=080d29d4 size=42
-port/data/rom_symbols_eu.txt: 11330/11410 mapped
-  guessed Img6_EfxLvupBG 085c3698
-  guessed AnimScr_085C74AC 085c74ac
-  guessed AnimSprite_NoDamageD 085c77a8
-  guessed AnimSprite_NoDamageF 085c7868
-  guessed AnimSprite_NoDamage10 085c78c8
-  guessed AnimSprite_NoDamage11 085c7934
-  guessed AnimSprite_NoDamage13 085c7a0c
-  guessed AnimSprite_NoDamage15 085c7afc
-  guessed AnimSprite_NoDamage16 085c7b74
-  guessed AnimSprite_NoDamage17 085c7bec
-  guessed AnimSprite_NoDamage19 085c7cdc
-  guessed AnimSprite_NoDamage1A 085c7d54
-  guessed AnimSprite_MissD 085c7f64
-  guessed AnimSprite_MissF 085c7ff4
-  guessed AnimSprite_Miss10 085c803c
-  guessed AnimSprite_Miss11 085c8084
-  guessed AnimSprite_Miss13 085c8114
-  guessed AnimSprite_Miss14 085c815c
-  guessed Img_StatscreenObjs 08a02274
-  guessed chap_title_10 08a0cf74
-  guessed chap_title_11 08a0d288
-  guessed chap_title_12 08a0d9c4
-  guessed chap_title_13 08a0dd50
-  guessed chap_title_14 08a0e068
-  guessed chap_title_23 08a0e434
-  guessed chap_title_25 08a0ed90
-  guessed chap_title_26 08a0f10c
-  guessed chap_title_27 08a0f48c
-  guessed chap_title_16 08a0fb30
-  guessed chap_title_18 08a1022c
-  guessed chap_title_19 08a105a4
-  guessed chap_title_20 08a10858
-  guessed chap_title_21 08a10be4
-  guessed chap_title_blank 08a10fe0
-  guessed chap_title_36 08a110dc
-  guessed chap_title_38 08a11634
-  guessed chap_title_39 08a118ec
-  guessed chap_title_40 08a11b9c
-  guessed chap_title_41 08a11e58
-  guessed chap_title_42 08a12110
-  guessed chap_title_43 08a123bc
-  guessed chap_title_44 08a12668
-  guessed chap_title_45 08a12918
-  guessed chap_title_46 08a12bd8
-  guessed chap_title_47 08a12e58
-  guessed chap_title_48 08a130f0
-  guessed chap_title_49 08a13388
-  guessed chap_title_50 08a1361c
-  guessed chap_title_51 08a138b4
-  guessed chap_title_52 08a13b4c
-  guessed chap_title_53 08a13de4
-  guessed chap_title_54 08a14074
-  guessed chap_title_55 08a14304
-  guessed chap_title_70 08a1459c
-  guessed chap_title_72 08a14a60
-  guessed chap_title_73 08a14cc0
-  guessed chap_title_74 08a14f28
-  guessed chap_title_75 08a1512c
-  guessed chap_title_76 08a153b8
-  guessed chap_title_86 08a16040
-  guessed chap_title_57 08a1613c
-  guessed chap_title_56 08a16238
-  guessed gGfx_PlayerInterfaceFontTiles 08a167c8
-  guessed gGfx_PlayerInterfaceNumbers 08a16d6c
-  guessed gGfx_StatusText 08a16dec
-  guessed gGfx_OpSubtitle_02 08aa3ae4
-  guessed gGfx_OpSubtitle_03 08aa3d7c
-  guessed gGfx_OpSubtitle_04 08aa435c
-  guessed gGfx_OpSubtitle_05 08aa5344
-  guessed gGfx_OpSubtitle_06 08aa5954
-  guessed gTsa_OpSubtitle_02 08aa6098
-  guessed gTsa_OpSubtitle_03 08aa6170
-  guessed gTsa_OpSubtitle_04 08aa629c
-  guessed gTsa_OpSubtitle_06 08aa6674
-  guessed gGfx_TitleMainBackground_1 08aa7760
-  guessed gGfx_TitleMainBackground_2 08aa9708
-  guessed gTsa_TitleMainBackground 08aaae90
+port/data/rom_symbols_eu.txt: 15038/15043 mapped
+  guessed REDA_088BD7F4 088bd7f4
+  guessed EventScr_089F782C 089f782c
   guessed Tsa_OpAnimHealthSafetyScreenBG1 08b118c4
   guessed Tsa_OpAnimHealthSafetyScreenBG0 08b11c0c
   guessed Img_OpAnimHealthSafetyScreen 08b11d0c
-port/data/ram_symbols_eu.txt: 176/176 mapped
+port/data/ram_symbols_eu.txt: 173/173 mapped
+port/data/rom_funcs_eu.txt: 121/121 mapped

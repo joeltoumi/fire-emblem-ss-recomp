@@ -14,6 +14,9 @@
 #include "sio.h"
 
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 /**
  * Battle result screen for the Link Arena.
@@ -237,9 +240,22 @@ void SioPostBattle_Init(struct SioPostBattleProc * proc)
     ClearSioBG();
     InitSioBG();
 
+#ifdef REGION_EU
+    // EU 0x080457e4: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), (void *)(0x06014800));
+#else
     Decompress(Img_TacticianSelObj, (void *)(0x06014800));
+#endif
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaPlayerBanners, GetLang()), (void *)(0x06016000));
+#else
     Decompress(Img_LinkArenaPlayerBanners, (void *)(0x06016000));
+#endif
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaPlacementRanks, GetLang()), (void *)(0x06016800));
+#else
     Decompress(Img_LinkArenaPlacementRanks, (void *)(0x06016800));
+#endif
 
     ApplyPalettes(Pal_TacticianSelObj, 0x13, 4);
     ApplyPalette(Pal_LinkArenaPlacementRanks, 0x17);

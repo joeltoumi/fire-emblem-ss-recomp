@@ -238,7 +238,7 @@ void UnpackChapterMap(void* into, int chapterId) {
 
     // Decompress tileset config
     Decompress(
-        gChapterDataAssetTable[GetROMChapterStruct(chapterId)->map.tileConfigId], sTilesetConfig);
+        CHAPTER_ASSET(GetROMChapterStruct(chapterId)->map.tileConfigId), sTilesetConfig);
 
     // Setting max camera offsets (?) TODO: figure out
     gBmSt.cameraMax.x = gBmMapSize.x*16 - DISPLAY_WIDTH;
@@ -248,24 +248,24 @@ void UnpackChapterMap(void* into, int chapterId) {
 void UnpackChapterMapGraphics(int chapterId) {
     // Decompress tileset graphics (part 1)
     Decompress(
-        gChapterDataAssetTable[GetROMChapterStruct(chapterId)->map.obj1Id],
+        CHAPTER_ASSET(GetROMChapterStruct(chapterId)->map.obj1Id),
         (void*)(BG_VRAM + 0x20 * 0x400)); // TODO: tile id constant?
 
     // Decompress tileset graphics (part 2, if it exists)
-    if (gChapterDataAssetTable[GetROMChapterStruct(chapterId)->map.obj2Id])
+    if (CHAPTER_ASSET(GetROMChapterStruct(chapterId)->map.obj2Id))
         Decompress(
-            gChapterDataAssetTable[GetROMChapterStruct(chapterId)->map.obj2Id],
+            CHAPTER_ASSET(GetROMChapterStruct(chapterId)->map.obj2Id),
             (void*)(BG_VRAM + 0x20 * 0x600)); // TODO: tile id constant?
 
     // Apply tileset palette
     ApplyPalettes(
-        gChapterDataAssetTable[GetROMChapterStruct(chapterId)->map.paletteId],
+        CHAPTER_ASSET(GetROMChapterStruct(chapterId)->map.paletteId),
         6, 10); // TODO: palette id constant?
 }
 
 void UnpackChapterMapPalette(void) {
     ApplyPalettes(
-        gChapterDataAssetTable[GetROMChapterStruct(gPlaySt.chapterIndex)->map.paletteId],
+        CHAPTER_ASSET(GetROMChapterStruct(gPlaySt.chapterIndex)->map.paletteId),
         6, 10); // TODO: palette id constant?
 }
 

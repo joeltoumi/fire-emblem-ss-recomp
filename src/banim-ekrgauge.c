@@ -1,4 +1,7 @@
 #include "gbafe.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 void sub_8050E40(void *_src, void *_dst)
 {
@@ -80,7 +83,12 @@ void NewEkrGauge(void)
     gEkrGaugeHpBak[0] = -1;
     gEkrGaugeHpBak[1] = -1;
 
+#ifdef REGION_EU
+    // EU 0x080512ac: the HIT/DMG/CRT labels in the player's language.
+    LZ77UnCompVram(EU_ROM_PTR(gEuImgTable_EfxSideHitDmgCrit, GetLang()), (void *)0x6013800);
+#else
     LZ77UnCompVram(Img_EfxSideHitDmgCrit, (void *)0x6013800);
+#endif
     LZ77UnCompVram(Img_EfxWTAArrow1, (void *)0x6013940);
     LZ77UnCompVram(Img_EfxWTAArrow2, (void *)0x6013D40);
 

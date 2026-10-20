@@ -65,6 +65,7 @@ gUnk_Sio_0203DD9A 0203dd9a
 gUnk_Sio_0203DD9F 0203dd9f
 gUnk_Sio_0203DDB4 0203ddb4
 gUnk_Sio_0203DDDC 0203dddc
+gLoadUnitBuffer 0203efb8
 gKeyComboResetEN 0300000c
 sModifiedBGs 0300000d
 sModifiedPalette 0300000e
@@ -105,6 +106,7 @@ gUnknown_03001C7C 03001c7c
 gActiveEventRegistry 03001c80
 gUdefCnt 03001cc0
 gUdefREDAs 03001cc8
+gUdefs 03001ce8
 gUnknown_03001D50 03001d50
 gUnknown_03001DA8 03001dc0
 gUnknown_03001DE8 03001e00

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "hardware.h"
 #include "chap_title.h"
@@ -49,7 +52,15 @@ void PutChapterTitleGfx(int chr, u32 titleId)
         titleId = 0x54;
 
     gChapterTitleFxSt.chr_str = chr & 0x3FF;
+#ifdef REGION_EU
+    // EU 0x080899d0: from the chapter title table of the player's language.
+    {
+        const u32 * titles = EU_ROM_PTR(gEuChapTitleTables, GetLang());
+        Decompress(EU_ROM_PTR(titles, titleId * 3), (void*)((chr * TILE_SIZE_4BPP) + VRAM));
+    }
+#else
     Decompress(chap_title_data[titleId].save, (void*)((chr * TILE_SIZE_4BPP) + VRAM));
+#endif
 }
 
 void _PutChapterTitleGfx(int chr, int titleId)

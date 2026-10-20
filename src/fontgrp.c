@@ -7,8 +7,18 @@
 #include "ctc.h"
 #include "constants/video-global.h"
 #include "fontgrp.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #define CHAR_NEWLINE 0x01
+
+#ifdef REGION_EU
+// EU: every font of the five languages draws single-byte characters.
+#define FONT_IS_SJIS(font) ((font)->lang == EU_FONT_LANG_SJIS)
+#else
+#define FONT_IS_SJIS(font) ((font)->lang == LANG_JAPANESE)
+#endif
 
 struct Struct02026E30
 {
@@ -358,10 +368,18 @@ void InitTextFont(struct Font *font, void *vramDest, int chr, int palid)
 
 void SetTextFontGlyphs(int glyphset)
 {
+#ifdef REGION_EU
+    // EU 0x08003cb4: the ROM's font, which has the accented letters.
+    if (glyphset == TEXT_GLYPHS_SYSTEM)
+        gActiveFont->glyphs = EuGetGlyphTable(gEuTextGlyphs_System, 0x100);
+    else
+        gActiveFont->glyphs = EuGetGlyphTable(gEuTextGlyphs_Talk, 0x100);
+#else
     if (glyphset == TEXT_GLYPHS_SYSTEM)
         gActiveFont->glyphs = TextGlyphs_System;
     else
         gActiveFont->glyphs = TextGlyphs_Talk;
+#endif
 }
 
 void ResetTextFont(void)
@@ -490,7 +508,7 @@ int GetStringTextLen(const char *str)
     char byte1;
     char byte2;
 
-    if (gActiveFont->lang)
+    if (!FONT_IS_SJIS(gActiveFont))
         return GetStringTextLenASCII(str);
     while (*str != 0 && *str != CHAR_NEWLINE) {
         byte1 = *str++;
@@ -516,7 +534,7 @@ const char *GetCharTextLen(const char *str, u32 *pWidth)
     char byte1;
     char byte2;
 
-    if (gActiveFont->lang)
+    if (!FONT_IS_SJIS(gActiveFont))
         return GetCharTextLenASCII(str, pWidth);
 
     byte1 = *str++;
@@ -576,7 +594,7 @@ void Text_DrawString(struct Text *text, const char* str)
     char byte1;
     char byte2;
 
-    if (gActiveFont->lang != LANG_JAPANESE) {
+    if (!FONT_IS_SJIS(gActiveFont)) {
         Text_DrawStringASCII(text, str);
         return;
     }
@@ -660,7 +678,11 @@ void Text_DrawNumberOrBlank(struct Text *th, int n)
 {
     if (n == 255 || n == -1) {
         Text_Skip(th, -8);
+#ifdef REGION_EU
+        Text_DrawString(th, GetStringFromIndex(0x517)); // EU 0x08004104: "--"
+#else
         Text_DrawString(th, GetStringFromIndex(0x535));
+#endif
         return;
     }
 
@@ -672,7 +694,7 @@ char const * Text_DrawCharacter(struct Text * text, char const * str)
     struct Glyph *glyph;
     char byte2, byte1;
 
-    if (gActiveFont->lang != LANG_JAPANESE)
+    if (!FONT_IS_SJIS(gActiveFont))
         return Text_DrawCharacterAscii(text, str);
 
     byte1 = *str++;
@@ -1099,6 +1121,15 @@ void DrawSpecialCharGlyph(int a, int b, struct Glyph *glyph)
     u32 *r7 = glyph->bitmap;
     u16 *r2 = GetColorLut(b);
 
+#ifdef REGION_EU
+    // EU 0x080049f4: a missing glyph leaves the tile blank.
+    if (glyph == NULL) {
+        for (i = 0; i < 16; i++)
+            r8[i] = 0;
+        return;
+    }
+#endif
+
     for (i = 0; i < 16; i++)
     {
         u32 r0 = *r7++;
@@ -1125,7 +1156,13 @@ int AddSpecialChar(struct SpecialCharSt *st, int color, int id)
 
     (st + 1)->color = -1;
 
+#ifdef REGION_EU
+    // EU 0x08004a64: the special characters of the player's language.
+    DrawSpecialCharGlyph(st->chr_position, color,
+        EuGetGlyphTable(EU_ROM_PTR(gEuTextGlyphsTable_Special, GetLang()), EU_SPECIAL_GLYPH_COUNT)[id]);
+#else
     DrawSpecialCharGlyph(st->chr_position, color, TextGlyphs_Special[id]);
+#endif
 
     return st->chr_position;
 }

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "hardware.h"
 #include "fontgrp.h"
@@ -36,11 +39,20 @@ void LoadHelpBoxGfx(void * vram, int palId)
 
     palId = (palId & 0xF) + 0x10;
 
+#ifdef REGION_EU
+    // EU 0x08089bb8: the box graphics in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 0 * EU_LANG_COUNT + GetLang()), vram + 0x360);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 1 * EU_LANG_COUNT + GetLang()), vram + 0x760);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 2 * EU_LANG_COUNT + GetLang()), vram + 0xb60);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 3 * EU_LANG_COUNT + GetLang()), vram + 0xf60);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 4 * EU_LANG_COUNT + GetLang()), vram + 0x1360);
+#else
     Decompress(gGfx_HelpTextBox, vram + 0x360);
     Decompress(gGfx_HelpTextBox2, vram + 0x760);
     Decompress(gGfx_HelpTextBox3, vram + 0xb60);
     Decompress(gGfx_HelpTextBox4, vram + 0xf60);
     Decompress(gGfx_HelpTextBox5, vram + 0x1360);
+#endif
 
     InitSpriteTextFont(&gHelpBoxSt.font, vram, palId);
 
@@ -68,11 +80,20 @@ void sub_80898C4(void* vram, int palId) {
 
     palId = (palId & 0xf) + 0x10;
 
+#ifdef REGION_EU
+    // EU 0x08089ca0: the box graphics in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 0 * EU_LANG_COUNT + GetLang()), vram + 0x360);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 1 * EU_LANG_COUNT + GetLang()), vram + 0x760);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 2 * EU_LANG_COUNT + GetLang()), vram + 0xb60);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 3 * EU_LANG_COUNT + GetLang()), vram + 0xf60);
+    Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 4 * EU_LANG_COUNT + GetLang()), vram + 0x1360);
+#else
     Decompress(gGfx_HelpTextBox, vram + 0x360);
     Decompress(gGfx_HelpTextBox2, vram + 0x760);
     Decompress(gGfx_HelpTextBox3, vram + 0xb60);
     Decompress(gGfx_HelpTextBox4, vram + 0xf60);
     Decompress(gGfx_HelpTextBox5, vram + 0x1360);
+#endif
 
     InitSpriteTextFont(&gHelpBoxSt.font, vram, palId);
 
@@ -912,11 +933,20 @@ void InitBoxDialogue(void * vram_dst, int pad_idx) {
         Decompress(gGfx_YellowTextBox4, vram_dst + 0xf80);
         Decompress(gGfx_YellowTextBox5, vram_dst + 0x1380);
     } else {
+#ifdef REGION_EU
+        // EU 0x0808aa64: in the player's language.
+        Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 0 * EU_LANG_COUNT + GetLang()), vram_dst + 0x360);
+        Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 1 * EU_LANG_COUNT + GetLang()), vram_dst + 0x760);
+        Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 2 * EU_LANG_COUNT + GetLang()), vram_dst + 0xb60);
+        Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 3 * EU_LANG_COUNT + GetLang()), vram_dst + 0xf60);
+        Decompress(EU_ROM_PTR(gEuGfxTable_HelpTextBox, 4 * EU_LANG_COUNT + GetLang()), vram_dst + 0x1360);
+#else
         Decompress(gGfx_HelpTextBox, vram_dst + 0x360);
         Decompress(gGfx_HelpTextBox2, vram_dst + 0x760);
         Decompress(gGfx_HelpTextBox3, vram_dst + 0xb60);
         Decompress(gGfx_HelpTextBox4, vram_dst + 0xf60);
         Decompress(gGfx_HelpTextBox5, vram_dst + 0x1360);
+#endif
     }
 
     ClearAllTalkFlags();

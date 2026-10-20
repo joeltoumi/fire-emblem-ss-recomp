@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "m4a.h"
 #include "soundwrapper.h"
@@ -323,7 +326,12 @@ void SaveMenu_InitScreen(struct SaveMenuProc * proc)
         gGenericBuffer,
         OBJ_PALETTE(BGPAL_SAVEMENU_BGFOG) + OBJ_PRIORITY(0) + OBJ_CHAR(BGCHR_SAVEMENU_BGFOG));
 
+#ifdef REGION_EU
+    // EU 0x080a9688: the sprites in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_SaveScreenSprits, GetLang()), OBJ_VRAM0 + OBJCHR_SAVEMENU_SPRITES * TILE_SIZE_4BPP);
+#else
     Decompress(Img_SaveScreenSprits, OBJ_VRAM0 + OBJCHR_SAVEMENU_SPRITES * TILE_SIZE_4BPP);
+#endif
     ApplyPalettes(Pal_SaveScreenSprits, OBJPAL_SAVEMENU_SPRITES + 0x10, 8);
 
     ApplyPalette(Pal_08A295B4, 2);
@@ -374,7 +382,12 @@ void SaveMenu_InitScreen(struct SaveMenuProc * proc)
 //! FE8U = 0x080A8F04
 void SaveMenu_LoadExtraMenuGraphics(struct SaveMenuProc * proc)
 {
+#ifdef REGION_EU
+    // EU 0x080a984c: the menu choices in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_GameMainMenuObjs, GetLang()), OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#else
     Decompress(Img_GameMainMenuObjs, OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#endif
     InitSaveMenuChoice(proc);
 
     if (proc->main_sel_bitfile == MAIN_MENU_OPTION_EXTRAS)
@@ -930,7 +943,11 @@ void SaveMenuScrollBackToMain(struct SaveMenuProc * proc)
 
     if (proc->scroll_cnt == 0xe)
     {
+#ifdef REGION_EU
+        Decompress(EU_ROM_PTR(gEuImgTable_GameMainMenuObjs, GetLang()), OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#else
         Decompress(Img_GameMainMenuObjs, OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#endif
         Proc_Break(proc);
     }
 }
@@ -1257,7 +1274,11 @@ void sub_80A9E1C(struct SaveMenuProc * proc)
             return;
         }
 
+#ifdef REGION_EU
+        Decompress(EU_ROM_PTR(gEuImgTable_GameMainMenuObjs, GetLang()), OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#else
         Decompress(Img_GameMainMenuObjs, OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#endif
         proc->scroll_cnt = 0;
         Proc_Goto(proc, PL_SAVEMENU_13);
         return;
@@ -1480,12 +1501,20 @@ void SaveMenu_ReloadScreenFormDifficulty(struct SaveMenuProc * proc)
     Decompress(Tsa_MainMenuBgFog, gGenericBuffer);
     CallARM_FillTileRect(gBG2TilemapBuffer, gGenericBuffer, 0x00007260);
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_SaveScreenSprits, GetLang()), (void*)0x06010800);
+#else
     Decompress(Img_SaveScreenSprits, (void*)0x06010800);
+#endif
     ApplyPalettes(Pal_SaveScreenSprits, 0x12, 8);
     ApplyPalette(Pal_08A295B4, 2);
 
     SaveMenuCopyPalette(PAL_OBJ(0x2), PAL_OBJ(0x2) - 0x10, 1);
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_GameMainMenuObjs, GetLang()), OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#else
     Decompress(Img_GameMainMenuObjs, OBJ_VRAM0 + OBJCHR_SAVEMENU_MAINCHOICE_STR * TILE_SIZE_4BPP);
+#endif
 
     SaveMenuInitSubBoxText();
     SaveMenuPutChapterTitle(proc);

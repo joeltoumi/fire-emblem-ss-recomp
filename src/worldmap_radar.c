@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "ctc.h"
 #include "hardware.h"
@@ -435,7 +438,12 @@ void StartWorldMapMinimapCore(struct Proc * proc)
     SetBlendTargetB(0, 0, 1, 1, 1);
     SetBlendBackdropA(0);
 
+#ifdef REGION_EU
+    // EU 0x080c4720: the minimap in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_WorldmapMinimap, GetLang()), (void *)0x06003C00);
+#else
     Decompress(Img_WorldmapMinimap, (void *)0x06003C00);
+#endif
 
     ApplyPalette(Pal_WorldmapMinimap, 7);
     ApplyPalette(gPal_GMapPI_ShopIcons, 0x19);

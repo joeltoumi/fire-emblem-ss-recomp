@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "chapterdata.h"
 #include "bmsave.h"
@@ -1183,8 +1186,14 @@ void SetupFinScreenGfx(void)
 {
     ApplyPalette(Pal_FinScreen, 14);
 
+#ifdef REGION_EU
+    // EU 0x080b7dfc: "Fin" in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_FinScreen, GetLang()), BG_CHR_ADDR(0x80));
+    Decompress(EU_ROM_PTR(gEuTsaTable_FinScreen, GetLang()), gGenericBuffer);
+#else
     Decompress(Img_FinScreen, BG_CHR_ADDR(0x80));
     Decompress(Tsa_FinScreen, gGenericBuffer);
+#endif
     CallARM_FillTileRect(gBG2TilemapBuffer, gGenericBuffer, TILEREF(0x80, 14));
 
     BG_EnableSyncByMask(BG2_SYNC_BIT);

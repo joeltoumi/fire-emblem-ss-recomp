@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "functions.h"
 #include "variables.h"
 #include "hardware.h"
@@ -130,7 +133,12 @@ void sub_8095C2C(struct ProcAtMenu * proc)
 void sub_8095C50(int tile, int pal)
 {
     /* "Cahpter 0", "Infomaion" */
+#ifdef REGION_EU
+    // EU 0x080961f8: in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_08A1AC88, GetLang()), OBJ_VRAM0 + tile);
+#else
     Decompress(gUnknown_08A1AC88, OBJ_VRAM0 + tile);
+#endif
     ApplyPalette(gPal_SupportScreenBanner, pal + 0x10);
 }
 
@@ -160,10 +168,18 @@ void AtMenu_Reinitialize(struct ProcAtMenu* proc)
         InitText(&gPrepMainMenuTexts[i + 1], 0x8);
     InitText(&gPrepMainMenuTexts[0], 0xA);
 
+#ifdef REGION_EU
+    // EU 0x080962d4: in the player's language.
+    /* "Preparations" */
+    Decompress(EU_ROM_PTR(gEuImgTable_08A1A4C8, GetLang()), (void*)0x6014800);
+    /* "Menu", "Start" button */
+    Decompress(EU_ROM_PTR(gEuImgTable_08A1D510, GetLang()), (void*)0x6016000);
+#else
     /* "Preparations" */
     Decompress(gUnknown_08A1A4C8, (void*)0x6014800);
     /* "Menu", "Start" button */
     Decompress(gUnknown_08A1D510, (void*)0x6016000);
+#endif
     ApplyPalettes(Pal_SysBrownBox, 0x19, 2);
     
     sub_8095C50(0x7000, 0x6);

@@ -415,7 +415,7 @@ u8 Event0D_AsmCall(struct EventEngineProc * proc)
     _cmd = *proc->pEventCurrent;
     _cmd_mask = 0xF;
 
-    func = (void *)EVT_CMD_ARG32_BE(proc->pEventCurrent);
+    func = GBA_FUNC(void *, EVT_CMD_ARG32_BE(proc->pEventCurrent));
 
     if ((_cmd_mask &= _cmd) == 0x1 && EVENT_IS_SKIPPING(proc))
         return EVC_ADVANCE_CONTINUE;
@@ -2363,9 +2363,9 @@ void sub_800F8A8(struct Unit * unit, const struct UnitDefinition * unitDefinitio
     }
 
     if (unk == 1 || (unit->state & US_UNDER_A_ROOF))
-        MoveUnitExt(unit, unitDefinition->redas, unitDefinition->redaCount, flags);
+        MoveUnitExt(unit, GBA_GET(const void *, unitDefinition->redas), unitDefinition->redaCount, flags);
     else
-        MuCtr_StartDefinedMove(unit, unitDefinition->redas, unitDefinition->redaCount, flags);
+        MuCtr_StartDefinedMove(unit, GBA_GET(const void *, unitDefinition->redas), unitDefinition->redaCount, flags);
 }
 
 //! FE8U = 0x0800F914
@@ -2450,7 +2450,7 @@ struct UnitDefinition * GetUnitDefinitionFromEventScr(struct UnitDefinition * so
         for (i = 0; i < count; i++)
         {
             source->redaCount = 0;
-            source->redas = NULL;
+            source->redas = 0;
             source++;
         }
     }
@@ -2872,7 +2872,7 @@ u8 Event32_SpawnSingleUnit(struct EventEngineProc * proc)
 
     unitDef.redaCount = 0;
 
-    unitDef.redas = NULL;
+    unitDef.redas = 0;
 
     unitDef.items[0] = 0;
     unitDef.items[1] = 0;

@@ -15,6 +15,9 @@
 #include "constants/faces.h"
 #include "constants/msg.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 //! FE8U = 0x08047A54
 int SioMenu_GetItemHelpText(struct SioMenuProc * proc, int lineNum)
@@ -115,7 +118,12 @@ void SioMenu_LoadGraphics(struct SioMenuProc * proc)
     InitSioBG();
     StartMuralBackgroundExt(proc, 0, 0x10, 4, 0);
 
+#ifdef REGION_EU
+    // EU 0x08047da0: the menu in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaMenu, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_LinkArenaMenu, OBJ_CHR_ADDR(0x240));
+#endif
     ApplyPalettes(Pal_LinkArenaMenu, 0x13, 3);
 
     SetTextFont(&Font_0203DB64);
@@ -262,7 +270,12 @@ void SioMenu_RestartGraphicsMaybe(struct SioMenuProc * proc)
     InitSioBG();
     StartMuralBackgroundExt(proc, 0, 0x10, 4, 0);
 
+#ifdef REGION_EU
+    // EU 0x08047ffc: the menu in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaMenu, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_LinkArenaMenu, OBJ_CHR_ADDR(0x240));
+#endif
     ApplyPalettes(Pal_LinkArenaMenu, 0x13, 3);
 
     SetTextFont(&Font_0203DB64);

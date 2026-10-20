@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "bmunit.h"
 #include "hardware.h"
@@ -568,7 +571,12 @@ void ChapterStatus_Init(struct ChapterStatusProc * proc)
     Decompress(Tsa_ChapterStatusUi, gGenericBuffer);
     CallARM_FillTileRect(gBG2TilemapBuffer, gGenericBuffer, TILEREF(0x0, 1));
 
+#ifdef REGION_EU
+    // EU 0x0808e4d4: in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_PlayStatusSprites, GetLang()), OBJ_CHR_ADDR(0x180));
+#else
     Decompress(Img_PlayStatusSprites, OBJ_CHR_ADDR(0x180));
+#endif
     ApplyPalettes(Pal_PlayStatusSprites, 0x18, 2);
 
     Decompress(Img_ChapterStatusSelectorSprite, OBJ_CHR_ADDR(0x198));
@@ -976,7 +984,12 @@ void StatusScreenSpriteDraw_Init(struct ChapterStatusProc * proc)
     ApplyPalette(Pal_StatusScreenLabelSprites, 0x14);
     ApplyPalette(Pal_08A2E8F0, 0x17);
 
+#ifdef REGION_EU
+    // EU 0x0808ecd8: in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_StatusScreenLabelSprites, GetLang()), OBJ_CHR_ADDR(0x340));
+#else
     Decompress(Img_StatusScreenLabelSprites, OBJ_CHR_ADDR(0x340));
+#endif
 
     proc->unk_64 = 0;
 
@@ -1041,7 +1054,27 @@ void StatusScreenSpriteDraw_Loop(struct ChapterStatusProc * proc)
     {
         if (!(gPlaySt.chapterStateBits & PLAY_FLAG_POSTGAME))
         {
+#ifdef REGION_EU
+            // EU 0x0808ee74: a wider label (two objects), placed per language.
+            switch (GetLang())
+            {
+            case EU_LANG_ENGLISH:
+            case EU_LANG_GERMAN:
+            case EU_LANG_SPANISH:
+                PutSprite(4, 201, 4, gEuSprite_ChapterStatus_PlayCountLabel, 0);
+                break;
+
+            case EU_LANG_FRENCH:
+                PutSprite(4, 203, 3, gEuSprite_ChapterStatus_PlayCountLabel, 0);
+                break;
+
+            case EU_LANG_ITALIAN:
+                PutSprite(4, 199, 4, gEuSprite_ChapterStatus_PlayCountLabel, 0);
+                break;
+            }
+#else
             PutSprite(4, 219, 3, Sprite_ChapterStatus_PlayCountLabel, 0);
+#endif
         }
     }
 

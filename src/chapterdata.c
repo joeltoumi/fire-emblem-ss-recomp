@@ -14,7 +14,7 @@ const struct ROMChapterData* GetROMChapterStruct(unsigned chIndex) {
 
 const void* GetChapterMapPointer(unsigned chIndex) {
     if (chIndex != 0x7F)
-        return gChapterDataAssetTable[GetROMChapterStruct(chIndex)->map.mainLayerId];
+        return CHAPTER_ASSET(GetROMChapterStruct(chIndex)->map.mainLayerId);
 
     ReadSramFast(GetExtraMapMapReadAddr(), gGenericBuffer, GetExtraMapMapSize());
     return gGenericBuffer;
@@ -22,14 +22,14 @@ const void* GetChapterMapPointer(unsigned chIndex) {
 
 const void* GetChapterMapChangesPointer(unsigned chIndex) {
     if (chIndex != 0x7F)
-        return gChapterDataAssetTable[GetROMChapterStruct(chIndex)->map.changeLayerId];
+        return CHAPTER_ASSET(GetROMChapterStruct(chIndex)->map.changeLayerId);
 
     return gExtraMapInfo->map_change_info;
 }
 
 const struct ChapterEventGroup* GetChapterEventDataPointer(unsigned chIndex) {
     if (chIndex != 0x7F)
-        return gChapterDataAssetTable[GetROMChapterStruct(chIndex)->mapEventDataId];
+        return CHAPTER_ASSET(GetROMChapterStruct(chIndex)->mapEventDataId);
 
     return gExtraMapInfo->event_info;
 }

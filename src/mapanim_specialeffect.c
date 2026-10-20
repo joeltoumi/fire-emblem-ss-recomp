@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "functions.h"
 #include "variables.h"
 #include "proc.h"
@@ -20,6 +23,54 @@
 #include "constants/characters.h"
 #include "constants/songs.h"
 
+#ifdef REGION_EU
+// EU 0x0807cd08 / 0x0807cdd4: the label in the player's language. Its width
+// depends on the language, so near the screen edges it is moved to a fixed
+// x so it stays on screen.
+static int EuMapAnimMojiX(struct Unit * unit, const struct EuMapAnimMojiPos * pos)
+{
+    int lang = GetLang();
+    int x = 16 * (SCREEN_TILE_X(unit->xPos)) + 8;
+
+    if (2 * SCREEN_TILE_X(unit->xPos) < pos[lang].min_x2)
+        x = pos[lang].x_left;
+
+    if (2 * SCREEN_TILE_X(unit->xPos) > pos[lang].max_x2)
+        x = pos[lang].x_right;
+
+    return x;
+}
+
+void MapAnim_BeginMISSAnim(struct Unit * unit)
+{
+    int x = EuMapAnimMojiX(unit, gEuMapAnimMojiPos_Miss);
+
+    Decompress(
+        EU_ROM_PTR(gEuImgTable_MapAnimMISS, GetLang()),
+        OBJ_VRAM0 + 0x20 * BM_OBJCHR_BANIM_EFFECT);
+
+    APProc_Create(
+        EU_ROM_PTR(gEuObjTable_MapAnimMISS, GetLang()),
+        x,
+        16 * (SCREEN_TILE_Y(unit->yPos)) + 16,
+        TILEREF(BM_OBJCHR_BANIM_EFFECT, 0), 0, 2);
+}
+
+void MapAnim_BeginNODAMAGEAnim(struct Unit * unit)
+{
+    int x = EuMapAnimMojiX(unit, gEuMapAnimMojiPos_NoDamage);
+
+    Decompress(
+        EU_ROM_PTR(gEuImgTable_MapAnimNODAMAGE, GetLang()),
+        OBJ_VRAM0 + 0x20 * BM_OBJCHR_BANIM_EFFECT);
+
+    APProc_Create(
+        EU_ROM_PTR(gEuObjTable_MapAnimNODAMAGE, GetLang()),
+        x,
+        16 * (SCREEN_TILE_Y(unit->yPos)) + 16,
+        TILEREF(BM_OBJCHR_BANIM_EFFECT, 0), 0, 2);
+}
+#else
 void MapAnim_BeginMISSAnim(struct Unit * unit)
 {
     Decompress(
@@ -45,6 +96,7 @@ void MapAnim_BeginNODAMAGEAnim(struct Unit * unit)
         16 * (SCREEN_TILE_Y(unit->yPos)) + 16,
         TILEREF(BM_OBJCHR_BANIM_EFFECT, 0), 0, 2);
 }
+#endif
 
 CONST_DATA struct ProcCmd ProcScr_MapAnimWallBreak[] = {
     PROC_SLEEP(0x1),
@@ -293,7 +345,7 @@ void LoadGorgonFromEgg(struct MAEffectProc * proc)
     gUnitDefEggHatching.yPosition = proc->unit->yPos;
 
     gUnitDefEggHatching.redaCount = 0;
-    gUnitDefEggHatching.redas = NULL;
+    gUnitDefEggHatching.redas = 0;
 
     gUnitDefEggHatching.genMonster = FALSE;
     gUnitDefEggHatching.itemDrop = FALSE;

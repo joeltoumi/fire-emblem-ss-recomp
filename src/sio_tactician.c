@@ -10,6 +10,9 @@
 #include "prepscreen.h"
 #include "uiutils.h"
 #include "constants/characters.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 struct ProcCmd CONST_DATA ProcScr_TacticianNameSelection[] = {
     PROC_YIELD,
@@ -537,6 +540,11 @@ const struct TacticianTextConf gTacticianTextConf[] = {
     },
 };
 
+#ifdef REGION_EU
+// EU: the name entry grid is the ROM's (it has the accented letters).
+#define gTacticianTextConf (EuGetTacticianTextConf())
+#endif
+
 const s16 SioTacticianIndexMap[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A,
     0x1F, 0x20, 0x21, 0x22, 0x23,
@@ -688,7 +696,12 @@ void Tactician_InitScreen(struct ProcTactician * proc)
     ClearSioBG();
     InitSioBG();
     StartMuralBackgroundExt(proc, 0, 0, 0, 0);
+#ifdef REGION_EU
+    // EU 0x080449d0: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), (void *)0x06014800);
+#else
     Decompress(Img_TacticianSelObj, (void *)0x06014800);
+#endif
     ApplyPalette(Pal_TacticianSelObj, 0x13);
     ApplyPalette(Pal_085ADE68, 0x14);
     CallARM_FillTileRect(TILEMAP_LOCATED(gBG2TilemapBuffer, 0, 8), Tsa_085AE190, 0x1000);
@@ -717,7 +730,12 @@ void Tactician_InitScreen(struct ProcTactician * proc)
 
     proc->cur_len = 0;
     InitText(&Text_0203DB14, 8);
+#ifdef REGION_EU
+    // EU 0x080449d0: the entry starts on the capital letters.
+    proc->line_idx = 0;
+#else
     proc->line_idx = 1;
+#endif
     proc->conf_idx = 6;
 
     conf = GetTacticianTextConf(6);
@@ -950,6 +968,8 @@ void Tactician_LoopCore(struct ProcTactician * proc, const struct TacticianTextC
             SaveTactician(proc, conf);
             break;
 
+#ifndef REGION_EU
+        // EU 0x08044eb4: no third and fourth character sets.
         case 6:
             sub_8044B78(proc, conf, 1, 0);
 
@@ -959,6 +979,7 @@ void Tactician_LoopCore(struct ProcTactician * proc, const struct TacticianTextC
             sub_8044B78(proc, conf, 2, 0);
 
             break;
+#endif
 
         case 1:
             if (proc->line_idx != 0)
@@ -990,6 +1011,7 @@ void Tactician_LoopCore(struct ProcTactician * proc, const struct TacticianTextC
             break;
 
         case 3:
+#ifndef REGION_EU
             if (proc->line_idx < 2 || proc->line_idx > 3)
             {
                 SioPlaySoundEffect(2);
@@ -1008,6 +1030,7 @@ void Tactician_LoopCore(struct ProcTactician * proc, const struct TacticianTextC
             }
 
             SioPlaySoundEffect(0);
+#endif
 
             break;
         }
@@ -1039,6 +1062,8 @@ void Tactician_LoopCore(struct ProcTactician * proc, const struct TacticianTextC
         proc->conf_idx = 5;
     }
 
+#ifndef REGION_EU
+    // EU 0x08044eb4: Select does not switch character sets.
     if ((gKeyStatusPtr->newKeys & SELECT_BUTTON) != 0)
     {
         SioPlaySoundEffect(2);
@@ -1065,6 +1090,7 @@ void Tactician_LoopCore(struct ProcTactician * proc, const struct TacticianTextC
         Proc_Goto(proc, 1);
         return;
     }
+#endif
 
     if ((gKeyStatusPtr->newKeys & B_BUTTON) != 0)
     {

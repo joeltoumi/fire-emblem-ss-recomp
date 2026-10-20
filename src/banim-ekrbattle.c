@@ -16,6 +16,9 @@
 #include "ekrtriangle.h"
 #include "eventinfo.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 /* ekr */
 EWRAM_OVERLAY(banim) struct Anim * gAnims[4] = {NULL};
@@ -699,7 +702,12 @@ void ekrBattleExecExpGain(struct ProcEkrBattle * proc)
     gLCDControlBuffer.wincnt.win0_enableBlend = 0;
     gLCDControlBuffer.wincnt.wout_enableBlend = 0;
 
+#ifdef REGION_EU
+    // EU 0x080509a8: the bar's labels in the player's language (table declared in eu_battle.h).
+    RegisterDataMove(EU_ROM_PTR(gEuImgTable_EkrExpBar, GetLang()), (void *)0x6002000, 0x300);
+#else
     RegisterDataMove(Img_EkrExpBar, (void *)0x6002000, 0x300);
+#endif
     EfxTmCpyBG(Tsa_EkrExpBar, TILEMAP_LOCATED(gBG1TilemapBuffer, 6, 17), 18, 3, 1, 0x100);
     CpuFastCopy(Pal_ExpBar, PAL_BG(1), 0x20);
     BG_EnableSyncByMask(2);

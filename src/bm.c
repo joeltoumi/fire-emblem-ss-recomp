@@ -27,6 +27,9 @@
 #include "eventcall.h"
 
 #include "bm.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "constants/event-flags.h"
 #include "constants/songs.h"
@@ -401,7 +404,7 @@ int CallBeginningEvents(void)
     const struct ChapterEventGroup* pChapterEvents = GetChapterEventDataPointer(gPlaySt.chapterIndex);
 
     if (GetBattleMapKind() != BATTLEMAP_KIND_SKIRMISH)
-        CallEvent(pChapterEvents->beginningSceneEvents, 1);
+        CallEvent(GBA_GET(const void *, pChapterEvents->beginningSceneEvents), 1);
     else
         CallEvent((u16 *)EventScr_SkirmishCommonBeginning, 1);
 
@@ -568,7 +571,12 @@ void InitBmBgLayers(void) {
 
 //! FE8U = 0x08015680
 void LoadObjUIGfx(void) {
+#ifdef REGION_EU
+    // EU 0x08015650: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_MiscUiGraphics, GetLang()), gGenericBuffer);
+#else
     Decompress(gGfx_MiscUiGraphics, gGenericBuffer);
+#endif
     Copy2dChr(gGenericBuffer, (void*)0x06010000, 0x12, 4);
 
     ApplyPalettes(gPal_MiscUiGraphics, 0x10, 2);

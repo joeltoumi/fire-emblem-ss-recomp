@@ -16,6 +16,9 @@
 #include "constants/faces.h"
 #include "constants/msg.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 //! FE8U = 0x08045930
 int sub_8045930(u8 ranking, u32 playerCount, u32 mode, u32 points)
@@ -301,9 +304,30 @@ void sub_8045DC0(struct SioBatProc * proc)
 
     StartMuralBackgroundExt(proc, 0, 0x12, 2, 0);
 
+#ifdef REGION_EU
+    // EU 0x08045f84: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_TacticianSelObj, OBJ_CHR_ADDR(0x240));
+#endif
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaPlayerBanners, GetLang()), OBJ_CHR_ADDR(0x300));
+#else
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaPlayerBanners, GetLang()), OBJ_CHR_ADDR(0x300));
+#else
     Decompress(Img_LinkArenaPlayerBanners, OBJ_CHR_ADDR(0x300));
+#endif
+#endif
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_085AC604, GetLang()), OBJ_CHR_ADDR(0x340));
+#else
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_085AC604, GetLang()), OBJ_CHR_ADDR(0x340));
+#else
     Decompress(gUnknown_085AC604, OBJ_CHR_ADDR(0x340));
+#endif
+#endif
 
     for (i = 0; i < 4; i++)
     {
@@ -880,10 +904,19 @@ void sub_8046838(ProcPtr proc)
 
     StartMuralBackgroundExt(proc, 0, 0x12, 2, 0);
 
+#ifdef REGION_EU
+    // EU 0x08046a24: the graphics of the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_LinkArenaRankIcons, GetLang()), GetBackgroundTileDataOffset(BG_1) + BG_CHR_ADDR(0x78));
+#else
     Decompress(Img_LinkArenaRankIcons, GetBackgroundTileDataOffset(BG_1) + BG_CHR_ADDR(0x78));
+#endif
     ApplyPalette(Pal_LinkArenaRankIcons, 6);
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_TacticianSelObj, GetLang()), OBJ_CHR_ADDR(0x240));
+#else
     Decompress(Img_TacticianSelObj, OBJ_CHR_ADDR(0x240));
+#endif
     ApplyPalettes(Pal_TacticianSelObj, 0x13, 4);
 
     sub_804C3A4(0);

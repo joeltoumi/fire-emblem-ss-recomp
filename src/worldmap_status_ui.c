@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "fontgrp.h"
 #include "statscreen.h"
@@ -344,7 +347,12 @@ void WorldmapStatus_InitGfx(void)
     ApplyUnitSpritePalettes();
     StartMuralBackground(NULL, (void *)0x0600B000, -1);
 
+#ifdef REGION_EU
+    // EU 0x080c161c: the labels in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_WorldmapStatus, GetLang()), (void *)0x06003000);
+#else
     Decompress(gUnknown_08A986C0, (void *)0x06003000);
+#endif
     ApplyPalettes(gUnknown_08A98DCC, 6, 3);
 
     EnablePaletteSync();

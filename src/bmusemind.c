@@ -862,7 +862,7 @@ void sub_802FAD0(ProcPtr proc) {
     gUnknown_03001788.yPosition = yPos;
 
     gUnknown_03001788.redaCount = 0;
-    gUnknown_03001788.redas = NULL;
+    gUnknown_03001788.redas = 0;
 
     gUnknown_03001788.genMonster = 0;
     gUnknown_03001788.itemDrop = 0;

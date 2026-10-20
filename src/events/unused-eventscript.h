@@ -47,7 +47,7 @@ void AutoGenerateUnitdef(u8 idx, int jid, s8 x_from, s8 y_from, s8 x_to, s8 y_to
     gUdefs[idx].unk_05_7 = false;
     gUdefs[idx].extraData = 0;
     gUdefs[idx].redaCount = 1;
-    gUdefs[idx].redas = &reda[idx];
+    gUdefs[idx].redas = GBA_SET(&reda[idx]);
 
     gUdefs[idx].items[0] = 0;
     gUdefs[idx].items[1] = 0;

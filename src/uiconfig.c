@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "fontgrp.h"
 #include "hardware.h"
@@ -865,7 +868,12 @@ void Config_Init(struct ConfigProc * proc)
     ApplyPalette(Pal_ConfigUiSprites, 4);
     ApplyPalette(Pal_ConfigUiSprites, 18);
 
+#ifdef REGION_EU
+    // EU 0x080b24b8: the sprites in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_ConfigUiSprites, GetLang()), OBJ_CHR_ADDR(0xC0));
+#else
     Decompress(Img_ConfigUiSprites, OBJ_CHR_ADDR(0xC0));
+#endif
     Decompress(Img_ConfigUiIcons, BG_CHR_ADDR(0x200));
 
     Decompress(Tsa_ConfigUiFrame, gGenericBuffer + 0x80);

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "bmunit.h"
 #include "prepscreen.h"
@@ -22,6 +25,13 @@
 
 #include "unitlistscreen.h"
 #include "constants/songs.h"
+
+#ifdef REGION_EU
+// EU 0x08095558: the EU version moves some columns per language.
+#define UNITLIST_COLUMN_X(page, column) EuGetUnitListColumnX((page), (column))
+#else
+#define UNITLIST_COLUMN_X(page, column) gUnitListScreenFields[page][column].xColumn
+#endif
 
 EWRAM_OVERLAY(0) struct SortedUnitEnt gSortedUnitsBuf[0x40] = {};
 EWRAM_OVERLAY(0) struct SortedUnitEnt * gSortedUnits[0x40] = {};
@@ -622,7 +632,7 @@ void UnitListScreenSprites_Main(struct UnitListScreenSpritesProc * proc)
     if (proc->unk_2c->unk_29 >= 3)
     {
         DisplayUiHand(
-            gUnitListScreenFields[proc->unk_2c->page][proc->unk_2c->unk_2d].xColumn, proc->unk_2c->unk_2c * 16 + 40);
+            UNITLIST_COLUMN_X(proc->unk_2c->page, proc->unk_2c->unk_2d), proc->unk_2c->unk_2c * 16 + 40);
     }
     else
     {
@@ -951,7 +961,14 @@ void sub_8090D80(struct UnitListScreenProc * proc)
     LoadUiFrameGraphics();
 
     Decompress(Img_08A1CD68, (void *)0x06014800);
+#ifdef REGION_EU
+    // EU 0x0809141e: in the player's language.
+    Decompress(
+        EU_ROM_PTR(proc->page != 0 ? gEuImgTable_UnitListBanners : gEuImgTable_UnitListBanner_Animation, GetLang()),
+        (void *)0x06015800);
+#else
     Decompress(proc->page != 0 ? Img_UnitListBanners : Img_UnitListBanner_Animation, (void *)0x06015800);
+#endif
 
     ApplyPalettes(Pal_SysBrownBox, 0x19, 2);
 
@@ -1403,7 +1420,7 @@ void sub_80917D8(struct UnitListScreenProc * proc)
             PlaySoundEffect(SONG_6F);
             proc->pageTarget--;
 
-            for (i = 8; i > 0 && gUnitListScreenFields[proc->pageTarget][i].xColumn == 0; i--)
+            for (i = 8; i > 0 && UNITLIST_COLUMN_X(proc->pageTarget, i) == 0; i--)
             {
             }
 
@@ -1421,7 +1438,7 @@ void sub_80917D8(struct UnitListScreenProc * proc)
     {
         proc->unk_33 = 1;
 
-        if (proc->unk_2d == 8 || gUnitListScreenFields[proc->page][proc->unk_2d + 1].xColumn == 0)
+        if (proc->unk_2d == 8 || UNITLIST_COLUMN_X(proc->page, proc->unk_2d + 1) == 0)
         {
             if (proc->page < proc->unk_2e)
             {
@@ -1450,7 +1467,7 @@ void sub_80917D8(struct UnitListScreenProc * proc)
         proc->helpActive = 1;
 
         StartHelpBox(
-            gUnitListScreenFields[proc->page][proc->unk_2d].xColumn, 0x28,
+            UNITLIST_COLUMN_X(proc->page, proc->unk_2d), 0x28,
             gUnitListScreenFields[proc->page][proc->unk_2d].helpTextId);
     }
 
@@ -1517,7 +1534,7 @@ void sub_8091AEC(struct UnitListScreenProc * proc)
     if ((proc->helpActive != 0) && (prev != proc->unk_2d))
     {
         StartHelpBox(
-            gUnitListScreenFields[proc->pageTarget][proc->unk_2d].xColumn, 40,
+            UNITLIST_COLUMN_X(proc->pageTarget, proc->unk_2d), 40,
             gUnitListScreenFields[proc->pageTarget][proc->unk_2d].helpTextId);
     }
 
@@ -2098,7 +2115,7 @@ void UnitList_DrawColumnNames(u16 * tm, u8 page)
     {
         for (i = 1; i < 9 && gUnitListScreenFields[page][i].xColumn != 0; i++)
         {
-            Text_SetCursor(&gUnknown_0200E148, gUnitListScreenFields[page][i].xColumn - 64);
+            Text_SetCursor(&gUnknown_0200E148, UNITLIST_COLUMN_X(page, i) - 64);
             Text_SetColor(&gUnknown_0200E148, TEXT_COLOR_SYSTEM_WHITE);
             Text_DrawString(&gUnknown_0200E148, GetStringFromIndex(gUnitListScreenFields[page][i].labelString));
         }

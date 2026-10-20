@@ -166,11 +166,19 @@ static void PutOam(u16 **pdst, int x, int y, const u16 *list, int oam2)
 
 void Port_PutOamHi(int x, int y, const u16 *list, int oam2)
 {
+    // Before the first SyncHiOam the put pointer is NULL; the GBA writes to
+    // address 0, which does nothing.
+    if (gOamHiPutIt == NULL)
+        return;
     PutOam((u16 **)&gOamHiPutIt, x, y, list, oam2);
 }
 
 void Port_PutOamLo(int x, int y, const u16 *list, int oam2)
 {
+    // Before the first SyncLoOam the put pointer is NULL; the GBA writes to
+    // address 0, which does nothing.
+    if (gOamLoPutIt == NULL)
+        return;
     PutOam((u16 **)&gOamLoPutIt, x, y, list, oam2);
 }
 

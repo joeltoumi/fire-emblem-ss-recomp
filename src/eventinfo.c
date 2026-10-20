@@ -112,7 +112,11 @@ struct EventInfo * SearchAvailableEvent(struct EventInfo * info)
             }
         }
 
+#ifdef PLATFORM_PC
+        info->listScript += cmdInfo[r6].length;
+#else
         info->listScript += len[r6 << 1];
+#endif
     }
 
 _end:
@@ -317,7 +321,7 @@ void CallEndEvent(void) {
     const struct ChapterEventGroup* evGroup = GetChapterEventDataPointer(gPlaySt.chapterIndex);
 
     if (GetBattleMapKind() != BATTLEMAP_KIND_SKIRMISH) {
-        CallEvent(evGroup->endingSceneEvents, 1);
+        CallEvent(GBA_GET(const void *, evGroup->endingSceneEvents), 1);
     } else {
         CallEvent((u16 *)EventScr_SkirmishCommonEnd, 1);
     }
@@ -376,7 +380,7 @@ void MaybeCallEndEvent(void) {
 //! FE8U = 0x08083308
 const struct TrapData * GetTrapPointer(void)
 {
-    return GetChapterEventDataPointer(gPlaySt.chapterIndex)->traps;
+    return GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->traps);
 }
 
 //! FE8U = 0x08083320
@@ -385,7 +389,7 @@ const struct TrapData * GetHardModeTrapPointer(void)
     const struct ChapterEventGroup* evGroup = GetChapterEventDataPointer(gPlaySt.chapterIndex);
 
     if (gPlaySt.chapterStateBits & PLAY_FLAG_HARD)
-        return evGroup->extraTrapsInHard;
+        return GBA_GET(const void *, evGroup->extraTrapsInHard);
 
     return NULL;
 }
@@ -397,20 +401,20 @@ const void * GetChapterAllyUnitDataPointer(void)
 
     if (GetBattleMapKind() != BATTLEMAP_KIND_SKIRMISH) {
         if (gPlaySt.chapterStateBits & PLAY_FLAG_HARD) {
-            return evGroup->playerUnitsInHard;
+            return GBA_GET(const void *, evGroup->playerUnitsInHard);
         }
 
-        return evGroup->playerUnitsInNormal;
+        return GBA_GET(const void *, evGroup->playerUnitsInNormal);
     } else {
         switch (gGMData.unk_c9[gGMData.unk_cc]) {
             case 0:
-                return evGroup->playerUnitsChoice1InEncounter;
+                return GBA_GET(const void *, evGroup->playerUnitsChoice1InEncounter);
 
             case 1:
-                return evGroup->playerUnitsChoice2InEncounter;
+                return GBA_GET(const void *, evGroup->playerUnitsChoice2InEncounter);
 
             case 2:
-                return evGroup->playerUnitsChoice3InEncounter;
+                return GBA_GET(const void *, evGroup->playerUnitsChoice3InEncounter);
         }
     }
 }
@@ -424,15 +428,15 @@ const struct UnitDefinition * GetChapterEnemyUnitDefinitions(void)
 
     switch (gGMData.unk_c9[gGMData.unk_cc]) {
         case 0:
-            ret = evGroup->enemyUnitsChoice1InEncounter;
+            ret = GBA_GET(const void *, evGroup->enemyUnitsChoice1InEncounter);
             break;
 
         case 1:
-            ret = evGroup->enemyUnitsChoice2InEncounter;
+            ret = GBA_GET(const void *, evGroup->enemyUnitsChoice2InEncounter);
             break;
 
         case 2:
-            ret = evGroup->enemyUnitsChoice3InEncounter;
+            ret = GBA_GET(const void *, evGroup->enemyUnitsChoice3InEncounter);
             break;
     }
 
@@ -444,9 +448,9 @@ void GetChapterSkirmishLeaderClasses(u8 chapterId, u8 * list)
 {
     const struct ChapterEventGroup* evGroup = GetChapterEventDataPointer(chapterId);
 
-    list[0] = ((struct UnitDefinition *)(evGroup->enemyUnitsChoice1InEncounter))->classIndex;
-    list[1] = ((struct UnitDefinition *)(evGroup->enemyUnitsChoice2InEncounter))->classIndex;
-    list[2] = ((struct UnitDefinition *)(evGroup->enemyUnitsChoice3InEncounter))->classIndex;
+    list[0] = ((struct UnitDefinition *)(GBA_GET(const void *, evGroup->enemyUnitsChoice1InEncounter)))->classIndex;
+    list[1] = ((struct UnitDefinition *)(GBA_GET(const void *, evGroup->enemyUnitsChoice2InEncounter)))->classIndex;
+    list[2] = ((struct UnitDefinition *)(GBA_GET(const void *, evGroup->enemyUnitsChoice3InEncounter)))->classIndex;
 }
 
 //! FE8U = 0x08083424
@@ -454,22 +458,22 @@ bool sub_8083424(void)
 {
     const struct ChapterEventGroup* evGroup = GetChapterEventDataPointer(gPlaySt.chapterIndex);
 
-    if (evGroup->playerUnitsChoice1InEncounter == 0)
+    if (GBA_GET(const void *, evGroup->playerUnitsChoice1InEncounter) == 0)
         return false;
 
-    if (evGroup->playerUnitsChoice2InEncounter == 0)
+    if (GBA_GET(const void *, evGroup->playerUnitsChoice2InEncounter) == 0)
         return false;
 
-    if (evGroup->playerUnitsChoice3InEncounter == 0)
+    if (GBA_GET(const void *, evGroup->playerUnitsChoice3InEncounter) == 0)
         return false;
 
-    if (evGroup->enemyUnitsChoice1InEncounter == 0)
+    if (GBA_GET(const void *, evGroup->enemyUnitsChoice1InEncounter) == 0)
         return false;
 
-    if (evGroup->enemyUnitsChoice2InEncounter == 0)
+    if (GBA_GET(const void *, evGroup->enemyUnitsChoice2InEncounter) == 0)
         return false;
 
-    if (evGroup->enemyUnitsChoice3InEncounter == 0)
+    if (GBA_GET(const void *, evGroup->enemyUnitsChoice3InEncounter) == 0)
         return false;
 
     return true;
@@ -820,7 +824,7 @@ struct EvCheck04 {
     u32 script;
     u8 pidA;
     u8 pidB;
-    s8 (*func)(void *);
+    GBA_PTR(s8 (*)(void *)) func;
 };
 
 //! FE8U = 0x080838FC
@@ -830,7 +834,7 @@ int EvCheck04_CHARASM(struct EventInfo* info) {
     int pidA = listScript->pidA;
     int pidB = listScript->pidB;
 
-    if ((listScript->func(info) != 0) && (info->pidA == pidA || (pidA == 0)) && (info->pidB == pidB)) {
+    if ((GBA_FUNC(s8 (*)(void *), listScript->func)(info) != 0) && (info->pidA == pidA || (pidA == 0)) && (info->pidB == pidB)) {
         info->script = listScript->script;
         info->flag = listScript->unk0 >> 16; // EVT_CMD_HI causes regswap
         return 1;
@@ -1272,7 +1276,7 @@ int GetChapterFlagBitsSize(void) {
 void EnqueueTutEvent(uintptr_t ptr, u8 event_enqueue_type)
 {
     u16 i = 0;
-    const u32 * tutorialEvents = GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents;
+    const u32 * tutorialEvents = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents);
 
     for (; tutorialEvents[i] != 0; i++)
     {
@@ -1298,7 +1302,7 @@ bool RunTutorialEvent(u8 type)
     int counter;
     if ((gPlaySt.tutorial_counter != 0) && (gPlaySt.tutorial_exec_type == type)) {
         counter = gPlaySt.tutorial_counter;
-        CallEvent(((u16**)(GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents))[counter - 1], 1);
+        CallEvent(((u16**)(GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents)))[counter - 1], 1);
         gPlaySt.tutorial_counter = 0;
         gPlaySt.tutorial_exec_type = 0;
         return true;
@@ -1340,7 +1344,7 @@ s8 RunPhaseSwitchEvents(void) {
 
     ret = RunTutorialEvent(TUTORIAL_EVT_TYPE_PHASECHANGE);
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->turnBasedEvents;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->turnBasedEvents);
     pInfo = SearchAvailableEvent(&info);
 
     if (pInfo) {
@@ -1365,7 +1369,7 @@ s8 CheckForCharacterEvents(u8 pidA, u8 pidB) {
         return 0;
     }
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->characterBasedEvents;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->characterBasedEvents);
     info.pidA = pidA;
     info.pidB = pidB;
 
@@ -1384,7 +1388,7 @@ void StartCharacterEvent(u8 pidA, u8 pidB) {
         return;
     }
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->characterBasedEvents;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->characterBasedEvents);
     info.pidA = pidA;
     info.pidB = pidB;
 
@@ -1436,7 +1440,7 @@ u16 sub_8083FFC(u16 itemId) {
 int GetAvailableTileEventCommand(s8 x, s8 y) {
     struct EventInfo info;
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->locationBasedEvents;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->locationBasedEvents);
     info.xPos = x;
     info.yPos = y;
 
@@ -1451,7 +1455,7 @@ int GetAvailableTileEventCommand(s8 x, s8 y) {
 void StartAvailableTileEvent(s8 x, s8 y) {
     struct EventInfo info;
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->locationBasedEvents;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->locationBasedEvents);
     info.xPos = x;
     info.yPos = y;
 
@@ -1609,7 +1613,7 @@ s8 CheckForWaitEvents(void) {
 
         ret = CheckTutorialEvent(TUTORIAL_EVT_TYPE_POSTACTION);
 
-        info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->miscBasedEvents;
+        info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->miscBasedEvents);
         info.xPos = gActiveUnit->xPos;
         info.yPos = gActiveUnit->yPos;
 
@@ -1647,7 +1651,7 @@ void RunWaitEvents(void) {
 
     RunTutorialEvent(TUTORIAL_EVT_TYPE_POSTACTION);
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->miscBasedEvents;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->miscBasedEvents);
     info.xPos = gActiveUnit->xPos;
     info.yPos = gActiveUnit->yPos;
 
@@ -1676,7 +1680,7 @@ s8 TryCallSelectEvents(void) {
 
     ret = RunTutorialEvent(TUTORIAL_EVT_TYPE_ONSELECT);
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->specialEventsWhenUnitSelected;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->specialEventsWhenUnitSelected);
 
     ClearActiveEventRegistry();
 
@@ -1699,7 +1703,7 @@ s8 StartDestSelectedEvent(void) {
 
     ret = RunTutorialEvent(TUTORIAL_EVT_TYPE_DESTSELECTED);
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->specialEventsWhenDestSelected;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->specialEventsWhenDestSelected);
 
     if (SearchAvailableEvent(&info)) {
         ClearActiveEventRegistry();
@@ -1721,7 +1725,7 @@ s8 StartAfterUnitMovedEvent(void) {
 
     ret = RunTutorialEvent(TUTORIAL_EVT_TYPE_AFTERMOVE);
 
-    info.listScript = GetChapterEventDataPointer(gPlaySt.chapterIndex)->specialEventsAfterUnitMoved;
+    info.listScript = GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->specialEventsAfterUnitMoved);
 
     if (SearchAvailableEvent(&info)) {
         ClearActiveEventRegistry();

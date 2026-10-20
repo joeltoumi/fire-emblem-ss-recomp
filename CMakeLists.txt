@@ -60,7 +60,29 @@ add_custom_command(
             "${CMAKE_SOURCE_DIR}/tools/port/gen_abs_symbols.py"
     VERBATIM)
 
-add_library(fe8_game STATIC ${FE8_GAME_SOURCES} ${FE8_PORT_GAME_SOURCES} "${FE8_ABS_SYMBOLS}")
+# GBA address -> native function, for the function pointers in ROM data.
+set(FE8_GBA_FUNCS "${CMAKE_BINARY_DIR}/gen/gba_funcs.c")
+add_custom_command(
+    OUTPUT "${FE8_GBA_FUNCS}"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/gen"
+    COMMAND ${Python3_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/port/gen_gba_funcs.py"
+            "${FE8_GBA_FUNCS}" "${CMAKE_SOURCE_DIR}/port/data/rom_funcs_${FE8_REGION}.txt"
+    DEPENDS "${CMAKE_SOURCE_DIR}/port/data/rom_funcs_${FE8_REGION}.txt"
+            "${CMAKE_SOURCE_DIR}/tools/port/gen_gba_funcs.py"
+    VERBATIM)
+
+# Event data the port reads from the ROM (see tools/port/dump_rom_symbols.py):
+# sources that only hold it are left out, and in the ones that also hold code
+# its definitions are only weak placeholders (PORT_ROM_EVENT_SCRIPTS).
+list(FILTER FE8_GAME_SOURCES EXCLUDE REGEX
+    "/src/(events_info|events_wm|events_trapdata|events_shoplist|events_udefs|data_battlequotes)\\.c$")
+foreach(src events_script events_script_utils eventscr bmtrade sio_battlemap sio_event)
+    set_source_files_properties("${CMAKE_SOURCE_DIR}/src/${src}.c"
+        PROPERTIES COMPILE_DEFINITIONS PORT_ROM_EVENT_SCRIPTS)
+endforeach()
+
+add_library(fe8_game STATIC ${FE8_GAME_SOURCES} ${FE8_PORT_GAME_SOURCES} "${FE8_ABS_SYMBOLS}"
+    "${FE8_GBA_FUNCS}")
 target_include_directories(fe8_game PRIVATE
     "${CMAKE_SOURCE_DIR}/include" "${CMAKE_SOURCE_DIR}/port/generated" "${CMAKE_SOURCE_DIR}")
 target_compile_definitions(fe8_game PRIVATE PLATFORM_PC NONMATCHING=1 REGION_${FE8_REGION_UPPER})
@@ -137,6 +159,60 @@ if(FE8_HOST STREQUAL "headless")
     target_compile_options(fe8_headless PRIVATE -std=gnu11 -Wall -Wextra -fno-pic -fno-pie)
     target_link_libraries(fe8_headless PRIVATE fe8_port fe8_game fe8_port)
     fe8_low_image(fe8_headless)
+elseif(FE8_HOST STREQUAL "sdl")
+    if(NOT ANDROID)
+        find_package(SDL3 CONFIG QUIET)
+    endif()
+    if(NOT TARGET SDL3::SDL3)
+        # No system SDL3 (always the case on Android): build it from source.
+        include(FetchContent)
+        set(SDL_TEST_LIBRARY OFF CACHE BOOL "" FORCE)
+        set(SDL_TESTS OFF CACHE BOOL "" FORCE)
+        set(SDL_EXAMPLES OFF CACHE BOOL "" FORCE)
+        FetchContent_Declare(SDL3
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+            GIT_TAG ${FE8_SDL3_TAG}
+            GIT_SHALLOW TRUE)
+        FetchContent_MakeAvailable(SDL3)
+    endif()
+    # Options menu: Dear ImGui with its SDL3 + SDL_Renderer backends.
+    enable_language(CXX)
+    include(FetchContent)
+    FetchContent_Declare(imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG ${FE8_IMGUI_TAG}
+        GIT_SHALLOW TRUE)
+    FetchContent_MakeAvailable(imgui)
+    add_library(fe8_imgui STATIC
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp)
+    target_include_directories(fe8_imgui PUBLIC ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends)
+    target_compile_definitions(fe8_imgui PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS IMGUI_DISABLE_DEMO_WINDOWS
+                                               IMGUI_DISABLE_DEBUG_TOOLS)
+    target_link_libraries(fe8_imgui PUBLIC SDL3::SDL3)
+
+    set(FE8_SDL_SOURCES port/src/host_sdl.c port/src/config.c port/src/menu.cpp)
+    if(ANDROID)
+        # SDLActivity loads libmain.so and calls its SDL_main, which loads the
+        # game (libgame.so) at a reserved address below 4 GiB and runs it.
+        add_library(game SHARED ${FE8_SDL_SOURCES})
+        set(FE8_EXE game)
+        add_library(main SHARED port/src/android_launcher.c)
+        target_link_libraries(main PRIVATE dl log)
+        target_compile_definitions(main PRIVATE FE8_IMAGE_BASE=${FE8_IMAGE_BASE})
+        add_dependencies(main game)
+    else()
+        add_executable(fe8 ${FE8_SDL_SOURCES})
+        set(FE8_EXE fe8)
+        fe8_low_image(fe8)
+    endif()
+    target_compile_options(${FE8_EXE} PRIVATE $<$<COMPILE_LANGUAGE:C>:-std=gnu11> -Wall -Wextra)
+    target_compile_features(${FE8_EXE} PRIVATE cxx_std_17)
+    target_link_libraries(${FE8_EXE} PRIVATE fe8_port fe8_game fe8_port fe8_imgui SDL3::SDL3)
 else()
-    message(FATAL_ERROR "FE8_HOST must be headless (sdl: not yet)")
+    message(FATAL_ERROR "FE8_HOST must be sdl or headless")
 endif()

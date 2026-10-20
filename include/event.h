@@ -4,8 +4,14 @@
 #include "global.h"
 #include "bmunit.h"
 
+#if defined(PLATFORM_PC) && !defined(PORT_ROM_EVENT_SCRIPTS)
+// Event scripts are read from the ROM: 32-bit words.
+typedef u32 EventListScr;
+typedef u32 EventScr;
+#else
 typedef uintptr_t EventListScr;
 typedef uintptr_t EventScr;
+#endif
 
 struct EventEngineProc
 {

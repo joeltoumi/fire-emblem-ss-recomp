@@ -86,7 +86,7 @@ struct BattleTalkExtEnt {
     /* 04 */ u16 chapter;
     /* 06 */ u16 flag;
     /* 08 */ u16 msg;
-    /* 0C */ EventScr * event;
+    /* 0C */ GBA_PTR(EventScr *) event;
 };
 
 struct DefeatTalkEnt {
@@ -95,7 +95,7 @@ struct DefeatTalkEnt {
     /* 03 */ u8 chapter;
     /* 04 */ u16 flag;
     /* 06 */ u16 msg;
-    /* 08 */ EventScr * event;
+    /* 08 */ GBA_PTR(EventScr *) event;
 };
 
 struct ForceDeploymentEnt {

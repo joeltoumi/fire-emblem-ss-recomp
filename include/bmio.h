@@ -34,11 +34,11 @@ enum {
 struct TileGfxAnim {
     /* 00 */ u16         time;
     /* 02 */ u16         size;
-    /* 04 */ const void* data;
+    /* 04 */ GBA_PTR(const void*) data;
 };
 
 struct TilePalAnim {
-    /* 00 */ const void* data;
+    /* 00 */ GBA_PTR(const void*) data;
     /* 04 */ u8          time;
     /* 05 */ u8          colorCount;
     /* 06 */ u8          colorStart;

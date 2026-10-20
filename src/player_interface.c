@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "fontgrp.h"
 #include "bmunit.h"
@@ -768,7 +771,12 @@ void PutUnitMapUiStatus(u16 * buffer, struct Unit * unit)
         break;
     }
 
+#ifdef REGION_EU
+    // EU 0x0808c84c: in the player's language.
+    CpuFastCopy((const u8 *)EU_ROM_PTR(gEuGfxTable_StatusText, GetLang()) + offset, BG_CHR_ADDR(0x16F), 5 * CHR_SIZE);
+#else
     CpuFastCopy(gGfx_StatusText + offset, BG_CHR_ADDR(0x16F), 5 * CHR_SIZE);
+#endif
 
     buffer[0] = tileIdx++;
     buffer[1] = tileIdx++;
@@ -1412,7 +1420,12 @@ void InitPlayerPhaseInterface(void)
     SetBlendBackdropA(0);
     SetBlendTargetB(0, 0, 1, 1, 1);
 
+#ifdef REGION_EU
+    // EU 0x0808d47e: in the player's language.
+    Decompress(EU_ROM_PTR(gEuGfxTable_PlayerInterfaceFontTiles, GetLang()), BG_CHR_ADDR(0x100));
+#else
     Decompress(gGfx_PlayerInterfaceFontTiles, BG_CHR_ADDR(0x100));
+#endif
     Decompress(gGfx_PlayerInterfaceNumbers, OBJ_CHR_ADDR(0x2E0));
 
     CpuFastCopy(BG_CHR_ADDR(0x175), OBJ_CHR_ADDR(0x2EA), CHR_SIZE);
@@ -1554,7 +1567,12 @@ void GoalDisplay_Init(struct PlayerInterfaceProc * proc)
     proc->windowQuadrant = -1;
 
     InitText(&proc->texts[0], 8);
+#ifdef REGION_EU
+    // EU 0x0808d6f2: one tile wider, for the longer translations.
+    InitText(&proc->texts[1], 9);
+#else
     InitText(&proc->texts[1], 8);
+#endif
 
     StartGreenText(proc);
 
@@ -1592,8 +1610,14 @@ void GoalDisplay_Init(struct PlayerInterfaceProc * proc)
         return;
 
     case GOAL_TYPE_DEFEAT_ALL:
+#ifdef REGION_EU
+        // EU 0x0808d79c: French "Left" starts further left.
+        Text_InsertDrawString(
+            &proc->texts[1], GetLang() == EU_LANG_FRENCH ? 12 : 16, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_1C1)); // "Left"
+#else
         Text_InsertDrawString(
             &proc->texts[1], 16, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_1C1)); // "Left"
+#endif
 
         if (gPlaySt.chapterVisionRange != 0)
         {
@@ -1631,6 +1655,25 @@ void GoalDisplay_Init(struct PlayerInterfaceProc * proc)
             }
         }
 
+#ifdef REGION_EU
+        // EU 0x0808d868: French and Spanish put "Turn" first: "Turn 3/10".
+        if (GetLang() == EU_LANG_FRENCH || GetLang() == EU_LANG_SPANISH)
+        {
+            text = &proc->texts[1];
+
+            Text_InsertDrawString(text, 6, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_1C2)); // "Turn"
+            Text_InsertDrawNumberOrBlank(text, 39, TEXT_COLOR_SYSTEM_BLUE, gPlaySt.chapterTurnNumber);
+            Text_InsertDrawString(text, 47, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_539)); // "/[.]"
+
+            if (GetBattleMapKind() != BATTLEMAP_KIND_SKIRMISH)
+                lastTurnNumber = GetROMChapterStruct(gPlaySt.chapterIndex)->goalWindowEndTurnNumber - 1;
+            else
+                lastTurnNumber = -1;
+
+            Text_InsertDrawNumberOrBlank(text, 63, TEXT_COLOR_SYSTEM_BLUE, lastTurnNumber);
+            break;
+        }
+#endif
         Text_InsertDrawNumberOrBlank(&proc->texts[1], 10, TEXT_COLOR_SYSTEM_BLUE, gPlaySt.chapterTurnNumber);
         Text_InsertDrawString(
             &proc->texts[1], 18, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(MSG_539)); // "/[.]"
@@ -1891,7 +1934,12 @@ bool IsAnyPlayerSideWindowRetracting(void)
 //! FE8U = 0x0808D870
 void MenuButtonDisp_Init(struct PlayerInterfaceProc * proc)
 {
+#ifdef REGION_EU
+    // EU 0x0808dd50: in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_PrepHelpButtonSprites, GetLang()), OBJ_CHR_ADDR(0x280));
+#else
     Decompress(Img_PrepHelpButtonSprites, OBJ_CHR_ADDR(0x280));
+#endif
 
     proc->xHp = 136;
     proc->yHp = 140;

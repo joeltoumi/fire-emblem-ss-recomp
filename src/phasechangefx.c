@@ -14,6 +14,9 @@
 #include "phasechangefx.h"
 #include "constants/video-global.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 /*
  * The nice phase changing animation thing and related procs/functions
@@ -411,23 +414,36 @@ void PhaseIntro_InitGraphics(ProcPtr proc)
     BG_SetPosition(1, 0, 0);
     BG_SetPosition(2, 0, 0);
 
+    // EU 0x0801f588: the phase names are in the player's language.
     switch (gPlaySt.faction)
     {
 
     case FACTION_BLUE:
+#ifdef REGION_EU
+        Decompress(EU_ROM_PTR(gEuImgTable_PhaseChangePlayer, GetLang()), BG_CHR_ADDR(BGCHR_PHASE_CHANGE_NAME));
+#else
         Decompress(Img_PhaseChangePlayer, BG_CHR_ADDR(BGCHR_PHASE_CHANGE_NAME));
+#endif
         ApplyPalette(Pal_PhaseChangePlayer, BGPAL_PHASE_CHANGE);
         ApplyPalette(Pal_PhaseChangePlayer, 18);
         break;
 
     case FACTION_RED:
+#ifdef REGION_EU
+        Decompress(EU_ROM_PTR(gEuImgTable_PhaseChangeEnemy, GetLang()), BG_CHR_ADDR(BGCHR_PHASE_CHANGE_NAME));
+#else
         Decompress(Img_PhaseChangeEnemy, BG_CHR_ADDR(BGCHR_PHASE_CHANGE_NAME));
+#endif
         ApplyPalette(Pal_PhaseChangeEnemy, BGPAL_PHASE_CHANGE);
         ApplyPalette(Pal_PhaseChangeEnemy, 18);
         break;
 
     case FACTION_GREEN:
+#ifdef REGION_EU
+        Decompress(EU_ROM_PTR(gEuImgTable_PhaseChangeOther, GetLang()), BG_CHR_ADDR(BGCHR_PHASE_CHANGE_NAME));
+#else
         Decompress(Img_PhaseChangeOther, BG_CHR_ADDR(BGCHR_PHASE_CHANGE_NAME));
+#endif
         ApplyPalette(Pal_PhaseChangeOther, BGPAL_PHASE_CHANGE);
         ApplyPalette(Pal_PhaseChangeOther, 18);
         break;

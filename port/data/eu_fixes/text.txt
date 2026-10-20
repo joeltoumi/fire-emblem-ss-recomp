@@ -1,0 +1,48 @@
+# Addresses in the EU ROM that tools/port/map_rom.py can't find on its own,
+# read from the EU code by hand (US address -> EU address, English version).
+# name                        EU        where it was read
+gGfx_MiscUiGraphics           087afc5c  # entry 0 of the per-language table in LoadObjUIGfx (EU 0x08015650)
+Img_PhaseChangeUnk            087b15e4  # literal pool of PhaseIntro_InitGraphics (EU 0x0801f588)
+Img_PhaseChangePlayer         087b19bc  # entry 0 of the table at 087ac260, PhaseIntro_InitGraphics
+Img_PhaseChangeEnemy          087b3410  # entry 0 of the table at 087ac274, PhaseIntro_InitGraphics
+Img_PhaseChangeOther          087b4f34  # entry 0 of the table at 087ac288, PhaseIntro_InitGraphics
+Pal_PhaseChangePlayer         087b69ac  # literal pool of PhaseIntro_InitGraphics
+Pal_PhaseChangeEnemy          087b69cc  # literal pool of PhaseIntro_InitGraphics
+Pal_PhaseChangeOther          087b69ec  # literal pool of PhaseIntro_InitGraphics
+Img_GameOverText              08a9c894  # entry 0 of the table at 087ac674, GameOverScreen_Init (EU 0x08021600)
+Pal_GameOverText1             08a9d930  # literal pool of GameOverScreen_Init
+Pal_GameOverText2             08a9d910  # literal pool of GameOverScreen_Init
+Tsa_GameOverFx                08a9d950  # entry 0 of the layout table at 080d8708, GameOverScreen_Init
+Img_PrepHelpButtonSprites     08ade3e8  # entry 0 of the table at 087aeee4, PrepHelpPrompt_Init (EU 0x08033904)
+gUnknown_089A234C             090a0b90  # entry 0 of the table at 087afaf0, SetupDungeonRecordUi (EU 0x08038600)
+gUnknown_089A27B4             090a2004  # entry 0 of the table at 087afb04, SetupDungeonRecordUi
+gUnknown_089A28E0             090a25c8  # literal pool of SetupDungeonRecordUi
+Img_TacticianSelObj           087c622c  # entry 0 of the table at 087bf708, SioTeamList_SetupGfx (EU 0x08043b48)
+gUnknown_085AC604             087c8b74  # entry 0 of the table at 087bf71c, SioTeamList_SetupGfx
+gUnknown_085ADF40             087ce720  # literal pool of SioTeamList_SetupGfx
+gUnknown_08A1BD00             08ae5154  # literal pool of SioTeamList_SetupGfx
+Tsa_085AE190                  087ce970  # literal pool of Tactician_InitScreen (EU 0x080449d0)
+Pal_085ADE68                  087ce648  # literal pool of Tactician_InitScreen (EU 0x080449d0)
+Img_LinkArenaPlayerBanners    087cdb4c  # entry 0 of the table at 087bf9a0, SioPostBattle_Init (EU 0x080457e4)
+Img_LinkArenaPlacementRanks   087cb1b0  # entry 0 of the table at 087bf9b4, SioPostBattle_Init
+Pal_LinkArenaPlacementRanks   087ce5a8  # literal pool of SioPostBattle_Init
+Img_LinkArenaActiveBannerFx   087cae04  # literal pool of SioPostBattle_Init
+Img_LinkArenaPostBattleBg     087d19e4  # literal pool of SioPostBattle_Init
+Pal_LinkArenaPostBattleBg     087d3090  # literal pool of SioPostBattle_Init
+Tsa_LinkArenaPostBattleBg     087d3110  # literal pool of SioPostBattle_Init
+Img_LinkArenaRankIcons        087c9eb8  # entry 0 of the table at 087bfb34, sub_8046838 (EU 0x08046a24)
+gUnknown_085AE778             087cef58  # literal pool of sub_8046838 (EU 0x08046a24)
+Tsa_SioResultRankings         087cec44  # literal pool of SioResult_Init (EU 0x08047230)
+gUnknown_085ACEFC             087cafe0  # literal pool of SioResult_NewHS_Init (EU 0x0804755c)
+Img_LinkArenaMenu             087c2db4  # entry 0 of the table at 087c0108, SioMenu_LoadGraphics (EU 0x08047da0)
+Pal_LinkArenaMenu             087ce3c8  # literal pool of SioMenu_LoadGraphics
+gUnknown_085AD80C             087cd220  # entry 0 of the table at 087c0340, LAPointsBox_LoadBoxes (EU 0x08048c04)
+gUnknown_085AAE0C             087c1128  # entry 0 of the table at 087c0c78, LATitleBanner_Init (EU 0x0804c66c)
+gUnknown_085B0DE8             087d365c  # literal pool of LATitleBanner_Init
+gUnknown_085B0F2C             087d37a0  # literal pool of LATitleBanner_Init
+gUnknown_085AE7EC             087cefd8  # entry 0 of the table at 087c0e70, LAPhaseIntro_Init (EU 0x0804d554)
+gUnknown_085AF0F0             087d1964  # palette table at 080daf64, LAPhaseIntro_Init
+gUnknown_085AF130             087d19a4  # palette table at 080daf64, LAPhaseIntro_Init
+gUnknown_085AF110             087d1984  # palette table at 080daf64, LAPhaseIntro_Init
+gUnknown_085AF150             087d19c4  # palette table at 080daf64, LAPhaseIntro_Init
+Pal_085A06B8                  087b6a0c  # palette table at 080daf74, LAPhaseIntro_Init

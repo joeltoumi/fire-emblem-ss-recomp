@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "hardware.h"
 #include "fontgrp.h"
@@ -675,7 +678,12 @@ void SoundRoomUi_Init(struct SoundRoomProc * proc)
 
     sub_80AF4D0(TILEMAP_LOCATED(gBG0TilemapBuffer, 15, 6), proc);
 
+#ifdef REGION_EU
+    // EU 0x080affc4: the sprites in the player's language.
+    Decompress(EU_ROM_PTR(gEuImgTable_PlayStatusSprites, GetLang()), (void *)0x06016000);
+#else
     Decompress(Img_PlayStatusSprites, (void *)0x06016000);
+#endif
     ApplyPalette(Pal_PlayStatusSprites, 0x1C);
 
     BG_SetPosition(BG_0, 0, 0);
@@ -687,7 +695,12 @@ void SoundRoomUi_Init(struct SoundRoomProc * proc)
     SetWin0Box(4, 66, 240, 144);
     SetWOutLayers(1, 1, 0, 1, 1);
 
+#ifdef REGION_EU
+    // EU 0x080b0058
+    Decompress(EU_ROM_PTR(gEuImgTable_SoundRoomUiElements, GetLang()), (void *)0x06012000);
+#else
     Decompress(Img_SoundRoomUiElements, (void *)0x06012000);
+#endif
     ApplyPalettes(Pal_SoundRoomUiElements, 0x13, 3);
 
     DrawSoundRoomSprites(proc);

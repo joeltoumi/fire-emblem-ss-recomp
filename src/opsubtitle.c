@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 #include "hardware.h"
 #include "m4a.h"
@@ -103,6 +106,18 @@ const struct OpSubtitleEnt gOpSubtitleGfxLut[] = {
         250,
     },
 };
+
+#ifdef REGION_EU
+// EU 0x09130e58: one gOpSubtitleGfxLut per language (gfx, tsa, timer words).
+#define OP_SUBTITLE_ENT(i) ((const u32 *)EU_ROM_PTR(gEuOpSubtitleGfxLutTable, GetLang()) + (i) * 3)
+#define OP_SUBTITLE_GFX(i) EU_ROM_PTR(OP_SUBTITLE_ENT(i), 0)
+#define OP_SUBTITLE_TSA(i) EU_ROM_PTR(OP_SUBTITLE_ENT(i), 1)
+#define OP_SUBTITLE_TIMER(i) (OP_SUBTITLE_ENT(i)[2])
+#else
+#define OP_SUBTITLE_GFX(i) gOpSubtitleGfxLut[i].gfx
+#define OP_SUBTITLE_TSA(i) gOpSubtitleGfxLut[i].tsa
+#define OP_SUBTITLE_TIMER(i) gOpSubtitleGfxLut[i].timer
+#endif
 
 //! FE8U = 0x080C488C
 void sub_80C488C(int bg) {
@@ -317,9 +332,9 @@ void OpSubtitle_AwaitTimer2a(struct OpSubtitleProc* proc) {
 //! FE8U = 0x080C4C60
 void sub_80C4C60(struct OpSubtitleProc* proc) {
 
-    Decompress(gOpSubtitleGfxLut[proc->index].gfx, (void*)0x06001000);
+    Decompress(OP_SUBTITLE_GFX(proc->index), (void*)0x06001000);
 
-    Decompress(gOpSubtitleGfxLut[proc->index].tsa, gGenericBuffer);
+    Decompress(OP_SUBTITLE_TSA(proc->index), gGenericBuffer);
 
     CallARM_FillTileRect(gBG0TilemapBuffer, gGenericBuffer, 0x3080);
 
@@ -335,9 +350,9 @@ void sub_80C4C60(struct OpSubtitleProc* proc) {
 //! FE8U = 0x080C4CD0
 void sub_80C4CD0(struct OpSubtitleProc* proc) {
 
-    Decompress(gOpSubtitleGfxLut[proc->index].gfx, (void*)0x06001000);
+    Decompress(OP_SUBTITLE_GFX(proc->index), (void*)0x06001000);
 
-    Decompress(gOpSubtitleGfxLut[proc->index].tsa, gGenericBuffer);
+    Decompress(OP_SUBTITLE_TSA(proc->index), gGenericBuffer);
 
     CallARM_FillTileRect(gBG0TilemapBuffer, gGenericBuffer, 0x3080);
     CallARM_FillTileRect(gBG1TilemapBuffer, gGenericBuffer, 0xE080);
@@ -354,9 +369,9 @@ void sub_80C4CD0(struct OpSubtitleProc* proc) {
 //! FE8U = 0x080C4D54
 void sub_80C4D54(int index) {
 
-    Decompress(gOpSubtitleGfxLut[index].gfx, (void*)0x06005000);
+    Decompress(OP_SUBTITLE_GFX(index), (void*)0x06005000);
 
-    Decompress(gOpSubtitleGfxLut[index].tsa, gGenericBuffer);
+    Decompress(OP_SUBTITLE_TSA(index), gGenericBuffer);
 
     CallARM_FillTileRect(gBG0TilemapBuffer, gGenericBuffer, 0x3280);
 
@@ -384,7 +399,7 @@ void sub_80C4DA0(struct OpSubtitleProc* proc) {
 
         Proc_Break(proc);
 
-        proc->timer_2a = gOpSubtitleGfxLut[proc->index].timer;
+        proc->timer_2a = OP_SUBTITLE_TIMER(proc->index);
         proc->timer_2c = 0;
     }
 
@@ -491,10 +506,10 @@ void sub_80C4F60(struct OpSubtitleProc* proc) {
 
         if (proc->index < 5) {
             Proc_Break(proc);
-            proc->timer_2a = gOpSubtitleGfxLut[proc->index].timer;
+            proc->timer_2a = OP_SUBTITLE_TIMER(proc->index);
             proc->timer_2c = 0;
         } else {
-            proc->timer_2a = gOpSubtitleGfxLut[proc->index].timer;
+            proc->timer_2a = OP_SUBTITLE_TIMER(proc->index);
             proc->index++;
 
             Proc_Goto(proc, 4);
@@ -586,7 +601,7 @@ void sub_80C5104(struct OpSubtitleProc* proc) {
 
         Proc_Break(proc);
 
-        proc->timer_2a = gOpSubtitleGfxLut[proc->index].timer;
+        proc->timer_2a = OP_SUBTITLE_TIMER(proc->index);
         proc->timer_2c = 0;
     }
 

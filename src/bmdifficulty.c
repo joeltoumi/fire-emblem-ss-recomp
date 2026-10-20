@@ -23,6 +23,9 @@
 #include "bmdifficulty.h"
 #include "constants/event-flags.h"
 #include "constants/songs.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 
 EWRAM_OVERLAY(0) u16 gUnknown_0200310C[0x3D0] = {};
 EWRAM_OVERLAY(0) struct Font gUnknown_020038AC = {};
@@ -544,11 +547,19 @@ void SetupDungeonRecordUi(ProcPtr proc) {
 
     CallARM_FillTileRect(gBG2TilemapBuffer, gGenericBuffer, 0x7260);
 
-    // Load and display "Combat Record" graphic
+    // Load and display "Combat Record" graphic (EU 0x08038600: in the player's language)
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuImgTable_DungeonRecordTitle, GetLang()), (void *)(BG_VRAM + 0x4000) + GetBackgroundTileDataOffset(1));
+#else
     Decompress(gUnknown_089A234C, (void *)(BG_VRAM + 0x4000) + GetBackgroundTileDataOffset(1));
+#endif
 
+#ifdef REGION_EU
+    Decompress(EU_ROM_PTR(gEuTsaTable_DungeonRecordTitle, GetLang()), gBG1TilemapBuffer);
+#else
     Decompress(gUnknown_089A27B4, gBG1TilemapBuffer);
+#endif
 
     ApplyPalettes(gUnknown_089A28E0, 2, 2);
 
@@ -576,6 +587,22 @@ struct DungeonUiTextLutEntry {
 };
 
 void DrawDungeonRecordUiLabels(struct Text* th) {
+#ifdef REGION_EU
+    // EU 0x0803881c: the labels move per language. Each 24-byte entry of the
+    // ROM table is a message id, then x and y (s8) for each language.
+    const u8* entry;
+
+    for (entry = (const u8*)gEuDungeonRecordLabels; *(const u16*)entry != 0; entry += 24) {
+        char* str = GetStringFromIndex(*(const u16*)entry);
+        s8 x = entry[4 + GetLang() * 4];
+        s8 y = entry[5 + GetLang() * 4];
+
+        InitText(th, strlen(str));
+        Text_SetParams(th, 0, 0);
+        Text_DrawString(th, str);
+        PutText(th, &gBG0TilemapBuffer[TILEMAP_INDEX(x, y)]);
+    }
+#else
     char* str;
     struct DungeonUiTextLutEntry* iter;
 
@@ -602,6 +629,7 @@ void DrawDungeonRecordUiLabels(struct Text* th) {
 
         iter++;
     }
+#endif
 
     return;
 }

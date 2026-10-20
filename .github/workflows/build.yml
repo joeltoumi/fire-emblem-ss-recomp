@@ -1,63 +1,68 @@
-name: Build CI
+name: build
 
 on:
   push:
-    branches: [ "master" ]
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-
+  linux:
+    name: Linux (headless smoke test, ${{ matrix.region }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        region: [us, eu]
     steps:
-    - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y build-essential binutils-arm-none-eabi libpng-dev && python -m pip install ttp numpy pillow
+      - uses: actions/checkout@v5
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y ninja-build lld
+      - name: Configure
+        # clang, like the Android NDK: it rejects implicit declarations, GCC does not.
+        run: cmake -B build -G Ninja -DFE8_HOST=headless -DFE8_REGION=${{ matrix.region }} -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_C_COMPILER=clang
+      - name: Build
+        run: cmake --build build
+      - name: Smoke test (no game data)
+        # The game can't run without the player's ROM, so CI only checks that
+        # the engine starts and refuses a file that isn't Fire Emblem.
+        run: |
+          head -c 16777216 /dev/zero > zero.gba
+          if ./build/fe8_headless --rom zero.gba --frames 10 --dump-every 0 > out.txt 2>&1; then
+            cat out.txt; echo "a zero-filled ROM was accepted"; exit 1
+          fi
+          cat out.txt
+          grep -q "ROM rejected" out.txt
 
-    - uses: actions/checkout@v4
-
-    - name: Install agbcc
-      run: git clone https://github.com/pret/agbcc.git && cd agbcc/ && ./build.sh && ./install.sh .. && cd ..
-
-    - name: Build tools
-      run: ./build_tools.sh
-
-    - name: Mock base ROM
-      run: head -c 16M /dev/urandom > baserom.gba
-
-    - name: Build target ROM
-      run: make fireemblem8.gba
-
-    - name: Calculate decomp progress
-      run: scripts/calcrom.sh | tee _site/progress.txt
-
-    - name: Upload decomp progress
-      continue-on-error: true
-      run: python scripts/upload-progress.py -b "https://progress.deco.mp" -a ${{secrets.PROGRESS_API_KEY}} -p fireemblem8 -v us -t scripts/progress-template.txt _site/progress.txt
-
-    - name: Extract symbol table
-      run: arm-none-eabi-nm -l -n fireemblem8.elf | grep -v '^00' | uniq > _site/symbols.txt
-
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+  android:
+    name: Android APK
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v5
+      - name: Build APK
+        working-directory: android
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon assembleRelease 2>&1 | tee gradle.log
+      - name: Report build errors
+        if: failure()
+        working-directory: android
+        # Surface the end of the log as an annotation (readable from the API).
+        run: |
+          {
+            grep -nE "error|Error|FAILED|What went wrong" gradle.log | tail -40
+            echo "----- tail -----"
+            tail -60 gradle.log
+          } > summary.txt || true
+          msg=$(sed -e 's/%/%25/g' summary.txt | awk '{printf "%s%%0A", $0}')
+          echo "::error title=Android build log::${msg}"
+      - uses: actions/upload-artifact@v5
+        with:
+          name: fe8-android-apk
+          path: android/app/build/outputs/apk/*/release/*.apk
+          if-no-files-found: error

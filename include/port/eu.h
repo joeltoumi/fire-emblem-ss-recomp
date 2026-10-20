@@ -4,7 +4,7 @@
 /* The European version (REGION_EU).
  *
  * Its code differs from the US one where it handles the five languages:
- * GetLang() returns the language (0 English, 1 French, 2 German, 3 Spanish,
+ * GetLang() returns the language (0 English, 1 German, 2 French, 3 Spanish,
  * 4 Italian) and per-language data is picked from tables in the EU ROM.
  * Those tables have no US counterpart, so they are declared here and placed
  * by port/data/eu_only/*.txt. The `REGION_EU` branches in src/ follow the EU
@@ -25,8 +25,8 @@ int EuLoadLanguage(void);
 
 enum {
     EU_LANG_ENGLISH,
-    EU_LANG_FRENCH,
     EU_LANG_GERMAN,
+    EU_LANG_FRENCH,
     EU_LANG_SPANISH,
     EU_LANG_ITALIAN,
     EU_LANG_COUNT,

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef REGION_EU
+#include "port/eu.h"
+#endif
 #include "functions.h"
 #include "variables.h"
 #include "proc.h"
@@ -35,10 +38,18 @@ void ProcMAExpBar_OnDraw(struct MAExpBarProc* proc)
     // TODO: ApplyTileImages macros?
     // TODO: BM_BGCHR_...?
 
+#ifdef REGION_EU
+    // EU 0x0807c220: the "EXP" label in the player's language.
+    RegisterDataMove(
+        EU_ROM_PTR(gEuImgTable_EkrExpBar, GetLang()),
+        (void*)(VRAM) + GetBackgroundTileDataOffset(0) + 512 * 0x20,
+        13 * 0x20);
+#else
     RegisterDataMove(
         Img_EkrExpBar,
         (void*)(VRAM) + GetBackgroundTileDataOffset(0) + 512 * 0x20,
         13 * 0x20);
+#endif
 
     RegisterDataMove(
         Img_EkrExpBarChange,
