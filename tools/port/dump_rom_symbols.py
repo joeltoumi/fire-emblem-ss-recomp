@@ -21,7 +21,8 @@ NM = "arm-none-eabi-nm"
 
 # Sources that only hold game data the port reads from the ROM (see main).
 EVENT_DATA_OBJS = ["events_info", "events_wm", "events_trapdata", "events_shoplist", "events_udefs",
-                   "data_battlequotes", "data_characters", "data_classes", "data_items", "data_event_trigger"]
+                   "data_battlequotes", "data_characters", "data_classes", "data_items", "data_event_trigger",
+                   "data_terrains", "data_supports", "data_itembonus", "data_itemuse", "data_banimconf"]
 # Sources whose event scripts (Event*) are read from the ROM; their code and
 # other data stay native. The port compiles these with PORT_ROM_EVENT_SCRIPTS.
 # Other data that the decomp generates from graphics into a C source.

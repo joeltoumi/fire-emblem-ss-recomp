@@ -75,7 +75,7 @@ add_custom_command(
 # sources that only hold it are left out, and in the ones that also hold code
 # its definitions are only weak placeholders (PORT_ROM_EVENT_SCRIPTS).
 list(FILTER FE8_GAME_SOURCES EXCLUDE REGEX
-    "/src/(events_info|events_wm|events_trapdata|events_shoplist|events_udefs|data_battlequotes|data_characters|data_classes|data_items|data_event_trigger)\\.c$")
+    "/src/(events_info|events_wm|events_trapdata|events_shoplist|events_udefs|data_battlequotes|data_characters|data_classes|data_items|data_event_trigger|data_terrains|data_supports|data_itembonus|data_itemuse|data_banimconf)\\.c$")
 foreach(src events_script events_script_utils eventscr bmtrade sio_battlemap sio_event)
     set_source_files_properties("${CMAKE_SOURCE_DIR}/src/${src}.c"
         PROPERTIES COMPILE_DEFINITIONS PORT_ROM_EVENT_SCRIPTS)

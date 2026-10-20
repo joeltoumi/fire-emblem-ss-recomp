@@ -487,7 +487,7 @@ functions: 8027/8515 matched
   func _sprintf_r 080d1cc0 hits=0 near=080d2944 size=3c
   func sprintf 080d1cfc hits=0 near=080d2980 size=40
   func strstr 080d1dcc hits=0 near=080d29d4 size=42
-port/data/rom_symbols_eu.txt: 15045/15050 mapped
+port/data/rom_symbols_eu.txt: 15342/15347 mapped
   guessed REDA_088BD7F4 088bd7f4
   guessed EventScr_089F782C 089f782c
   guessed Tsa_OpAnimHealthSafetyScreenBG1 08b118c4
