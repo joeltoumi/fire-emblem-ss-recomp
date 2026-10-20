@@ -418,6 +418,12 @@ struct FaceProc* StartFace(int slot, int fid, int x, int y, int disp) {
 
 //! FE8U = 0x08005738
 void EndFace(struct FaceProc* proc) {
+#ifdef PLATFORM_PC
+    // ResetFaces ends every slot, empty ones too: on the GBA this reads the
+    // slot number from the BIOS and clears some unrelated pointer.
+    if (proc == NULL)
+        return;
+#endif
     gFaces[proc->faceSlot] = NULL;
     Proc_End(proc);
 
@@ -452,6 +458,10 @@ int SetFaceDisplayBitsById(int slot, int disp) {
 
 //! FE8U = 0x080057A4
 int GetFaceDisplayBits(struct FaceProc* proc) {
+#ifdef PLATFORM_PC
+    if (proc == NULL)
+        return 0; // the GBA reads the BIOS
+#endif
     return proc->displayBits;
 }
 

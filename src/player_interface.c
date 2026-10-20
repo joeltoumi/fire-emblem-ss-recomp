@@ -1128,6 +1128,9 @@ void TerrainDisplay_Loop_OnSideChange(struct PlayerInterfaceProc * proc)
 
 #if BUGFIX
     if (piProc != NULL)
+#elif defined(PLATFORM_PC)
+    // As on the GBA, where a missing piProc reads the BIOS (no match).
+    if (ui1Proc != NULL && piProc != NULL)
 #else
     if (ui1Proc != NULL)
 #endif // BUGFIX

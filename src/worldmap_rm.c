@@ -782,6 +782,11 @@ void EndGmapRmBorder1(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
 
         if (proc->index == index)
         {
@@ -809,6 +814,11 @@ int sub_80C2BC4(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
         if (proc->index == index)
         {
             return 1;
@@ -829,6 +839,11 @@ void sub_80C2C10(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
         if (index < 0)
         {
             proc->flag = 1;
@@ -1174,6 +1189,11 @@ void EndWmPlaceDotByIndex(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
         if (proc->unk_2b == index)
         {
             Proc_End(proc);
@@ -1199,6 +1219,11 @@ bool IsWmPlaceDotActiveAtIndex(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
         if (proc->unk_2b == index)
         {
             return true;
@@ -1218,6 +1243,11 @@ void SetWmPlaceDotFlagForIndex(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
         if (index < 0)
         {
             proc->flag = 1;

@@ -183,7 +183,12 @@ def main():
         f.write("// at their GBA address (port/data/ram_symbols_*.txt).\n\n")
         f.write("\n".join(headers) + "\n\n")
         for n in native:
-            f.write(f"__typeof__({n}) {n}; // {note(n)}\n")
+            if n in elem:
+                # An array of unknown size: as many elements as its GBA slot holds.
+                count = gap(syms[n]) // sizes[n][0]
+                f.write(f"__typeof__({n}[0]) {n}[{count}]; // {note(n)}\n")
+            else:
+                f.write(f"__typeof__({n}) {n}; // {note(n)}\n")
         f.write("\n// Declared in source files only.\n")
         for n, d in local.items():
             f.write(f"{d}; // {note(n)}\n")

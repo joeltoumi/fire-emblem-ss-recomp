@@ -321,6 +321,11 @@ void EndGmAutoMuFor(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
 
         if (proc->unitId == index)
         {
@@ -347,6 +352,11 @@ bool IsGmAutoMuActiveFor(int index)
     do
     {
         proc = Proc_FindNext(&procIter);
+#ifdef PLATFORM_PC
+        // The GBA reads the BIOS here once no proc is left.
+        if (proc == NULL)
+            break;
+#endif
 
         if (proc->unitId == index)
         {

@@ -139,9 +139,9 @@ __typeof__(Font_Sio_02000C60) Font_Sio_02000C60; // GBA 0x02000c60, 0x18 bytes o
 __typeof__(Texts_0203DB14) Texts_0203DB14; // GBA 0x0203db14, 0x50 bytes on the GBA, 0x50 natively
 __typeof__(gClassReelMagicAnim) gClassReelMagicAnim; // GBA 0x0200a2d8, 0x28 bytes on the GBA, 0x40 natively
 __typeof__(gDungeonState) gDungeonState; // GBA 0x030017a0, 0x34 bytes on the GBA, 0x34 natively
-__typeof__(gEventActiveQueue) gEventActiveQueue; // GBA 0x03000570, element 0x8 bytes on the GBA, 0x10 natively
-__typeof__(gEventCallQueue) gEventCallQueue; // GBA 0x03000438, element 0x8 bytes on the GBA, 0x10 natively
-__typeof__(gFaces) gFaces; // GBA 0x03004980, element 0x4 bytes on the GBA, 0x8 natively
+__typeof__(gEventActiveQueue[0]) gEventActiveQueue[8]; // GBA 0x03000570, element 0x8 bytes on the GBA, 0x10 natively
+__typeof__(gEventCallQueue[0]) gEventCallQueue[16]; // GBA 0x03000438, element 0x8 bytes on the GBA, 0x10 natively
+__typeof__(gFaces[0]) gFaces[4]; // GBA 0x03004980, element 0x4 bytes on the GBA, 0x8 natively
 __typeof__(gFontClassChg) gFontClassChg; // GBA 0x03005380, 0x18 bytes on the GBA, 0x28 natively
 __typeof__(gFontClassChgMenu) gFontClassChgMenu; // GBA 0x03005360, 0x18 bytes on the GBA, 0x28 natively
 __typeof__(gGenericProc) gGenericProc; // GBA 0x030005b0, 0x20 bytes on the GBA, 0x40 natively
@@ -156,9 +156,9 @@ __typeof__(gUnk_Opinfo_0201DB00) gUnk_Opinfo_0201DB00; // GBA 0x0201db00, 0x28 b
 __typeof__(gUnk_Sio_02001180) gUnk_Sio_02001180; // GBA 0x02001180, 0x4 bytes on the GBA, 0x8 natively
 __typeof__(gUnk_Sio_02001184) gUnk_Sio_02001184; // GBA 0x02001184, 0x4 bytes on the GBA, 0x8 natively
 __typeof__(gUnk_Sio_0203DD90) gUnk_Sio_0203DD90; // GBA 0x0203dd90, 0x4c bytes on the GBA, 0x4c natively
-__typeof__(gUnknown_0201C5B4) gUnknown_0201C5B4; // GBA 0x0201c5b4, element 0x4 bytes on the GBA, 0x8 natively
-__typeof__(gUnknown_0201C5C0) gUnknown_0201C5C0; // GBA 0x0201c5c0, element 0x4 bytes on the GBA, 0x8 natively
-__typeof__(gUnknown_03001838) gUnknown_03001838; // GBA 0x03001838, element 0x4 bytes on the GBA, 0x8 natively
+__typeof__(gUnknown_0201C5B4[0]) gUnknown_0201C5B4[3]; // GBA 0x0201c5b4, element 0x4 bytes on the GBA, 0x8 natively
+__typeof__(gUnknown_0201C5C0[0]) gUnknown_0201C5C0[3]; // GBA 0x0201c5c0, element 0x4 bytes on the GBA, 0x8 natively
+__typeof__(gUnknown_03001838[0]) gUnknown_03001838[2]; // GBA 0x03001838, element 0x4 bytes on the GBA, 0x8 natively
 __typeof__(gUnknown_030053A0) gUnknown_030053A0; // GBA 0x030053a0, 0x38 bytes on the GBA, 0x60 natively
 __typeof__(gUnknown_030053E0) gUnknown_030053E0; // GBA 0x030053e0, 0x28 bytes on the GBA, 0x40 natively
 __typeof__(sOamHi) sOamHi; // GBA 0x03000020, 0xc bytes on the GBA, 0x18 natively

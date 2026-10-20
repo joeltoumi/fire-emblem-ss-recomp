@@ -750,6 +750,12 @@ void Minimap_OnHBlank() {
         vcount = 0;
     }
 
+#ifdef PLATFORM_PC
+    // Line 160 is off screen; the GBA reads past the end of the buffer.
+    if (vcount >= 160)
+        return;
+#endif
+
     REG_WIN0H = WIN_RANGE(gMinimapDisplayedWinBuf[vcount*2], gMinimapDisplayedWinBuf[vcount*2 + 1]);
 
     return;

@@ -378,7 +378,12 @@ void sub_80131F0(s16 *buf, int x1, int y1, int x2, int y2)
         _SWAP(y2, y1);
     }
 
+#ifdef PLATFORM_PC
+    // A division by zero gives 0 on the GBA (and on ARM); x86 traps.
+    val1 = (y2 != y1) ? ((x2 - x1) << 0x10) / (y2 - y1) : 0;
+#else
     val1 = ((x2 - x1) << 0x10) / (y2 - y1);
+#endif
     val2 = x1 << 0x10;
 
     if (y2 > DISPLAY_HEIGHT)
