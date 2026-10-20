@@ -1,0 +1,18 @@
+# EU addresses of incbin data the mapper placed on a wrong run of zeros: the move of
+# both neighbours (the US build used to map has no ROM bytes for incbin data).
+gPal_YellowTextBox 087b1544  # same move as both neighbours
+gUnknown_085A0EA0 087b7094  # same move as both neighbours
+AnimSprite_EfxLvupOBJ2_085C7178 08803dfc  # same move as both neighbours
+UnitDef_088B5D98 08fb2034  # same move as both neighbours
+UnitDef_088B5EF8 08fb2194  # same move as both neighbours
+UnitDef_088B82C4 08fb4560  # same move as both neighbours
+UnitDef_088BC3B4 08fb8650  # same move as both neighbours
+UnitDef_088BC54C 08fb87e8  # same move as both neighbours
+UnitDef_088BD710 08fb99ac  # same move as both neighbours
+UnitDef_088BDA30 08fb9ccc  # same move as both neighbours
+UnitDef_088BDB48 08fb9de4  # same move as both neighbours
+UnitDef_088BDC74 08fb9f10  # same move as both neighbours
+UnitDef_088C0BB8 08fbce54  # same move as both neighbours
+UnitDef_088C29D0 08fbec6c  # same move as both neighbours
+UnitDef_088D1C2C 08fcdec8  # same move as both neighbours
+UnitDef_088D1DB0 08fce04c  # same move as both neighbours

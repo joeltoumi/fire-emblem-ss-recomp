@@ -4,12 +4,14 @@
 //
 //   fe8_headless [--rom FILE] [--frames N] [--dump-every K] [--out DIR] [--save FILE]
 //                [--press FRAME:KEYS:LEN ...] [--wav FILE]
-//                [--state-save FRAME:FILE] [--state-load FRAME:FILE]
+//                [--state-save FRAME:FILE] [--state-load FRAME:FILE] [--dump-mem FRAME:FILE]
 //
 // Frames are written as PPM images (no dependencies). KEYS is a combination
 // of the letters A B s(elect) S(tart) R(ight) L(eft) U(p) D(own) r l.
 // --wav records the sound output (16-bit stereo, 48 kHz).
 // --state-save / --state-load write or restore a save state after FRAME.
+// --dump-mem writes the I/O registers, palette, VRAM and OAM at FRAME, raw, for
+// comparing with an emulator.
 #include "port.h"
 
 #include <errno.h>
@@ -25,6 +27,8 @@ typedef struct Press {
 
 static uint64_t sMaxFrames = 600;
 static uint64_t sDumpEvery = 60;
+static struct { uint64_t frame; const char* path; } sMemDumps[8];
+static int sMemDumpCount;
 static const char* sOutDir = "frames";
 static const char* sSavePath = "fe8_headless.sav";
 static const char* sRomPath = "fe8_us.gba";
@@ -94,6 +98,13 @@ bool Port_HostInit(const PortHostConfig* cfg)
             p->keys = (*end == ':') ? ParseKeys(end + 1) : 0;
             const char* len = strrchr(v, ':');
             p->length = (len && len != end) ? strtoull(len + 1, NULL, 10) : 1;
+            i++;
+        } else if (strcmp(a, "--dump-mem") == 0 && v && sMemDumpCount < 8) {
+            // FRAME:PATH: the I/O registers, palette, VRAM and OAM, raw.
+            char* end;
+            sMemDumps[sMemDumpCount].frame = strtoull(v, &end, 10);
+            sMemDumps[sMemDumpCount].path = (*end == ':') ? end + 1 : "mem.bin";
+            sMemDumpCount++;
             i++;
         } else if ((strcmp(a, "--state-save") == 0 || strcmp(a, "--state-load") == 0) && v && sStateOpCount < 8) {
             StateOp* op = &sStateOps[sStateOpCount++];
@@ -183,6 +194,19 @@ static void WritePpm(const uint32_t* abgr, int width, int height, uint64_t frame
 bool Port_HostPresent(const uint32_t* abgr, int width, int height)
 {
     const uint64_t frame = Port_FrameCount();
+
+    for (int i = 0; i < sMemDumpCount; i++) {
+        if (sMemDumps[i].frame == frame) {
+            FILE* f = fopen(sMemDumps[i].path, "wb");
+            if (f) {
+                fwrite((const void*)(uintptr_t)0x04000000, 1, 0x400, f);
+                fwrite((const void*)(uintptr_t)0x05000000, 1, 0x400, f);
+                fwrite((const void*)(uintptr_t)0x06000000, 1, 0x18000, f);
+                fwrite((const void*)(uintptr_t)0x07000000, 1, 0x400, f);
+                fclose(f);
+            }
+        }
+    }
 
     if (sDumpEvery != 0 && frame % sDumpEvery == 0)
         WritePpm(abgr, width, height, frame);

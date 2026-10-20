@@ -1302,7 +1302,11 @@ bool RunTutorialEvent(u8 type)
     int counter;
     if ((gPlaySt.tutorial_counter != 0) && (gPlaySt.tutorial_exec_type == type)) {
         counter = gPlaySt.tutorial_counter;
-        CallEvent(((u16**)(GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents)))[counter - 1], 1);
+#ifdef PLATFORM_PC
+        CallEvent(GBA_GET(const u16 *, ((const u32 *)GBA_GET(const void *, GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents))[counter - 1]), 1);
+#else
+        CallEvent(((u16**)(GetChapterEventDataPointer(gPlaySt.chapterIndex)->tutorialEvents))[counter - 1], 1);
+#endif
         gPlaySt.tutorial_counter = 0;
         gPlaySt.tutorial_exec_type = 0;
         return true;

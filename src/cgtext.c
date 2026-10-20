@@ -567,7 +567,7 @@ void StartCgText(int x, int y, int width, int height, int stringId, void * vram,
     SetTextFont(NULL);
 
     ApplyPalette(gPal_HelpTextBox, pal);
-    proc->palId = ((((uintptr_t)vram) << 0x11) >> 0x16) + ((pal & mask) << 0xc);
+    proc->palId = ((((u32)(uintptr_t)vram) << 0x11) >> 0x16) + ((pal & mask) << 0xc);
 
     proc->str = GetStringFromIndex(stringId);
     if (DoesStringContainTact(proc->str) != 0)

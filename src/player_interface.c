@@ -794,6 +794,13 @@ void UnitMapUiUpdate(struct PlayerInterfaceProc * proc, struct Unit * unit)
 {
     s16 frameCount = proc->unitClock;
 
+#ifdef PLATFORM_PC
+    // The cursor can leave the unit for a frame before the window closes:
+    // the GBA then reads the BIOS.
+    if (unit == NULL)
+        return;
+#endif
+
     if (unit->statusIndex == UNIT_STATUS_RECOVER)
     {
         frameCount = 0;

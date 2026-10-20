@@ -582,7 +582,11 @@ void ArchiveCurrentPalettes()
         for (j = 0; j < 16; j++)
             dst[j] = *src++;
 
+#ifdef PLATFORM_PC
+        dst += sizeof(struct PalFadeSt) / sizeof(u16); // the pointers make it larger on PC
+#else
         dst += 24;
+#endif
     }
 
     SetPalFadeStClkEnd1(0x100);
