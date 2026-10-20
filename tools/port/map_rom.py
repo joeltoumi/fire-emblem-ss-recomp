@@ -359,15 +359,16 @@ def main():
     ap.add_argument("rom")
     ap.add_argument("--map", nargs=2, action="append", metavar=("IN", "OUT"), required=True,
                     help="a 'name address' list of US symbols (ROM or RAM) and where to write theirs")
-    ap.add_argument("--fixes", help="'name address' list of addresses found by hand")
+    ap.add_argument("--fixes", action="append", default=[],
+                    help="'name address' list of addresses found by hand (repeatable)")
     ap.add_argument("--guess", action="store_true",
                     help="give the symbols not found the address their predecessor's move implies "
                          "(listed as guessed in the report) instead of failing")
     ap.add_argument("--report")
     args = ap.parse_args()
     fixes = {}
-    if args.fixes:
-        for line in open(args.fixes):
+    for path in args.fixes:
+        for line in open(path):
             row = line.split("#", 1)[0].split()
             if row:
                 fixes[row[0]] = int(row[1], 16)

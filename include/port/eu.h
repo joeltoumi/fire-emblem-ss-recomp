@@ -32,8 +32,9 @@ enum {
     EU_LANG_COUNT,
 };
 
-/* Opening: health and safety screen (EU 0x080ccb28). */
-extern const u32 gEuImgTable_HealthSafety[EU_LANG_COUNT];
-extern const u32 gEuTsaTable_HealthSafety[EU_LANG_COUNT * 2];
+/* EU-only data and code, by area. */
+#include "port/eu_text.h"   /* fonts, messages, items, map UI, link arena */
+#include "port/eu_battle.h" /* battle and map animations, status screens */
+#include "port/eu_menus.h"  /* save/title/opening/world map/menus */
 
 #endif /* PORT_EU_H */
