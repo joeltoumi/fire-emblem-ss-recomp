@@ -95,6 +95,11 @@ def main():
             decl, name, dims = m.group(1), m.group(2), m.group(3)
             if name in syms and name not in native and name not in local:
                 local[name] = decl
+        # function pointers: `extern RET (*name)(ARGS);`
+        for m in re.finditer(r"^\s*extern\s+([^;]*?\(\s*\*\s*(\w+)\s*\)\s*\([^;]*\))\s*;", src.read_text(errors="replace"), re.M):
+            decl, name = m.group(1), m.group(2)
+            if name in syms and name not in native and name not in local:
+                local[name] = decl
     while True:
         body = "\n".join(headers) + "\n\n" + "".join(f"{d};\n" for d in local.values())
         with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False) as f:

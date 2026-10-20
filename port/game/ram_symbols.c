@@ -169,3 +169,8 @@ __typeof__(sOamLo) sOamLo; // GBA 0x03000030, 0xc bytes on the GBA, 0x18 nativel
 // Declared in source files only.
 struct Unit gStatGainSimUnit; // GBA 0x03004c00, 0x48 bytes on the GBA, 0x58 natively
 struct Text gClassReelTexts[6]; // GBA 0x0201fb28, 0x30 bytes on the GBA, 0x30 natively
+void (*gUnknown_03003740)(int, int, int, int); // GBA 0x03003740, 0x4 bytes on the GBA, 0x8 natively
+void (*DecodeStringRAMFunc)(const char *, char *); // GBA 0x03004150, 0x4 bytes on the GBA, 0x8 natively
+void (*gUnknown_03003130)(int, int, const u16 *, int); // GBA 0x03003130, 0x4 bytes on the GBA, 0x8 natively
+void (*gUnknown_03004154)(int, int, const u16 *, int); // GBA 0x03004154, 0x4 bytes on the GBA, 0x8 natively
+void (*gUnknown_03003128)(void); // GBA 0x03003128, 0x4 bytes on the GBA, 0x8 natively
