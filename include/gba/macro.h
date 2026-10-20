@@ -1,6 +1,10 @@
 #ifndef GUARD_GBA_MACRO_H
 #define GUARD_GBA_MACRO_H
 
+#ifdef PLATFORM_PC
+#include "port/platform.h"
+#endif
+
 #define CPU_FILL(value, dest, size, bit)                                          \
 {                                                                                 \
     vu##bit tmp = (vu##bit)(value);                                               \
@@ -29,6 +33,14 @@
 
 #define CpuFastCopy(src, dest, size) CpuFastSet(src, dest, ((size)/(32/8) & 0x1FFFFF))
 
+#ifdef PLATFORM_PC
+// The port performs the transfer: the source may be a stack variable, whose
+// address doesn't fit in the 32-bit DMA registers.
+#define DmaSet(dmaNum, src, dest, control)                                    \
+{                                                                             \
+    Port_DmaSet(dmaNum, (const void *)(src), (void *)(dest), (u32)(control)); \
+}
+#else
 #define DmaSet(dmaNum, src, dest, control)        \
 {                                                 \
     vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum; \
@@ -37,6 +49,7 @@
     dmaRegs[2] = (vu32)(control);                 \
     dmaRegs[2];                                   \
 }
+#endif
 
 #define DMA_FILL(dmaNum, value, dest, size, bit)                                              \
 {                                                                                             \

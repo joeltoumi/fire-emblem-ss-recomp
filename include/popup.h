@@ -21,7 +21,11 @@ enum popup_opcode_index {
 
 struct PopupInstruction {
     u8 opcode;
+#ifdef PLATFORM_PC
+    uintptr_t data; // holds string pointers (POPUP_STR)
+#else
     u32 data;
+#endif
 };
 
 #define POPUP_END               {POPUP_OP_END, 0}

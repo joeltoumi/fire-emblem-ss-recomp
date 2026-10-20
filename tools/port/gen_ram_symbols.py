@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Generate the RAM variables that only the GBA linker script defines (fe8 port).
+
+ldscript.txt and sym_iwram.txt give many IWRAM/EWRAM variables an address
+without any C definition. The native build needs a definition for each:
+
+  * declared in a header with a complete type: an ordinary native variable,
+    `__typeof__(name) name;` (its native size may differ from the GBA one,
+    e.g. when it holds pointers);
+  * else, declared with a complete type by an `extern` inside a source file:
+    that declaration, as a definition;
+  * otherwise (no usable declaration: an array of unknown size, a type local
+    to a source file...): raw native storage, twice its GBA size (the gap to
+    the next GBA symbol), which leaves room for pointers that are 8 bytes
+    natively.
+
+port/game/ram_native.c defines a few by hand; they are skipped here.
+
+Writes port/game/ram_symbols.c.
+
+Usage: gen_ram_symbols.py fireemblem8.elf CC
+"""
+import re
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+# Linker bookkeeping, or provided by the port itself.
+SKIP = {
+    "__ewram_start", "__iwram_start", "__iwram_top", "__sp_irq", "__sp_usr",
+    "__irq_flags", "end", "errno", "IntrMain_Buffer",
+}
+
+
+def nm(*args):
+    out = subprocess.run(["arm-none-eabi-nm", *args], check=True, capture_output=True, text=True).stdout
+    return [line.split() for line in out.splitlines()]
+
+
+def main():
+    elf, cc = sys.argv[1], sys.argv[2]
+    src_defs = set()
+    for obj in list(ROOT.glob("src/*.o")) + list(ROOT.glob("asm/*.o")):
+        for parts in nm("-g", "--defined-only", str(obj)):
+            if len(parts) == 3:
+                src_defs.add(parts[2])
+    syms = {}
+    all_addrs = sorted({int(p[0], 16) for p in nm("--defined-only", elf) if int(p[0], 16) >> 24 in (2, 3)})
+    for parts in nm("-g", "--defined-only", elf):
+        addr, name = int(parts[0], 16), parts[-1]
+        if addr >> 24 in (2, 3) and name not in src_defs and name not in SKIP:
+            syms[name] = addr
+
+    manual = set(re.findall(r"^[^/#\s][^;(]*?\b(\w+)\s*(?:\[[^\]]*\]\s*)*(?:=[^;]*)?;",
+                            (ROOT / "port/game/ram_native.c").read_text(), re.M))
+    for n in manual:
+        syms.pop(n, None)
+
+    headers = ['#include "global.h"'] + [f'#include "{h.name}"' for h in sorted(ROOT.glob("include/*.h"))]
+    native = sorted(syms)
+    while True:
+        body = "\n".join(headers) + "\n\n" + "".join(f"__typeof__({n}) {n};\n" for n in native)
+        with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False) as f:
+            f.write(body)
+        res = subprocess.run([cc, "-fsyntax-only", "-std=gnu11", "-Wno-everything", "-ferror-limit=0",
+                              "-DPLATFORM_PC", "-DNONMATCHING=1", f"-I{ROOT/'include'}", "-iquote", str(ROOT),
+                              f"-I{ROOT/'port/generated'}", "-include", "port/native.h", f.name],
+                             capture_output=True, text=True)
+        bad = set()
+        lines = body.splitlines()
+        for m in re.finditer(r":(\d+):\d+: error:", res.stderr):
+            line = lines[int(m.group(1)) - 1]
+            m2 = re.match(r"__typeof__\((\w+)\)", line)
+            if m2:
+                bad.add(m2.group(1))
+        if not bad:
+            if res.returncode != 0:
+                sys.exit(res.stderr)
+            break
+        native = [n for n in native if n not in bad]
+
+    # Declarations in source files: `extern TYPE name...;`.
+    local = {}
+    for src in sorted(ROOT.glob("src/*.c")):
+        for m in re.finditer(r"^\s*extern\s+([^;()]*?\b(\w+)\s*((?:\[[^\]]+\]\s*)*));", src.read_text(errors="replace"), re.M):
+            decl, name, dims = m.group(1), m.group(2), m.group(3)
+            if name in syms and name not in native and name not in local:
+                local[name] = decl
+    while True:
+        body = "\n".join(headers) + "\n\n" + "".join(f"{d};\n" for d in local.values())
+        with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False) as f:
+            f.write(body)
+        res = subprocess.run([cc, "-fsyntax-only", "-std=gnu11", "-Wno-everything", "-ferror-limit=0",
+                              "-DPLATFORM_PC", "-DNONMATCHING=1", f"-I{ROOT/'include'}", "-iquote", str(ROOT),
+                              f"-I{ROOT/'port/generated'}", "-include", "port/native.h", f.name],
+                             capture_output=True, text=True)
+        lines = body.splitlines()
+        bad = set()
+        for m in re.finditer(r":(\d+):\d+: error:", res.stderr):
+            line = lines[int(m.group(1)) - 1]
+            for n, d in local.items():
+                if line == d + ";":
+                    bad.add(n)
+        if not bad:
+            break
+        for n in bad:
+            del local[n]
+
+    out = ROOT / "port" / "game" / "ram_symbols.c"
+    with out.open("w") as f:
+        f.write("// Generated by tools/port/gen_ram_symbols.py: do not edit.\n//\n")
+        f.write("// RAM variables that only the GBA linker script places (by address),\n")
+        f.write("// defined natively with the type their header declares.\n\n")
+        f.write("\n".join(headers) + "\n\n")
+        for n in native:
+            f.write(f"__typeof__({n}) {n};\n")
+        f.write("\n// Declared in source files only.\n")
+        for d in local.values():
+            f.write(f"{d};\n")
+        f.write("\n// No usable declaration: raw storage, twice the GBA size.\n")
+        raw = sorted(set(syms) - set(native) - set(local), key=lambda n: syms[n])
+        for n in raw:
+            a = syms[n]
+            nxt = next((x for x in all_addrs if x > a), a + 0x10)
+            size = max(2 * (nxt - a), 0x40)
+            f.write(f"_Alignas(16) unsigned char {n}[0x{size:x}]; // GBA 0x{a:08x}\n")
+    print(f"{len(native)} typeof, {len(local)} declared, {len(raw)} raw", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

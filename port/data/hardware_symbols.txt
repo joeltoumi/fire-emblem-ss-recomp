@@ -1,0 +1,11 @@
+# The GBA memory regions, mapped by the port at their hardware addresses
+# (port/src/gba_mem.c). Shared by every region.
+gPortEwram  02000000
+gPortIwram  03000000
+gPortIo     04000000
+gPortPalram 05000000
+gPortVram   06000000
+gPortOam    07000000
+gPortRom    08000000
+gPortSram   0e000000
+__ewram_start 02000000

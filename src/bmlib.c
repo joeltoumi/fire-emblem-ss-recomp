@@ -1942,7 +1942,7 @@ void PlaySeSpacial(int song, int x)
 
     PlaySoundEffect(song);
 
-    info = gMPlayTable[gSongTable[song].ms].info;
+    info = M4A_GET(struct MusicPlayerInfo *, gMPlayTable[gSongTable[song].ms].info);
 
     m4aMPlayImmInit(info);
     m4aMPlayPanpotControl(info, 0xFFFF, Screen2Pan(x));

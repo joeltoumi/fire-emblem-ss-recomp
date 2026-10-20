@@ -1,6 +1,8 @@
 #ifndef GUARD_PLAYERPHASE_H
 #define GUARD_PLAYERPHASE_H
 
+#include "menu_def.h"
+
 struct MoveLimitViewProc
 {
     /* 00 */ PROC_HEADER;
@@ -70,7 +72,7 @@ void TrySwitchViewedUnit(int x, int y);
 void PlayerPhase_HandleAutoEnd(ProcPtr proc);
 
 extern const struct MenuDef gMapMenuDef;
-extern const struct MenuDef gUnitActionMenuDef;
+extern MENU_DEF_CONST struct MenuDef gUnitActionMenuDef;
 
 extern u16 gUnknown_08A02F34[];
 extern u16 gUnknown_08A02F94[];

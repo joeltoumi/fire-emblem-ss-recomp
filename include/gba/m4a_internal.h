@@ -3,6 +3,32 @@
 
 #include "gba/gba.h"
 
+// Pointer fields of the engine's structures.
+//
+// The sound data in ROM (song headers, voicegroups, the song and music player
+// tables) stores 32-bit GBA addresses, and the engine copies or clears its RAM
+// structures with fixed GBA sizes (Clear64byte, the 12-byte ToneData copy in
+// ply_voice, the 0x40-byte channel stride shared by DirectSound and CGB
+// channels...). So natively every m4a structure keeps its exact GBA layout and
+// its pointers are 32-bit addresses (u32). That works because the port maps
+// the GBA memory regions at their hardware addresses and loads the game below
+// 4 GiB (see port/platform.h). On the GBA these macros change nothing.
+//   M4A_PTR(type)       declares such a field
+//   M4A_GET(type, x)    reads one as a native pointer
+//   M4A_SET(p)          the value to store into one
+//   M4A_ADDR(p)         a pointer as a u32 (fields declared u32 on the GBA too)
+#ifdef PLATFORM_PC
+#define M4A_PTR(type)    u32
+#define M4A_GET(type, x) ((type)(uintptr_t)(x))
+#define M4A_SET(p)       ((u32)(uintptr_t)(p))
+#define M4A_ADDR(p)      ((u32)(uintptr_t)(p))
+#else
+#define M4A_PTR(type)    type
+#define M4A_GET(type, x) (x)
+#define M4A_SET(p)       (p)
+#define M4A_ADDR(p)      ((u32)(p))
+#endif
+
 // ASCII encoding of 'Smsh' in reverse
 // This is presumably short for SMASH, the developer of MKS4AGB.
 #define ID_NUMBER 0x68736D53
@@ -60,7 +86,7 @@ struct ToneData
     u8 key;
     u8 length; // sound length (compatible sound)
     u8 pan_sweep; // pan or sweep (compatible sound ch. 1)
-    struct WaveData *wav;
+    M4A_PTR(struct WaveData *) wav;
     u8 attack;
     u8 decay;
     u8 sustain;
@@ -100,7 +126,7 @@ struct CgbChannel
     u8 le; // 0x1E
     u8 sw; // 0x1F
     u32 fr; // 0x20
-    u32 *wp;
+    M4A_PTR(u32 *) wp;
     u32 cp;
     u32 tp;
     u32 pp;
@@ -137,9 +163,9 @@ struct SoundChannel
     u32 ct;
     u32 fw;
     u32 freq;
-    struct WaveData *wav;
+    M4A_PTR(struct WaveData *) wav;
     u32 cp;
-    struct MusicPlayerTrack *track;
+    M4A_PTR(struct MusicPlayerTrack *) track;
     u32 pp;
     u32 np;
     u32 d4;
@@ -195,8 +221,8 @@ struct SongHeader
     u8 blockCount;
     u8 priority;
     u8 reverb;
-    struct ToneData *tone;
-    u8 *part[1];
+    M4A_PTR(struct ToneData *) tone;
+    M4A_PTR(u8 *) part[1];
 };
 
 struct PokemonCrySong
@@ -205,8 +231,8 @@ struct PokemonCrySong
     u8 blockCount;
     u8 priority;
     u8 reverb;
-    struct ToneData *tone;
-    u8 *part[2];
+    M4A_PTR(struct ToneData *) tone;
+    M4A_PTR(u8 *) part[2];
     u8 gap;
     u8 part0; // 0x11
     u8 tuneValue; // 0x12
@@ -272,13 +298,13 @@ struct MusicPlayerTrack
     u8 priority;
     u8 echoVolume;
     u8 echoLength;
-    struct SoundChannel *chan;
+    M4A_PTR(struct SoundChannel *) chan;
     struct ToneData tone;
     u8 gap[10];
     u16 unk_3A;
     u32 unk_3C;
-    u8 *cmdPtr;
-    u8 *patternStack[3];
+    M4A_PTR(u8 *) cmdPtr;
+    M4A_PTR(u8 *) patternStack[3];
 };
 
 #define MUSICPLAYER_STATUS_TRACK 0x0000ffff
@@ -293,7 +319,7 @@ struct MusicPlayerTrack
 
 struct MusicPlayerInfo
 {
-    struct SongHeader *songHeader;
+    M4A_PTR(struct SongHeader *) songHeader;
     u32 status;
     u8 trackCount;
     u8 priority;
@@ -301,7 +327,7 @@ struct MusicPlayerInfo
     u8 unk_B;
     u32 clock;
     u8 gap[8];
-    u8 *memAccArea;
+    M4A_PTR(u8 *) memAccArea;
     u16 tempoD;
     u16 tempoU;
     u16 tempoI;
@@ -309,8 +335,8 @@ struct MusicPlayerInfo
     u16 fadeOI;
     u16 fadeOC;
     u16 fadeOV;
-    struct MusicPlayerTrack *tracks;
-    struct ToneData *tone;
+    M4A_PTR(struct MusicPlayerTrack *) tracks;
+    M4A_PTR(struct ToneData *) tone;
     u32 ident;
     u32 func;
     u32 intp;
@@ -318,21 +344,68 @@ struct MusicPlayerInfo
 
 struct MusicPlayer
 {
-    struct MusicPlayerInfo *info;
-    struct MusicPlayerTrack *track;
+    M4A_PTR(struct MusicPlayerInfo *) info;
+    M4A_PTR(struct MusicPlayerTrack *) track;
     u8 unk_8;
     u16 unk_A;
 };
 
 struct Song
 {
-    struct SongHeader *header;
+    M4A_PTR(struct SongHeader *) header;
     u16 ms;
     u16 me;
 };
 
 extern const struct MusicPlayer gMPlayTable[];
 extern const struct Song gSongTable[];
+
+#ifdef PLATFORM_PC
+_Static_assert(sizeof(struct ToneData) == 0xC, "GBA layout");
+_Static_assert(sizeof(struct CgbChannel) == 0x40, "GBA layout");
+_Static_assert(sizeof(struct SoundChannel) == 0x40, "GBA layout");
+_Static_assert(sizeof(struct MusicPlayerTrack) == 0x50, "GBA layout");
+_Static_assert(sizeof(struct MusicPlayerInfo) == 0x40, "GBA layout");
+_Static_assert(sizeof(struct MusicPlayer) == 0xC, "GBA layout");
+_Static_assert(sizeof(struct Song) == 0x8, "GBA layout");
+
+// gMPlayTable (ROM) holds the GBA addresses of the music players' RAM
+// structures; natively those are ordinary variables elsewhere, so the table's
+// info/track fields are translated by player index (src/m4a.c).
+struct MusicPlayerInfo *Port_M4aMPlayInfo(u32 index);
+struct MusicPlayerTrack *Port_M4aMPlayTrack(u32 index);
+#define M4A_MPLAY_INFO(index)  Port_M4aMPlayInfo(index)
+#define M4A_MPLAY_TRACK(index) Port_M4aMPlayTrack(index)
+#define M4A_SONG_HEADER(n)     M4A_GET(struct SongHeader *, gSongTable[n].header)
+
+// The music players' RAM (GBA: sound/music_player_table.s, ldscript).
+extern struct MusicPlayerInfo gMPlayInfo_BGM1;
+extern struct MusicPlayerInfo gMPlayInfo_BGM2;
+extern struct MusicPlayerInfo gMPlayInfo_SE1_SYS1;
+extern struct MusicPlayerInfo gMPlayInfo_SE2_SYS2;
+extern struct MusicPlayerInfo gMPlayInfo_SE3_BMP1;
+extern struct MusicPlayerInfo gMPlayInfo_SE4_BMP2;
+extern struct MusicPlayerInfo gMPlayInfo_SE5_BMP3;
+extern struct MusicPlayerInfo gMPlayInfo_SE6_BMP4;
+extern struct MusicPlayerInfo gMPlayInfo_SE7_EVT;
+extern struct MusicPlayerTrack gMPlayTrack_BGM1[8];
+extern struct MusicPlayerTrack gMPlayTrack_BGM2[8];
+extern struct MusicPlayerTrack gMPlayTrack_SE1_SYS1[2];
+extern struct MusicPlayerTrack gMPlayTrack_SE2_SYS2[2];
+extern struct MusicPlayerTrack gMPlayTrack_SE3_BMP1[4];
+extern struct MusicPlayerTrack gMPlayTrack_SE4_BMP2[4];
+extern struct MusicPlayerTrack gMPlayTrack_SE5_BMP3[5];
+extern struct MusicPlayerTrack gMPlayTrack_SE6_BMP4[4];
+extern struct MusicPlayerTrack gMPlayTrack_SE7_EVT[2];
+
+// port/game/m4a_asm.c: DMA 1/2 restart their transfer at the start of
+// soundInfo->pcmBuffer (m4aSoundVSyncOn, m4aSoundVSync).
+void Port_M4aDmaRestart(void);
+#else
+#define M4A_MPLAY_INFO(index)  (gMPlayTable[index].info)
+#define M4A_MPLAY_TRACK(index) (gMPlayTable[index].track)
+#define M4A_SONG_HEADER(n)     (gSongTable[n].header)
+#endif
 
 
 
@@ -349,7 +422,9 @@ extern struct PokemonCrySong gPokemonCrySongs[];
 extern struct MusicPlayerInfo gPokemonCryMusicPlayers[];
 extern struct MusicPlayerTrack gPokemonCryTracks[];
 
+#ifndef PLATFORM_PC
 extern char SoundMainRAM[];
+#endif
 
 extern void *gMPlayJumpTable[];
 
@@ -370,17 +445,28 @@ extern const struct PokemonCrySong gPokemonCrySongTemplate;
 
 extern const struct ToneData voicegroup_pokemon_cry;
 
+#ifdef PLATFORM_PC
+// Linker script constants on the GBA (ldscript.txt).
+#define NUM_MUSIC_PLAYERS 9
+#define MAX_LINES 0
+#else
 extern char gNumMusicPlayers[];
 extern char gMaxLines[];
 
 #define NUM_MUSIC_PLAYERS ((u16)gNumMusicPlayers)
 #define MAX_LINES ((u32)gMaxLines)
+#endif
 
 u32 umul3232H32(u32 multiplier, u32 multiplicand);
 void SoundMain(void);
+#ifdef PLATFORM_PC
+void SoundMainBTM(void *addr);
+void MPlayMain(struct MusicPlayerInfo *mplayInfo);
+#else
 void SoundMainBTM(void);
-void TrackStop(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track);
 void MPlayMain(void);
+#endif
+void TrackStop(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track);
 void RealClearChain(void *x);
 
 void MPlayContinue(struct MusicPlayerInfo *mplayInfo);
@@ -443,7 +529,12 @@ void ply_tune(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 void ply_port(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 void ply_xcmd(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
 void ply_endtie(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+#ifdef PLATFORM_PC
+// Called through soundInfo->plynote with the note length index first.
+void ply_note(u32 noteLengthIndex, struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+#else
 void ply_note(struct MusicPlayerInfo *, struct MusicPlayerTrack *);
+#endif
 
 // extended sound command handler functions
 void ply_xxx(struct MusicPlayerInfo *, struct MusicPlayerTrack *);

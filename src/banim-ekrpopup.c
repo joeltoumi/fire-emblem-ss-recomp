@@ -123,10 +123,22 @@ CONST_DATA struct AnimSpriteData AnimSprite_EkrPopup[] = {
     ANIM_SPRITE_END
 };
 
+#ifdef PLATFORM_PC
+// The script holds a 32-bit sprite pointer, which is not a constant natively:
+// it is filled in at startup (the game image is loaded below 4 GiB).
+AnimScr AnimScr_EkrPopup[2];
+
+__attribute__((constructor)) static void InitAnimScr_EkrPopup(void)
+{
+    AnimScr_EkrPopup[0] = ANIMSCR_FORCE_SPRITE(AnimSprite_EkrPopup, 1);
+    AnimScr_EkrPopup[1] = ANIMSCR_BLOCKED;
+}
+#else
 CONST_DATA AnimScr AnimScr_EkrPopup[2] = {
     ANIMSCR_FORCE_SPRITE(AnimSprite_EkrPopup, 1),
     ANIMSCR_BLOCKED
 };
+#endif
 
 void DrawBattlePopup(struct ProcEkrPopup *proc, int type, u32 priv)
 {

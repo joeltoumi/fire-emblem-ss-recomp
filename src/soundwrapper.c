@@ -330,7 +330,7 @@ void PlaySong(int songId, struct MusicPlayerInfo *player)
     }
 
     if (player != NULL)
-        MPlayStart(player, gSongTable[songId].header);
+        MPlayStart(player, M4A_GET(struct SongHeader *, gSongTable[songId].header));
     else
         m4aSongNumStart(songId);
 }

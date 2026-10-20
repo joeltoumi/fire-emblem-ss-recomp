@@ -17,6 +17,15 @@
 
 #define EWRAM_ENTRY ((void *)__ewram_start)
 
+// agbcc accepts a cast as an assignment target (GCC's old "lvalue cast"
+// extension), and some functions only match written that way. Native
+// compilers need the pointer form.
+#ifdef PLATFORM_PC
+#define LVALUE_CAST(type, lvalue) (*(type *)&(lvalue))
+#else
+#define LVALUE_CAST(type, lvalue) ((type)(lvalue))
+#endif
+
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 #define RED_VALUE(color) ((color) & 0x1F)

@@ -4,6 +4,7 @@
 #include "global.h"
 #include "proc.h"
 #include "bmunit.h"
+#include "fontgrp.h"
 
 enum {
     SHOP_TYPE_ARMORY        = 0,

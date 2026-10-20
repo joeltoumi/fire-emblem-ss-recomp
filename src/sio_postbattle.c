@@ -331,7 +331,7 @@ void SioPostBattle_AwaitAPress(ProcPtr proc)
 
     if ((gKeyStatusPtr->newKeys & A_BUTTON) != 0)
     {
-        m4aMPlayFadeOut(gMPlayTable[gSongTable[0x81].ms].info, 1);
+        m4aMPlayFadeOut(M4A_GET(struct MusicPlayerInfo *, gMPlayTable[gSongTable[0x81].ms].info), 1);
         Proc_Break(proc);
     }
 

@@ -20,6 +20,25 @@ extern const u8 MapFloodCoreStep[];
 extern const u8 MapFloodCore[];
 extern const u8 ARMCodeToCopy_End[];
 
+#ifdef PLATFORM_PC
+void Port_DrawGlyph(int, int, int, int);
+void Port_DecodeString(const char *, char *);
+void Port_PutOamHi(int, int, const u16 *, int);
+void Port_PutOamLo(int, int, const u16 *, int);
+void Port_MapFloodCoreStep(int, int, int);
+void Port_MapFloodCore(void);
+
+// The ARM routines are C functions natively (port/game/arm_routines.c).
+void StoreRoutinesToIRAM(void)
+{
+    gUnknown_03003740 = Port_DrawGlyph;
+    DecodeStringRAMFunc = Port_DecodeString;
+    gUnknown_03003130 = Port_PutOamHi;
+    gUnknown_03004154 = Port_PutOamLo;
+    gUnknown_03004960 = Port_MapFloodCoreStep;
+    gUnknown_03003128 = Port_MapFloodCore;
+}
+#else
 void StoreRoutinesToIRAM(void)
 {
     size_t armCodeSize = (ARMCodeToCopy_End - ARMCodeToCopy_Start);
@@ -35,6 +54,7 @@ void StoreRoutinesToIRAM(void)
     gUnknown_03004960 = (void *)(gUnknown_03003750 + (MapFloodCoreStep              - ARMCodeToCopy_Start));
     gUnknown_03003128 = (void *)(gUnknown_03003750 + (MapFloodCore    - ARMCodeToCopy_Start));
 }
+#endif
 
 void DrawGlyphRam(int a, int b, int c, int d)
 {

@@ -14,8 +14,12 @@ void StoreIRQToIRAM(void)
     for(i = 0; i < IRQ_COUNT; i++)
         gIRQHandlers[i] = DummyIRQRoutine;
 
+#ifdef PLATFORM_PC
+    // The port's frame loop calls gIRQHandlers directly (port/src/frame.c).
+#else
     CpuFastCopy(IrqMain, IntrMain_Buffer, sizeof IntrMain_Buffer);
     INTR_VECTOR = IntrMain_Buffer;
+#endif
 }
 
 void DummyIRQRoutine(void)

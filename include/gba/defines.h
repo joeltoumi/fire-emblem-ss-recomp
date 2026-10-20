@@ -11,9 +11,17 @@
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 
+#ifdef PLATFORM_PC
+#include "port/platform.h"
+// Full-width pointers don't fit in these BIOS words: native variables.
+#define SOUND_INFO_PTR (*(struct SoundInfo **)&gPortSoundInfoPtr)
+#define INTR_CHECK     gPortIntrCheck
+#define INTR_VECTOR    gPortIntrVector
+#else
 #define SOUND_INFO_PTR (*(struct SoundInfo **)0x3007FF0)
 #define INTR_CHECK     (*(u16 *)0x3007FF8)
 #define INTR_VECTOR    (*(void **)0x3007FFC)
+#endif
 
 #define EWRAM_START 0x02000000
 #define IWRAM_START 0x03000000

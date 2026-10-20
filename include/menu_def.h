@@ -4,21 +4,29 @@
 struct MenuDef;
 struct SelectTarget;
 
-extern const struct MenuDef gDebugClearMenuDef;
-extern const struct MenuDef gDebugChargeMenuDef;
-extern const struct MenuDef gDebugContinueMenuDef;
-extern const struct MenuDef gDebugChuudanMenuDef;
-extern const struct MenuDef gDebugMenuDef;
-extern const struct MenuDef gMenuInfo_RepairItems;
-extern const struct MenuDef gStealItemMenuDef;
-extern const struct MenuDef gYesNoSelectionMenuDef;
-extern const struct MenuDef gItemSubMenuDef;
-extern const struct MenuDef gItemMenuDef;
-extern const struct MenuDef gStaffItemSelectMenuDef;
-extern const struct MenuDef gItemSelectMenuDef;
-extern const struct MenuDef gBallistaRangeMenuDef;
-extern const struct MenuDef gWeaponSelectMenuDef;
-extern const struct MenuDef gUnitActionMenuDef;
+// The definitions in src/menu_def.c that are CONST_DATA rather than const:
+// a modern compiler rejects a const declaration of them.
+#ifdef PLATFORM_PC
+#define MENU_DEF_CONST
+#else
+#define MENU_DEF_CONST const
+#endif
+
+extern MENU_DEF_CONST struct MenuDef gDebugClearMenuDef;
+extern MENU_DEF_CONST struct MenuDef gDebugChargeMenuDef;
+extern MENU_DEF_CONST struct MenuDef gDebugContinueMenuDef;
+extern MENU_DEF_CONST struct MenuDef gDebugChuudanMenuDef;
+extern MENU_DEF_CONST struct MenuDef gDebugMenuDef;
+extern MENU_DEF_CONST struct MenuDef gMenuInfo_RepairItems;
+extern MENU_DEF_CONST struct MenuDef gStealItemMenuDef;
+extern MENU_DEF_CONST struct MenuDef gYesNoSelectionMenuDef;
+extern MENU_DEF_CONST struct MenuDef gItemSubMenuDef;
+extern MENU_DEF_CONST struct MenuDef gItemMenuDef;
+extern MENU_DEF_CONST struct MenuDef gStaffItemSelectMenuDef;
+extern MENU_DEF_CONST struct MenuDef gItemSelectMenuDef;
+extern MENU_DEF_CONST struct MenuDef gBallistaRangeMenuDef;
+extern MENU_DEF_CONST struct MenuDef gWeaponSelectMenuDef;
+extern MENU_DEF_CONST struct MenuDef gUnitActionMenuDef;
 
 extern struct SelectInfo CONST_DATA gSelectInfo_OffensiveStaff;
 extern struct SelectInfo CONST_DATA gSelectInfo_Barrier;
