@@ -24,6 +24,8 @@ EVENT_DATA_OBJS = ["events_info", "events_wm", "events_trapdata", "events_shopli
                    "data_battlequotes", "data_characters", "data_classes", "data_items", "data_event_trigger"]
 # Sources whose event scripts (Event*) are read from the ROM; their code and
 # other data stay native. The port compiles these with PORT_ROM_EVENT_SCRIPTS.
+# Other data that the decomp generates from graphics into a C source.
+ROM_DATA_SYMBOLS = {"fontgrp": {"debug_font_4bpp"}}
 EVENT_SCRIPT_OBJS = ["events_script", "events_script_utils", "eventscr", "bmtrade", "sio_battlemap", "sio_event"]
 
 
@@ -63,14 +65,17 @@ def main():
     objs += [root / "src" / f"{n}.o" for n in EVENT_DATA_OBJS]
     seen = set()
     rows = []
-    for obj in objs + [root / "src" / f"{n}.o" for n in EVENT_SCRIPT_OBJS]:
+    for obj in objs + [root / "src" / f"{n}.o" for n in EVENT_SCRIPT_OBJS + list(ROM_DATA_SYMBOLS)]:
         scripts_only = obj.stem in EVENT_SCRIPT_OBJS
+        only = ROM_DATA_SYMBOLS.get(obj.stem)
         for parts in nm(obj, "-g", "--defined-only"):
             _, kind, name = parts[-3:]
             # Linker bookkeeping labels (__data_start...) clash with the host's.
             if kind in "aA" or name in seen or name.startswith("__"):
                 continue
             if scripts_only and not (kind in "dD" and name.startswith("Event")):
+                continue
+            if only is not None and name not in only:
                 continue
             addr = addrs.get(name)
             if addr is None or not 0x08000000 <= addr < 0x0A000000:

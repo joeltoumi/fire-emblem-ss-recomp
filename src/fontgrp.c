@@ -46,7 +46,11 @@ EWRAM_DATA struct Font *gActiveFont = 0;
 EWRAM_DATA u8 gLanguageMode = 0;
 EWRAM_DATA struct SpecialCharSt sSpecialCharStList[64] = {0};
 
+#ifdef PLATFORM_PC
+extern u8 debug_font_4bpp[]; // read from the ROM
+#else
 #include "graphics/debug_font.4bpp.h"
+#endif
 
 void SetupDebugFontForBG(int bg, int tileDataOffset)
 {

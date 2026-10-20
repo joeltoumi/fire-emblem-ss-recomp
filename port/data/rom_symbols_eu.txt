@@ -1628,6 +1628,7 @@ song981_btl_mon_magic1 08793144
 song982_btl_mon_magic2 087931bc
 song997_sys_class_light1 087931e0
 song998_sys_class_light2 087931fc
+debug_font_4bpp 08793580
 EventScr_Nop 087a2f54
 EventScr_RemoveBGIfNeeded 087a2f5c
 EventScr_08591F64 087a2f80
