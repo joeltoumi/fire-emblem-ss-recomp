@@ -1,4 +1,52 @@
-# Fire Emblem: The Sacred Stones
+# Fire Emblem: The Sacred Stones — native PC/Android port
+
+**fire-emblem-ss-recomp** builds Fire Emblem: The Sacred Stones as a native
+program for Linux and Android, from the
+[fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u) decompilation.
+It is not an emulator: the game's C code is compiled for your machine, and its
+data (graphics, text, maps, music) is read from your own ROM at startup.
+
+**You need your own legally obtained ROM.** None of the game's data is in this
+repository or in the builds.
+
+| ROM | Status |
+| --- | --- |
+| Europe (En, Fr, De, Es, It) | Prologue and first battle play through (tested in English) |
+| USA | Builds; not tested in play yet |
+
+What the port adds: an options menu (Esc / F1, Select+Start, or the menu button
+on touch screens) with 4 quick-save slots with thumbnails (F5 / F8), remappable
+keyboard and gamepad controls, on-screen touch controls, fast forward, and LCD/CRT filters.
+
+## Playing
+
+- **Android:** install the APK for your ROM's region (eu or us, from the
+  [build workflow](../../actions/workflows/build.yml) artifacts) and
+  pick your ROM the first time.
+- **PC:** build it (below) and run `fe8`. It asks for the ROM the first time
+  and remembers it.
+
+## Building
+
+```bash
+cmake -B build -G Ninja -DFE8_REGION=eu        # or us
+cmake --build build
+./build/fe8
+```
+
+Needs CMake 3.22+, Ninja, clang (or GCC) and lld. SDL3 and Dear ImGui are
+downloaded when they are not installed. `-DFE8_HOST=headless` builds
+`fe8_headless`, a windowless version for tests (`--press`, `--dump-every`,
+`--dump-mem`, `--state-save`/`--state-load`).
+
+Android: `cd android && ./gradlew assembleEuRelease` (or `assembleUsRelease`).
+
+How the port works is in [docs/PORT.md](docs/PORT.md).
+
+---
+
+# The decompilation
+
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
