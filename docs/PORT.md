@@ -14,7 +14,8 @@ embedded: it is read in place from the player's ROM.
   address range and loads `libgame.so` into it with `android_dlopen_ext`.
 - The ROM is loaded at `0x08000000`. Every data symbol the code reads from it
   is an absolute symbol at its ROM address, listed per region in
-  `port/data/rom_symbols_{us,eu}.txt` and turned into a linker script by
+  `port/data/rom_symbols_{us,eu}.txt` and turned into an assembly file of
+  absolute symbol definitions by
   `tools/port/gen_abs_symbols.py`. RAM symbols whose GBA address matters are
   in `port/data/ram_symbols_*.txt`.
 
