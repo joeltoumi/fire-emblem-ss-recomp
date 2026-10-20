@@ -218,7 +218,7 @@ void sub_805A5A8(struct Anim * anim)
         register struct BanimModeData * frameData asm("r1") = (void *)unk28 + whoKnows[mode];
         register u32 r1 asm("r1");
 
-        anim1->pImgSheet = frameData->img;
+        anim1->pImgSheet = GBA_GET(const u32 *, frameData->img);
         unk28 = anim1->pSpriteDataPool;
         anim1->pSpriteData = unk28 += r1 = frameData->unk2;
 
@@ -227,7 +227,7 @@ void sub_805A5A8(struct Anim * anim)
 #else
         struct BanimModeData * frameData = (void *)unk28 + whoKnows[mode];
 
-        anim1->pImgSheet = frameData->img;
+        anim1->pImgSheet = GBA_GET(const u32 *, frameData->img);
         anim1->pSpriteData = anim1->pSpriteDataPool + frameData->unk2;
 
         anim2->pSpriteData = anim2->pSpriteDataPool + 0x000057F0;

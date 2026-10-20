@@ -299,7 +299,7 @@ void BattleAIS_ExecCommands(void)
                                 register u32 r1 asm("r1");
                                 struct BanimModeData * unk = (void *)(idx + gBanimScrLeft + GetAnimPosition(anim) * 0x2A00);
 
-                                anim1->pImgSheet = unk->img;
+                                anim1->pImgSheet = GBA_GET(const u32 *, unk->img);
                                 _ptr = anim1->pSpriteDataPool;
                                 _ptr += r1 = unk->unk2;
                                 anim1->pSpriteData = _ptr;
@@ -310,7 +310,7 @@ void BattleAIS_ExecCommands(void)
                             {
                                 struct BanimModeData * unk = (void *)(idx + gBanimScrLeft + GetAnimPosition(anim) * 0x2A00);
 
-                                anim1->pImgSheet = unk->img;
+                                anim1->pImgSheet = GBA_GET(const u32 *, unk->img);
                                 anim1->pSpriteData = anim1->pSpriteDataPool + unk->unk2;
                                 anim2->pSpriteData = anim2->pSpriteDataPool + 0x57F0;
                             }

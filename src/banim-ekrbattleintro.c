@@ -544,7 +544,7 @@ void UnitKakudaiPrepareAnimScript(struct ProcUnitKakudai * proc)
         const void * src;
         mode = gpBanimModesLeft[front_mode];
         unk = (void *)(gBanimScrLeft + mode);
-        src = unk->img;
+        src = GBA_GET(const u32 *, unk->img);
         proc->pOaml = (void *)gBanimOaml + unk->unk2;
         LZ77UnCompWram(src, gBanimLeftImgSheetBuf);
     }
@@ -555,7 +555,7 @@ void UnitKakudaiPrepareAnimScript(struct ProcUnitKakudai * proc)
         const void * src;
         mode = gpBanimModesRight[front_mode];
         unk = (void *)(gBanimScrRight + mode);
-        src = unk->img;
+        src = GBA_GET(const u32 *, unk->img);
         proc->pOamr = (void *)gBanimOamr2 + unk->unk2;
         LZ77UnCompWram(src, gBanimRightImgSheetBuf);
     }

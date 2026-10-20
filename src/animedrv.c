@@ -167,11 +167,17 @@ void AnimDelete(struct Anim* anim)
     if (anim->pPrev == NULL)
     {
         sFirstAnim = anim->pNext;
+#ifdef PLATFORM_PC
+        if (anim->pNext != NULL) // the last anim: a write to the BIOS on the GBA
+#endif
         anim->pNext->pPrev = NULL;
     }
     else
     {
         anim->pPrev->pNext = anim->pNext;
+#ifdef PLATFORM_PC
+        if (anim->pNext != NULL)
+#endif
         anim->pNext->pPrev = anim->pPrev;
     }
 
@@ -199,7 +205,11 @@ int AnimInterpret(struct Anim* anim)
             {
 
             case 0: // function call
+#ifdef PLATFORM_PC
+                GBA_FUNC(AnimCallback_t, (u32)(uintptr_t)ANINS_PTRINS_GET_ADDRESS(instruction))(anim);
+#else
                 ((AnimCallback_t) (ANINS_PTRINS_GET_ADDRESS(instruction)))(anim);
+#endif
                 break;
 
             case 1: // set new frame data

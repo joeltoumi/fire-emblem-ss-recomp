@@ -19,7 +19,13 @@
 #else
 #define CONST_DATA SECTION(".data")
 #endif
+#ifdef PLATFORM_PC
+// Code runs off the end of one overlay buffer into the next, as the GBA layout
+// allows: keep them contiguous, in order, without sanitizer redzones.
+#define EWRAM_OVERLAY(id) SECTION("ewram_overlay_" # id) __attribute__((no_sanitize("address")))
+#else
 #define EWRAM_OVERLAY(id) SECTION("ewram_overlay_" # id)
+#endif
 
 // this is for denoting objects that *should* be const, but need to not be for functions to match.
 #define SHOULD_BE_CONST

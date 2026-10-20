@@ -200,34 +200,41 @@ void DisableEkrGauge(void)
     gpProcEkrGauge->valid = false;
 }
 
+#ifdef PLATFORM_PC
+// buf is a struct Anim: unk3C is its sprite data, at another offset on PC.
+#define GAUGE_SPRITE(buf) (((struct Anim *)(buf))->pSpriteData)
+#else
+#define GAUGE_SPRITE(buf) ((buf)->unk3C)
+#endif
+
 void sub_8051238(struct EkrGaugeStruct1 *buf, int a, int b)
 {
     if (a > 0) {
         if (b != 1) {
             unsigned int temp = 1;
             if (b < temp) {
-                buf->unk3C = gUnknown_085B955C;
+                GAUGE_SPRITE(buf) = gUnknown_085B955C;
                 return;
             }
         } else {
-            buf->unk3C = gUnknown_085B9574;
+            GAUGE_SPRITE(buf) = gUnknown_085B9574;
             return;
         }
 
-        buf->unk3C = gUnknown_085B958C;
+        GAUGE_SPRITE(buf) = gUnknown_085B958C;
     } else {
         if (b != 1) {
             unsigned int temp = 1;
             if (b < temp) {
-                buf->unk3C = gUnknown_085B95A4;
+                GAUGE_SPRITE(buf) = gUnknown_085B95A4;
                 return;
             }
         } else {
-            buf->unk3C = gUnknown_085B95BC;
+            GAUGE_SPRITE(buf) = gUnknown_085B95BC;
             return;
         }
 
-        buf->unk3C = gUnknown_085B95D4;
+        GAUGE_SPRITE(buf) = gUnknown_085B95D4;
     }
 }
 

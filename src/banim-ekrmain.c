@@ -230,14 +230,19 @@ void UpdateBanimFrame(void)
 
         gpEfxUnitPaletteBackup[POS_L] = &PAL_BUF_COLOR(gBanimPaletteLeft, bid_pal, 0);
         CpuFastCopy(&PAL_BUF_COLOR(gBanimPaletteLeft, bid_pal, 0), PAL_OBJ(0x7), 0x20);
+#ifdef PLATFORM_PC
+        if (gBanimTriAtkPalettes[0] != NULL) // NULL outside triangle attacks (a BIOS read on the GBA)
+#endif
         CpuFastCopy(gBanimTriAtkPalettes[0], PAL_OBJ(0x8), 0x20);
 
-        /* WTF a horrible bug... */
+        /* WTF a horrible bug... (it passes a pointer as the palette line; skipped on PC) */
+#ifndef PLATFORM_PC
         if (gBattleActor.unit.statusIndex == 0xB || gBattleActor.unit.statusIndex == 0xD)
             EfxPalModifyPetrifyEffect(gPaletteBuffer, (int)PAL_OBJ(0x7), 0x1);
 
         if (gBattleTarget.unit.statusIndex == 0xB || gBattleTarget.unit.statusIndex == 0xD)
             EfxPalModifyPetrifyEffect(gPaletteBuffer, (int)PAL_OBJ(0x8), 0x1);
+#endif
 
         EnablePaletteSync();
         LZ77UnCompWram(banim[bid].oam_l, gBanimOaml);
@@ -260,6 +265,9 @@ void UpdateBanimFrame(void)
 
         gpEfxUnitPaletteBackup[POS_R] = &PAL_BUF_COLOR(gBanimPaletteRight, bid_pal, 0);
         CpuFastCopy(&PAL_BUF_COLOR(gBanimPaletteRight, bid_pal, 0), PAL_OBJ(0x9), 0x20);
+#ifdef PLATFORM_PC
+        if (gBanimTriAtkPalettes[1] != NULL) // NULL outside triangle attacks (a BIOS read on the GBA)
+#endif
         CpuFastCopy(gBanimTriAtkPalettes[1], PAL_OBJ(0xA), 0x20);
 
         EnablePaletteSync();
@@ -525,6 +533,11 @@ int GetAISLayerId(struct Anim * anim)
 
 int GetAnimPosition(struct Anim * anim)
 {
+#ifdef PLATFORM_PC
+    // The dragon status checks pass a NULL anim outside dragon battles (a BIOS read on the GBA).
+    if (anim == NULL)
+        return EKR_POS_L;
+#endif
     if (!(anim->state2 & ANIM_BIT2_POS_RIGHT))
         return EKR_POS_L;
 

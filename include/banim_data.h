@@ -35,7 +35,7 @@ struct BattleAnimTerrain {
 extern struct BattleAnimTerrain battle_terrain_table[];
 
 struct BanimModeData {
-    const u32 * unk0;
-    const u32 * img;
+    GBA_PTR(const u32 *) unk0;
+    GBA_PTR(const u32 *) img;
     u32 unk2;
 };
