@@ -21,6 +21,9 @@ void WriteSramFast(const u8 *src, u8 *dest, u32 size)
     REG_WAITCNT = (REG_WAITCNT & ~3) | 3;
     while (--size != -1)
         *dest++ = *src++;
+#ifdef PLATFORM_PC
+    Port_SramWritten();
+#endif
 }
 
 u32 VerifySramFast_Core(const u8 *src, u8 *dest, u32 size)
@@ -35,6 +38,14 @@ u32 VerifySramFast_Core(const u8 *src, u8 *dest, u32 size)
 }
 
 void SetSramFastFunc(void)
+#ifdef PLATFORM_PC
+{
+    // Natively the routines run where they are.
+    ReadSramFast = (void *)ReadSramFast_Core;
+    VerifySramFast = (void *)VerifySramFast_Core;
+    REG_WAITCNT = (REG_WAITCNT & ~3) | 3;
+}
+#else
 {
     u16 *src;
     u16 *dest;
@@ -72,6 +83,7 @@ void SetSramFastFunc(void)
 
     REG_WAITCNT = (REG_WAITCNT & ~3) | 3;
 }
+#endif
 
 u32 WriteAndVerifySramFast(void const * src, void * dest, u32 size)
 {

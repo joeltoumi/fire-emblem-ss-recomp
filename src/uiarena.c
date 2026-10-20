@@ -31,7 +31,7 @@ void DrawArenaOpponentDetailsText(ProcPtr);
 
 //! FE8U = 0x080B5730
 s8 sub_80B5730(void) {
-    if (!(M4A_GET(struct MusicPlayerInfo *, gMPlayTable[gSongTable[0x38].ms].info)->status & 0x8000FFFF)) {
+    if (!(M4A_MPLAY_INFO(gSongTable[0x38].ms)->status & 0x8000FFFF)) {
         return 0;
     }
 

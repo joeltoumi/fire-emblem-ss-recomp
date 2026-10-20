@@ -110,14 +110,14 @@ void M4aPlayWithPostionCtrl(int songid, int x, int flag)
         else
             pan = 0x78 - Div((0xF0 - x) * (0xF0 - x), 0x78);
 
-        info = M4A_GET(struct MusicPlayerInfo *, gMPlayTable[gSongTable[songid].ms].info);
+        info = M4A_MPLAY_INFO(gSongTable[songid].ms);
         m4aMPlayImmInit(info);
         m4aMPlayPanpotControl(info, 0xFFFF, pan);
     }
     else
     {
         struct MusicPlayerInfo * info;
-        info = M4A_GET(struct MusicPlayerInfo *, gMPlayTable[gSongTable[songid].ms].info);
+        info = M4A_MPLAY_INFO(gSongTable[songid].ms);
         m4aMPlayImmInit(info);
         m4aMPlayPanpotControl(info, 0xFFFF, Screen2Pan(x));
     }

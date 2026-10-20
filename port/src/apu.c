@@ -2,11 +2,12 @@
 // fire-emblem-ss-recomp — sound output: the GBA's audio hardware, as far as the game
 // uses it.
 //
-//   * DirectSound: the game mixes its PCM channels into
-//     gMusicInfo.soundRawData; on the GBA, DMA 1/2 feed that buffer to FIFO
-//     A/B 16 samples at a time, paced by timer 0, and the DMA 2 IRQ
-//     (DMA2IntrCode) tracks the read position. Here each frame plays the
-//     frame's worth of samples, raising that IRQ after every 16.
+//   * DirectSound: the m4a engine mixes its PCM channels into
+//     gSoundInfo.pcmBuffer; on the GBA, DMA 1/2 feed that buffer to FIFO
+//     A/B 16 samples at a time, paced by timer 0, and the engine restarts
+//     them every pcmDmaPeriod V-blanks (m4aSoundVSync). Here each frame
+//     plays the frame's worth of samples, taking them 16 at a time from
+//     Port_SoundFifoBlock (port/game/m4a_asm.c), which follows those DMAs.
 //   * PSG: the four Game Boy channels (2 squares, wave, noise), emulated from
 //     their I/O registers. The game writes them once per frame (from
 //     UpdateAudio), so they are sampled once per frame too; a write with the
@@ -42,13 +43,9 @@ enum {
     IO_TM0CNT_L = 0x100,
     IO_TM0CNT_H = 0x102,
 
-    IRQ_DMA2 = 1 << 10,
-    DMA_IRQ_ENABLE = 1 << 14,
     DMA_ENABLE = 1 << 15,
     RESTART = 1 << 15,
     LENGTH_ENABLE = 1 << 14,
-
-    INTR_SLOT_DMA2 = 0,
 };
 
 typedef struct Envelope {

@@ -61,6 +61,11 @@ void ClearOAMBuffer(void *buf, int count)
     u32 *dst = buf;
     int n = count / 16 - 1;
 
+    // Before InitOam the buffer is NULL: on the GBA these writes hit the
+    // BIOS and are ignored.
+    if (dst == NULL)
+        return;
+
     do {
         int i;
         for (i = 0; i < 16; i++)

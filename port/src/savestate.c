@@ -97,7 +97,7 @@ void Port_StateSave(uint8_t* buf)
     memcpy(buf, &h, sizeof(h));
     buf += sizeof(h);
     for (size_t i = 0; i < n; i++) {
-        memcpy(buf, r[i].data, r[i].size);
+        Port_RawCopy(buf, r[i].data, r[i].size);
         buf += r[i].size;
     }
 }
@@ -121,7 +121,7 @@ PortStateResult Port_StateLoad(const uint8_t* buf, size_t size)
         return PORT_STATE_OTHER_BUILD;
     buf += sizeof(h);
     for (size_t i = 0; i < n; i++) {
-        memcpy(r[i].data, buf, r[i].size);
+        Port_RawCopy(r[i].data, buf, r[i].size);
         buf += r[i].size;
     }
     return PORT_STATE_OK;

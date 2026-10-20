@@ -43,6 +43,7 @@ file(GLOB FE8_PORT_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/port/game
 # regions.
 set(FE8_SYMBOL_LISTS
     "${CMAKE_SOURCE_DIR}/port/data/rom_symbols_${FE8_REGION}.txt"
+    "${CMAKE_SOURCE_DIR}/port/data/ram_symbols_${FE8_REGION}.txt"
     "${CMAKE_SOURCE_DIR}/port/data/hardware_symbols.txt")
 set(FE8_ABS_SYMBOLS "${CMAKE_BINARY_DIR}/gen/abs_symbols.S")
 add_custom_command(

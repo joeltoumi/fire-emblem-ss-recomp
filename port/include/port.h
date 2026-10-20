@@ -65,6 +65,8 @@ void Port_MemReset(void);
 
 // The game's SoftReset: back to the top of the main loop (port/src/main.c).
 _Noreturn void Port_SoftReset(void);
+void Port_RawCopy(void* dst, const void* src, size_t size);
+void Port_RawZero(void* dst, size_t size);
 
 void Port_DmaReset(void);
 void Port_DmaOnHBlank(void); // run HBlank-timed channels (one scanline)

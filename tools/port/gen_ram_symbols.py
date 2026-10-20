@@ -1,22 +1,29 @@
 #!/usr/bin/env python3
-"""Generate the RAM variables that only the GBA linker script defines (fe8 port).
+"""Place the RAM variables that only the GBA linker script defines (fe8 port).
 
 ldscript.txt and sym_iwram.txt give many IWRAM/EWRAM variables an address
-without any C definition. The native build needs a definition for each:
+without any C definition. The port maps EWRAM and IWRAM at their GBA
+addresses, so most of these simply stay where they are on the GBA: an
+absolute symbol at that address (port/data/ram_symbols_us.txt). The game
+relies on that layout in places: it clears or copies past the end of one
+variable into the next ones, or uses an array of unknown size.
 
-  * declared in a header with a complete type: an ordinary native variable,
-    `__typeof__(name) name;` (its native size may differ from the GBA one,
-    e.g. when it holds pointers);
+That only works when the variable's native size fits in its GBA slot (the
+gap to the next GBA symbol). A variable whose native type is larger (it
+holds pointers, which are 8 bytes natively) is defined natively instead:
+
+  * declared in a header with a complete type: `__typeof__(name) name;`;
   * else, declared with a complete type by an `extern` inside a source file:
-    that declaration, as a definition;
-  * otherwise (no usable declaration: an array of unknown size, a type local
-    to a source file...): raw native storage, twice its GBA size (the gap to
-    the next GBA symbol), which leaves room for pointers that are 8 bytes
-    natively.
+    that declaration, as a definition.
+
+A variable with no usable declaration (an array of unknown size, a type
+local to a source file...) is always placed at its GBA address.
 
 port/game/ram_native.c defines a few by hand; they are skipped here.
 
-Writes port/game/ram_symbols.c.
+Writes port/game/ram_symbols.c and port/data/ram_symbols_us.txt. The native
+sizes are measured by compiling and running a probe with CC, so run it on
+a 64-bit (LP64) host: the sizes are the same on every 64-bit target.
 
 Usage: gen_ram_symbols.py fireemblem8.elf CC
 """
@@ -108,25 +115,74 @@ def main():
         for n in bad:
             del local[n]
 
+    # Sizes on the GBA (32-bit ARM) and natively (any 64-bit target), from
+    # probe variables `char __sz_X[sizeof(X)]` compiled for each. An array of
+    # unknown size is measured by its element (`__el_X`).
+    decls = "".join(f"extern {d};\n" for d in local.values())
+    names = list(native) + list(local)
+    elem = set()
+    while True:
+        probe = "\n".join(headers) + "\n\n" + decls + "".join(
+            f"char __el_{n}[sizeof(({n})[0])];\n" if n in elem else f"char __sz_{n}[sizeof({n})];\n" for n in names)
+        sizes = {}
+        lines = probe.splitlines()
+        redo = set()
+        for target, extra in (("armv4t-none-eabi", ["-isystem", "/usr/lib/arm-none-eabi/include"]),
+                              ("x86_64-linux-gnu", [])):
+            res = subprocess.run([cc, f"--target={target}", *extra, "-S", "-emit-llvm", "-o", "-", "-x", "c", "-",
+                                  "-std=gnu11", "-w", "-ferror-limit=0", "-DPLATFORM_PC", "-DNONMATCHING=1",
+                                  f"-I{ROOT/'include'}", "-iquote", str(ROOT), f"-I{ROOT/'port/generated'}",
+                                  "-include", "port/native.h", "-funsigned-char"],
+                                 input=probe, capture_output=True, text=True)
+            for m in re.finditer(r"<stdin>:(\d+):\d+: error:", res.stderr):
+                m2 = re.match(r"char __sz_(\w+)\[", lines[int(m.group(1)) - 1])
+                if m2:
+                    redo.add(m2.group(1))
+            if redo:
+                break
+            if res.returncode != 0:
+                sys.exit(res.stderr)
+            for m in re.finditer(r"^@__(sz|el)_(\w+) = .*?\[(\d+) x i8\]", res.stdout, re.M):
+                sizes.setdefault(m.group(2), []).append(int(m.group(3)))
+        if not redo:
+            break
+        elem |= redo
+
+    def gap(a):
+        return next((x for x in all_addrs if x > a), a + 0x10) - a
+
+    def fits(n):
+        if n not in sizes:
+            return True  # no declaration: only ever used through its address
+        gba, host = sizes[n]
+        return host == gba if n in elem else host <= gap(syms[n])
+
+    placed = sorted((n for n in syms if fits(n)), key=lambda n: syms[n])
+    native = [n for n in native if n not in placed]
+    local = {n: d for n, d in local.items() if n not in placed}
+
+    with (ROOT / "port" / "data" / "ram_symbols_us.txt").open("w") as f:
+        for n in placed:
+            f.write(f"{n} {syms[n]:08x}\n")
+
+    def note(n):
+        gba, host = sizes[n]
+        what = "element " if n in elem else ""
+        return f"GBA 0x{syms[n]:08x}, {what}0x{gba:x} bytes on the GBA, 0x{host:x} natively"
+
     out = ROOT / "port" / "game" / "ram_symbols.c"
     with out.open("w") as f:
         f.write("// Generated by tools/port/gen_ram_symbols.py: do not edit.\n//\n")
-        f.write("// RAM variables that only the GBA linker script places (by address),\n")
-        f.write("// defined natively with the type their header declares.\n\n")
+        f.write("// RAM variables that only the GBA linker script places and that are\n")
+        f.write("// larger natively than their GBA slot: native variables. The others stay\n")
+        f.write("// at their GBA address (port/data/ram_symbols_*.txt).\n\n")
         f.write("\n".join(headers) + "\n\n")
         for n in native:
-            f.write(f"__typeof__({n}) {n};\n")
+            f.write(f"__typeof__({n}) {n}; // {note(n)}\n")
         f.write("\n// Declared in source files only.\n")
-        for d in local.values():
-            f.write(f"{d};\n")
-        f.write("\n// No usable declaration: raw storage, twice the GBA size.\n")
-        raw = sorted(set(syms) - set(native) - set(local), key=lambda n: syms[n])
-        for n in raw:
-            a = syms[n]
-            nxt = next((x for x in all_addrs if x > a), a + 0x10)
-            size = max(2 * (nxt - a), 0x40)
-            f.write(f"_Alignas(16) unsigned char {n}[0x{size:x}]; // GBA 0x{a:08x}\n")
-    print(f"{len(native)} typeof, {len(local)} declared, {len(raw)} raw", file=sys.stderr)
+        for n, d in local.items():
+            f.write(f"{d}; // {note(n)}\n")
+    print(f"{len(placed)} at their GBA address, {len(native) + len(local)} native", file=sys.stderr)
 
 
 if __name__ == "__main__":

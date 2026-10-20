@@ -82,6 +82,23 @@ static unsigned char* sInitialData;
 
 static jmp_buf sResetJump;
 
+// Copies across a whole section, so across globals: AddressSanitizer would
+// see each of these as an overflow of the first one.
+__attribute__((no_sanitize("address"))) void Port_RawCopy(void* dst, const void* src, size_t size)
+{
+    unsigned char* d = dst;
+    const unsigned char* s = src;
+    while (size--)
+        *d++ = *s++;
+}
+
+__attribute__((no_sanitize("address"))) void Port_RawZero(void* dst, size_t size)
+{
+    unsigned char* d = dst;
+    while (size--)
+        *d++ = 0;
+}
+
 _Noreturn void Port_SoftReset(void)
 {
     longjmp(sResetJump, 1);
@@ -121,7 +138,7 @@ int Port_Main(int argc, char** argv)
     sInitialData = malloc(dataSize ? dataSize : 1);
     if (!sInitialData)
         Port_Fatal("out of memory");
-    memcpy(sInitialData, __start_fe8_data, dataSize);
+    Port_RawCopy(sInitialData, __start_fe8_data, dataSize);
 
     // Erased flash reads as 0xFF; the host overwrites it with the save file.
     memset(gPortSram, 0xFF, sizeof(gPortSram));
@@ -131,8 +148,8 @@ int Port_Main(int argc, char** argv)
         // src/crt0.s: `bl AgbMain; b crt0` — and SoftReset starts over too.
         setjmp(sResetJump);
         Port_FlushSave();
-        memcpy(__start_fe8_data, sInitialData, dataSize);
-        memset(__start_fe8_bss, 0, (size_t)(__stop_fe8_bss - __start_fe8_bss));
+        Port_RawCopy(__start_fe8_data, sInitialData, dataSize);
+        Port_RawZero(__start_fe8_bss, (size_t)(__stop_fe8_bss - __start_fe8_bss));
         Port_MemReset();
         Port_DmaReset();
         Port_ApuReset();
