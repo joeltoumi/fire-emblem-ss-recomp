@@ -472,9 +472,9 @@ void UnitRemoveItem(struct Unit* unit, int slot);
 
 #define UNIT_IS_VALID(aUnit) ((aUnit) && (aUnit)->pCharacterData)
 #ifdef PLATFORM_PC
-// The game reads these on empty unit slots too; NULL is a harmless BIOS read on the GBA
-#define UNIT_CHAR_ID(aUnit) ((aUnit)->pCharacterData ? (aUnit)->pCharacterData->number : 0)
-#define UNIT_CLASS_ID(aUnit) ((aUnit)->pClassData ? (aUnit)->pClassData->number : 0)
+// The game reads these on empty unit slots and NULL units too (harmless BIOS reads on the GBA)
+#define UNIT_CHAR_ID(aUnit) ((aUnit) && (aUnit)->pCharacterData ? (aUnit)->pCharacterData->number : 0)
+#define UNIT_CLASS_ID(aUnit) ((aUnit) && (aUnit)->pClassData ? (aUnit)->pClassData->number : 0)
 #else
 #define UNIT_CHAR_ID(aUnit) ((aUnit)->pCharacterData->number)
 #define UNIT_CLASS_ID(aUnit) ((aUnit)->pClassData->number)

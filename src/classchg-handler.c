@@ -69,7 +69,7 @@ u32 PromoHandler_SetupAndStartUI(struct ProcPromoHandler *proc)
         proc->sel_en = 1;
         flag = 0;
 
-#if BUGFIX
+#if BUGFIX || defined(PLATFORM_PC) // the original reads past the 3 trainees on the stack
         for (i = 0; i < 3; i++) {
 #else
         for (i = 0; i < 7; i++) {
@@ -77,6 +77,10 @@ u32 PromoHandler_SetupAndStartUI(struct ProcPromoHandler *proc)
             unit = GetUnitFromCharId(trainees[i].charId);
             if (!unit)
                 flag = true;
+#ifdef PLATFORM_PC
+            if (!unit)
+                continue; // the GBA reads its BIOS area here
+#endif
 
             if (unit->state & (US_BIT16 | US_DEAD))
                 flag = true;

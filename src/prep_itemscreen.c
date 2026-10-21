@@ -436,7 +436,7 @@ void PrepItemScreen_SetupGfx(struct PrepItemScreenProc * proc)
 void PrepItemScreen_OnEnd(struct PrepItemScreenProc * proc)
 {
     struct Unit * unit = GetUnitFromPrepList(proc->hoverUnitIdx);
-    PrepSetLatestCharId(unit->pCharacterData->number);
+    PrepSetLatestCharId(UNIT_CHAR_ID(unit));
 
     EndAllParallelWorkers();
     EndSysHandCursor();

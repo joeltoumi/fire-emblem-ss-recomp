@@ -224,7 +224,13 @@ void MapUnitC_DeleteGmapUnit(struct GMapUnitContainerProc * container, int index
 //! FE8U = 0x080BAF34
 void MapUnitC_SetPosition(struct GMapUnitContainerProc * container, int index, int x, int y)
 {
-    struct GMapUnitProc * mapUnitProc = container->pMapUnitProcs[index];
+    struct GMapUnitProc * mapUnitProc;
+
+#ifdef PLATFORM_PC
+    if (index < 0 || container->pMapUnitProcs[index] == NULL)
+        return; // no free map unit: the GBA writes through a stray pointer
+#endif
+    mapUnitProc = container->pMapUnitProcs[index];
 
     mapUnitProc->x = x;
     mapUnitProc->y = y;
@@ -263,7 +269,13 @@ int MapUnitC_GetAnimId(struct GMapUnitContainerProc * container, int index)
 //! FE8U = 0x080BAF84
 void MapUnitC_SetAnimId(struct GMapUnitContainerProc * container, int index, int animId)
 {
-    struct GMapUnitProc * mapUnitProc = container->pMapUnitProcs[index];
+    struct GMapUnitProc * mapUnitProc;
+
+#ifdef PLATFORM_PC
+    if (index < 0 || container->pMapUnitProcs[index] == NULL)
+        return; // no free map unit: the GBA writes through a stray pointer
+#endif
+    mapUnitProc = container->pMapUnitProcs[index];
 
     mapUnitProc->animId = animId;
     AP_SwitchAnimation(mapUnitProc->ap, mapUnitProc->animId);

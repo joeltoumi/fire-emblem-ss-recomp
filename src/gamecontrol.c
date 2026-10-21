@@ -571,6 +571,31 @@ void GameControl_PostChapterSwitch(struct GameCtrlProc* proc) {
 }
 
 void GameCtrl_CheckNewGameAndBranch(struct GameCtrlProc* proc) {
+#ifdef PLATFORM_PC
+    {
+        // Testing aid (FE8_WARP): start the first chapter of the session elsewhere,
+        // skipping the world map (which picks the chapter from its own progress)
+        static bool sWarped;
+        bool warp = !sWarped && gPlaySt.chapterIndex == 0 && Port_NewGameChapter() != 0;
+        sWarped = true;
+        if (warp) {
+            int i;
+            gPlaySt.chapterIndex = Port_NewGameChapter();
+            if (gPlaySt.chapterIndex >= CHAPTER_I_9 && gPlaySt.chapterIndex <= CHAPTER_I_21X)
+                gPlaySt.chapterModeIndex = CHAPTER_MODE_EPHRAIM;
+            else if (gPlaySt.chapterIndex >= CHAPTER_E_9 && gPlaySt.chapterIndex <= CHAPTER_E_21X)
+                gPlaySt.chapterModeIndex = CHAPTER_MODE_EIRIKA;
+            else if (gPlaySt.chapterIndex == CHAPTER_I_11)
+                gPlaySt.chapterModeIndex = CHAPTER_MODE_EPHRAIM;
+            // Mark the chapter's world map node so the battle map counts as a story one
+            for (i = 0; i < NODE_MAX; i++)
+                if (WMLoc_GetChapterId(i) == gPlaySt.chapterIndex)
+                    gGMData.nodes[i].state |= GM_NODE_STATE_CLEARED;
+            Proc_Goto(proc, LGAMECTRL_EXEC_BM_EXT);
+            return;
+        }
+    }
+#endif
     if ((gPlaySt.save_menu_type == 2) || (gPlaySt.save_menu_type == 4)) {
         Proc_Goto(proc, LGAMECTRL_EXEC_BM_EXT);
     }

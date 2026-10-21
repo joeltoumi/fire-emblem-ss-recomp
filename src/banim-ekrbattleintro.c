@@ -1019,30 +1019,38 @@ bool PrepareBattleGraphicsMaybe(void)
         }
     }
 
-    pid = unit_bu1->pCharacterData->number - 1;
-    jid = unit_bu1->pClassData->number;
+    pid = UNIT_CHAR_ID(unit_bu1) - 1;
+    jid = UNIT_CLASS_ID(unit_bu1);
 
     if (valid_l)
         gBanimUniquePal[POS_L] = -1;
 
     for (i = 0; i < 7; i++)
     {
+#ifdef PLATFORM_PC
+        if (valid_l && gAnimCharaPalConfig[pid][i] == jid) // no unit (a snag or wall) has pid -1
+#else
         if (gAnimCharaPalConfig[pid][i] == jid && valid_l)
+#endif
         {
             gBanimUniquePal[POS_L] = gAnimCharaPalIt[pid][i] - 1;
             break;
         }
     }
 
-    pid = unit_bu2->pCharacterData->number - 1;
-    jid = unit_bu2->pClassData->number;
+    pid = UNIT_CHAR_ID(unit_bu2) - 1;
+    jid = UNIT_CLASS_ID(unit_bu2);
 
     if (valid_r)
         gBanimUniquePal[POS_R] = -1;
 
     for (i = 0; i < 7; i++)
     {
+#ifdef PLATFORM_PC
+        if (valid_r && gAnimCharaPalConfig[pid][i] == jid) // no unit (a snag or wall) has pid -1
+#else
         if (gAnimCharaPalConfig[pid][i] == jid && valid_r)
+#endif
         {
             gBanimUniquePal[POS_R] = gAnimCharaPalIt[pid][i] - 1;
             break;
@@ -1140,14 +1148,14 @@ bool PrepareBattleGraphicsMaybe(void)
     else
     {
         if (valid_l)
-            gEkrSpellAnimIndex[POS_L] = GetSpellAnimId(unit_bu1->pClassData->number, bu1->weaponBefore);
+            gEkrSpellAnimIndex[POS_L] = GetSpellAnimId(UNIT_CLASS_ID(unit_bu1), bu1->weaponBefore);
 
         if (valid_r)
-            gEkrSpellAnimIndex[POS_R] = GetSpellAnimId(unit_bu2->pClassData->number, bu2->weaponBefore);
+            gEkrSpellAnimIndex[POS_R] = GetSpellAnimId(UNIT_CLASS_ID(unit_bu2), bu2->weaponBefore);
 
         if (gBattleStats.config & BATTLE_CONFIG_REFRESH)
             if (!IsItemDisplayedInBattle(bu2->weaponBefore))
-                if (unit_bu2->pClassData->number == CLASS_DANCER)
+                if (UNIT_CLASS_ID(unit_bu2) == CLASS_DANCER)
                     gEkrSpellAnimIndex[POS_R] = 0xF;
     }
 
@@ -1162,7 +1170,7 @@ bool PrepareBattleGraphicsMaybe(void)
         case EKR_DISTANCE_CLOSE:
         case EKR_DISTANCE_FAR:
         case EKR_DISTANCE_FARFAR:
-            switch (unit_bu1->pClassData->number)
+            switch (UNIT_CLASS_ID(unit_bu1))
             {
                 case CLASS_DRACO_ZOMBIE:
                     SetEkrDragonStatusType(gAnims[POS_L], EKRDRGON_TYPE_DRACO_ZOMBIE);
@@ -1371,32 +1379,32 @@ bool PrepareBattleGraphicsMaybe(void)
             return false;
     }
 
-    if (unit_bu1->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_STAFF_SLEEP)
+    if (UNIT_CLASS_ID(unit_bu1) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_STAFF_SLEEP)
         return false;
 
-    if (unit_bu2->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_STAFF_SLEEP)
+    if (UNIT_CLASS_ID(unit_bu2) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_STAFF_SLEEP)
         return false;
 
-    if (unit_bu1->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_STAFF_BERSERK)
+    if (UNIT_CLASS_ID(unit_bu1) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_STAFF_BERSERK)
         return false;
 
-    if (unit_bu2->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_STAFF_BERSERK)
+    if (UNIT_CLASS_ID(unit_bu2) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_STAFF_BERSERK)
         return false;
 
-    if (unit_bu1->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_STAFF_SILENCE)
+    if (UNIT_CLASS_ID(unit_bu1) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_STAFF_SILENCE)
         return false;
 
-    if (unit_bu2->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_STAFF_SILENCE)
+    if (UNIT_CLASS_ID(unit_bu2) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_STAFF_SILENCE)
         return false;
 
-    if (unit_bu1->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_MONSTER_STONE)
+    if (UNIT_CLASS_ID(unit_bu1) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu2->weaponBefore) == ITEM_MONSTER_STONE)
         return false;
 
-    if (unit_bu2->pClassData->number == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_MONSTER_STONE)
+    if (UNIT_CLASS_ID(unit_bu2) == CLASS_MANAKETE_MYRRH && GetItemIndex(bu1->weaponBefore) == ITEM_MONSTER_STONE)
         return false;
 
-    if (char_cnt != 1 && unit_bu1->pClassData->number == CLASS_DEMON_KING && GetItemIndex(bu1->weaponBefore) != ITEM_NIGHTMARE &&
-        unit_bu2->pClassData->number != CLASS_PHANTOM && unit_bu2->pClassData->number != CLASS_DRACO_ZOMBIE)
+    if (char_cnt != 1 && UNIT_CLASS_ID(unit_bu1) == CLASS_DEMON_KING && GetItemIndex(bu1->weaponBefore) != ITEM_NIGHTMARE &&
+        UNIT_CLASS_ID(unit_bu2) != CLASS_PHANTOM && UNIT_CLASS_ID(unit_bu2) != CLASS_DRACO_ZOMBIE)
         return true;
 
     if (usrdefined_enable == false)

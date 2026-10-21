@@ -1097,7 +1097,7 @@ void MoveActiveUnit(int x, int y) {
 
     gActiveUnit->state |= US_UNSELECTABLE;
 
-    PidStatsAddSquaresMoved(gActiveUnit->pCharacterData->number, gActionData.moveCount);
+    PidStatsAddSquaresMoved(UNIT_CHAR_ID(gActiveUnit), gActionData.moveCount);
 
     if (GetUnitCurrentHp(gActiveUnit) != 0)
         gActiveUnit->state = gActiveUnit->state &~ US_HIDDEN;

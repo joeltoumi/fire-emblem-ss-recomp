@@ -365,7 +365,11 @@ void LoadGorgonFromEgg(struct MAEffectProc * proc)
     gUnitDefEggHatching.ai[2] = proc->unit->ai_a_pc; // this looks incorrect
     gUnitDefEggHatching.ai[3] = proc->unit->ai_a_pc >> 8; // this is 0
 
+#ifdef PLATFORM_PC
+    LoadUnit(&gUnitDefEggHatching); // LoadUnits would read a terminator past the variable
+#else
     LoadUnits(&gUnitDefEggHatching);
+#endif
     GetUnitFromCharId(CHARACTER_MONSTER_BA);
 
     ClearUnit(GetUnit(proc->unit->index));

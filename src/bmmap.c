@@ -23,7 +23,13 @@ static void RefreshMinesOnBmMap(void);
 
 EWRAM_OVERLAY(bmstart) u16 gBmMapBuffer[0x800 / 2] = {};
 
-enum { MAP_POOL_SIZE = 0x7B8 };
+#ifdef PLATFORM_PC
+// Row pointers are twice as big, and the AI reads up to 3 rows past the map edges
+// (stray reads on the GBA), so PC maps get 4 guard rows on each side and a larger pool
+enum { MAP_POOL_SIZE = 0x7B8 * 2, MAP_GUARD_ROWS = 4 };
+#else
+enum { MAP_POOL_SIZE = 0x7B8, MAP_GUARD_ROWS = 2 };
+#endif
 
 // TODO: figure out what's up with this (overlaps with a lot of other objects?)
 
@@ -180,7 +186,7 @@ void BmMapInit(void* buffer, u8*** outHandle, int x, int y) {
     sInitializingMap = buffer;
 
     x  += 2; // two tiles on each edge (shared)
-    y += 4; // two tiles on each edge
+    y += 2 * MAP_GUARD_ROWS; // two tiles on each edge
 
     // itBuffer = start of tile area (the first y * sizeof(u8*) bytes are reserved for row pointers)
     itBuffer = buffer + y * sizeof(u8*);
@@ -192,11 +198,11 @@ void BmMapInit(void* buffer, u8*** outHandle, int x, int y) {
     }
 
     // first row is actually the third, ensuring the top two map rows as safety
-    *outHandle = sInitializingMap + 2;
+    *outHandle = sInitializingMap + MAP_GUARD_ROWS;
 }
 
 void BmMapFill(u8** map, int value) {
-    int size = (gBmMapSize.y + 4) * (gBmMapSize.x + 2);
+    int size = (gBmMapSize.y + 2 * MAP_GUARD_ROWS) * (gBmMapSize.x + 2);
 
     if (size % 2)
         size = size - 1;
@@ -204,7 +210,7 @@ void BmMapFill(u8** map, int value) {
     value = (0xFF & value);
     value += value << 8;
 
-    CpuFill16(value, map[-2], size);
+    CpuFill16(value, map[-MAP_GUARD_ROWS], size);
 
     SetWorkingBmMap(map);
 }

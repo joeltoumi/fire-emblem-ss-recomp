@@ -312,7 +312,7 @@ void ApplyMapChangesById(int id)
     int ix = 0, iy = 0;
 
     const struct MapChange* mapChange = GetMapChange(id);
-    const u16* tileDataIt = mapChange->data;
+    const u16* tileDataIt = GBA_GET(const u16 *, mapChange->data);
 
     for (iy = 0; iy < mapChange->ySize; ++iy)
     {

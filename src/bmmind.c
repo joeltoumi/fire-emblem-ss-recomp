@@ -473,6 +473,10 @@ void DeathDropSpriteAnim_End(void) {
 void DropRescueOnDeath(ProcPtr proc, struct Unit* unit) {
     struct DeathDropAnimProc* child;
 
+#ifdef PLATFORM_PC
+    if (unit == NULL)
+        return; // the GBA reads its BIOS area here
+#endif
     if (GetUnitCurrentHp(unit) != 0) {
         return;
     }

@@ -219,6 +219,10 @@ inline struct UnitUsageStats *GetPidStats(u8 pid)
 {
     if (pid >= BWL_ARRAY_NUM)
         return 0;
+#ifdef PLATFORM_PC
+    else if (pid == 0) // no character data (a BIOS read on the GBA)
+        return 0;
+#endif
     else if (0 == GetCharacterData(pid)->affinity)
         return 0;
     else

@@ -1279,6 +1279,10 @@ void SetFaceBlinkControl(struct FaceProc* proc, int blinkControl) {
     }
 
     blinkProc = proc->pBlinkProc;
+#ifdef PLATFORM_PC
+    if (blinkProc == NULL)
+        return; // faces without blinking: the GBA writes to its (read-only) BIOS area
+#endif
     blinkProc->blinkControl = blinkControl;
 
     blinkProc->unk_38 = FaceBlinkProc_GenBlinkInterval(blinkProc);

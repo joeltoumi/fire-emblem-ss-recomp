@@ -45,6 +45,12 @@ void Port_FlushSave(void)
     sSramDirty = false;
 }
 
+int Port_NewGameChapter(void)
+{
+    const char* warp = getenv("FE8_WARP");
+    return warp != NULL ? atoi(warp) : 0;
+}
+
 void Port_Log(const char* fmt, ...)
 {
     va_list ap;

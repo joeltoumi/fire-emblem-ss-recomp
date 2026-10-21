@@ -397,7 +397,7 @@ struct MapChange
     /* 02 */ u8 yOrigin;
     /* 03 */ u8 xSize;
     /* 04 */ u8 ySize;
-    /* 08 */ const void* data;
+    /* 08 */ GBA_PTR(const void *) data;
 };
 
 enum { UNIT_SUPPORT_MAX_COUNT = 7 };

@@ -39,6 +39,10 @@ void Port_SramWritten(void);
  * same there, so the host can take or restore save states. */
 void Port_HostFrameBoundary(void);
 
+/* Testing aid: the chapter a new game starts on, from the FE8_WARP environment
+ * variable (a chapter index), or 0. */
+int Port_NewGameChapter(void);
+
 /* Sound (port/game/m4a_asm.c): the next 16 samples DMA 1/2 would feed to
  * FIFO A/B. Returns 0 when there is nothing to play. */
 int Port_SoundFifoBlock(const signed char **fifoA, const signed char **fifoB);

@@ -298,8 +298,19 @@ void StartShopScreen(struct Unit * unit, const u16 * inventory, u8 shopType, Pro
     if (inventory != 0)
         shopItems = inventory;
 
+#ifdef PLATFORM_PC
+    // The GBA copies 21 entries whatever the list length; stop at the terminator
+    for (i = 0; i < SHOP_ITEMS_MAX_AMT; i++) {
+        proc->shopItems[i] = MakeNewItem(*shopItems);
+        if (*shopItems++ == 0)
+            break;
+    }
+    for (; i < SHOP_ITEMS_MAX_AMT; i++)
+        proc->shopItems[i] = 0;
+#else
     for (i = 0; i <= SHOP_ITEMS_MAX_AMT; i++)
         proc->shopItems[i] = MakeNewItem(*shopItems++);
+#endif
 
     UpdateShopItemCounts(proc);
 }

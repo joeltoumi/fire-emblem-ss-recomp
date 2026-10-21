@@ -1252,6 +1252,10 @@ void sub_8026414(int unk) {
 
         struct Unit* unit = GetUnit(target->uid);
 
+#ifdef PLATFORM_PC
+        if (unit == NULL)
+            continue; // the GBA reads its BIOS area here
+#endif
         if (GetUnitCurrentHp(unit) <= target->extra) {
             PidStatsRecordDefeatInfo(unit->pCharacterData->number, 0, unk);
             PidStatsRecordLoseData(unit->pCharacterData->number);
