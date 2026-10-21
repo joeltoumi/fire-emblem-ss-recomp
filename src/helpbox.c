@@ -1081,8 +1081,8 @@ void sub_808A8AC(void) {
 }
 
 int CONST_DATA gUnknown_08A016D8[] = {
-    0x0843, // TODO: msgid "Yes[.]"
-    0x0844, // TODO: msgid "No"
+    MSG_ID(0x843), // TODO: msgid "Yes[.]"
+    MSG_ID(0x844), // TODO: msgid "No"
 };
 
 struct ProcCmd CONST_DATA gProcScr_BoxDialogue[] = {

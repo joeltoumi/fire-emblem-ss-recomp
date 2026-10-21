@@ -66,28 +66,28 @@ PROC_LABEL(5),
 };
 
 int CONST_DATA gUnknown_08A196BC[] = {
-    0x586, // TODO: msgid "Rank"
-    0x587, // TODO: msgid "Tactician"
-    0x588, // TODO: msgid "Augury"
-    0x577, // TODO: msgid "Support"
-    0x589, // TODO: msgid "Augury Menu"
+    MSG_ID(0x586), // TODO: msgid "Rank"
+    MSG_ID(0x587), // TODO: msgid "Tactician"
+    MSG_ID(0x588), // TODO: msgid "Augury"
+    MSG_ID(0x577), // TODO: msgid "Support"
+    MSG_ID(0x589), // TODO: msgid "Augury Menu"
 };
 
 int CONST_DATA gUnknown_08A196D0[] = {
-    0x586, // TODO: msgid "Rank"
-    0x587, // TODO: msgid "Tactician"
-    0x588, // TODO: msgid "Augury"
-    0x577, // TODO: msgid "Support"
-    0x589, // TODO: msgid "Augury Menu"
+    MSG_ID(0x586), // TODO: msgid "Rank"
+    MSG_ID(0x587), // TODO: msgid "Tactician"
+    MSG_ID(0x588), // TODO: msgid "Augury"
+    MSG_ID(0x577), // TODO: msgid "Support"
+    MSG_ID(0x589), // TODO: msgid "Augury Menu"
 };
 
 int CONST_DATA gUnused_08A196E4[] = {
-    0x58A, // TODO: msgid "Tactics"
-    0x58B, // TODO: msgid "Survival"
-    0x58C, // TODO: msgid "Funds"
-    0x58D, // TODO: msgid "Exp"
-    0x58E, // TODO: msgid "Combat"
-    0x58F, // TODO: msgid "Objective"
+    MSG_ID(0x58A), // TODO: msgid "Tactics"
+    MSG_ID(0x58B), // TODO: msgid "Survival"
+    MSG_ID(0x58C), // TODO: msgid "Funds"
+    MSG_ID(0x58D), // TODO: msgid "Exp"
+    MSG_ID(0x58E), // TODO: msgid "Combat"
+    MSG_ID(0x58F), // TODO: msgid "Objective"
 };
 
 //! FE8U = 0x080A0724

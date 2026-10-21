@@ -8,16 +8,16 @@ struct MultiArenaSaveTeam EWRAM_DATA gMultiArenaSaveTeamBufA = {0};
 struct MultiArenaSaveTeam EWRAM_DATA gMultiArenaSaveTeamBufB = {0};
 
 int CONST_DATA sArenaCpTeamNameLut[] = {
-    0x2BF,      /* Lord */
-    0x2CC,      /* Sniper */
-    0x2E1,      /* Shaman */
-    0x2C1,      /* Cavalier */
-    0x2DC,      /* Fighter */
-    0x2DD,      /* Warrior */
-    0x2C3,      /* Knight */
-    0x2C4,      /* General */
-    0x2CB,      /* Archer */
-    0x2E2,      /* Druid */
+    MSG_ID(0x2BF),      /* Lord */
+    MSG_ID(0x2CC),      /* Sniper */
+    MSG_ID(0x2E1),      /* Shaman */
+    MSG_ID(0x2C1),      /* Cavalier */
+    MSG_ID(0x2DC),      /* Fighter */
+    MSG_ID(0x2DD),      /* Warrior */
+    MSG_ID(0x2C3),      /* Knight */
+    MSG_ID(0x2C4),      /* General */
+    MSG_ID(0x2CB),      /* Archer */
+    MSG_ID(0x2E2),      /* Druid */
 };
 
 struct MultiArenaRankingEnt const gInitialMultiArenaRankings[MULTIARENA_MAX_RANKINGS] = {

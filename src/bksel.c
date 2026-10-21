@@ -78,12 +78,12 @@ void InitBattleForecastIconPaletteBuffer(void)
 void InitBattleForecastLabels(void)
 {
     static const int sBattleForecastLabelStringIndexes[] = {
-        0x503, // Mt
-        0x4F4, // Hit[.]
-        0x501, // Crit
-        0x4F3, // Atk[.]
-        0x4EF, // Def[.]
-        0x504, // AS
+        MSG_ID(0x503), // Mt
+        MSG_ID(0x4F4), // Hit[.]
+        MSG_ID(0x501), // Crit
+        MSG_ID(0x4F3), // Atk[.]
+        MSG_ID(0x4EF), // Def[.]
+        MSG_ID(0x504), // AS
     };
 
     int i;
@@ -727,7 +727,7 @@ u8 StartBattleForecastHelpBox(ProcPtr parent, struct SelectTarget * target)
 u16 GetBkselHelpBoxMsg(int wt, s8 isEffective)
 {
     static u16 lut[] = {
-        0x56B, 0x56D, 0x56F, 0x56C, 0x56E, 0x570,
+        MSG_ID(0x56B), MSG_ID(0x56D), MSG_ID(0x56F), MSG_ID(0x56C), MSG_ID(0x56E), MSG_ID(0x570),
     };
 
     int idx = isEffective != 0 ? 3 : 0;

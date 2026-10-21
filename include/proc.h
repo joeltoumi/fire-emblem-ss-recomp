@@ -91,6 +91,13 @@ struct Proc
     /* 66 */ short unk66;
     /* 68 */ short unk68;
     /* 6A */ short unk6A;
+
+#ifdef PLATFORM_PC
+    // Each kind of proc casts this storage to its own struct, sized for the
+    // GBA's 32-bit pointers. Natively the pointers are 64-bit, so a proc's
+    // fields would run into the next slot: give every slot room to spare.
+    u8 pcExtra[0x100];
+#endif
 };
 
 struct ProcFindIterator

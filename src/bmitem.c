@@ -567,7 +567,12 @@ s8 IsItemEffectiveAgainst(u16 item, struct Unit* unit) {
 
 s8 IsUnitEffectiveAgainst(struct Unit* actor, struct Unit* target) {
     int actorClass = actor->pClassData->number;
+#ifdef PLATFORM_PC
+    // The weapon select preview has no target class yet (a BIOS read on the GBA).
+    int targetClass = target->pClassData ? target->pClassData->number : 0;
+#else
     int targetClass = target->pClassData->number;
+#endif
 
     const u8* effList = NULL;
 

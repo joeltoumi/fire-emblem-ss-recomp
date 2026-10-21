@@ -42,15 +42,15 @@ u16 CONST_DATA gBgConfig_ItemUseScreen[] =
 
 int CONST_DATA gUnknown_08A18200[][3] =
 {
-    { 0x57A, 0x57A, 0x75D, },
-    { 0x57B, 0x57C, 0x75E, },
-    { 0x57D, 0x581,     0, },
-    {     0,     0, 0x75F, },
-    { 0x57D, 0x57F,     0, },
+    { MSG_ID(0x57A), MSG_ID(0x57A), MSG_ID(0x75D), },
+    { MSG_ID(0x57B), MSG_ID(0x57C), MSG_ID(0x75E), },
+    { MSG_ID(0x57D), MSG_ID(0x581),     0, },
+    {     0,     0, MSG_ID(0x75F), },
+    { MSG_ID(0x57D), MSG_ID(0x57F),     0, },
     {     0,     0,     0, },
     {     0,     0,     0, },
-    { 0x580, 0x580,     0, },
-    { 0x582, 0x582,     0, },
+    { MSG_ID(0x580), MSG_ID(0x580),     0, },
+    { MSG_ID(0x582), MSG_ID(0x582),     0, },
 };
 
 // clang-format on
