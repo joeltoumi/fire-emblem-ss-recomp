@@ -21,6 +21,12 @@ static s8 HasUnitGainedSupportLevel(struct Unit* unit, int num);
 
 int GetUnitSupporterCount(struct Unit* unit)
 {
+#ifdef PLATFORM_PC
+    // Called with a NULL unit when the supporter is not deployed (a BIOS read on the GBA)
+    if (unit == NULL || unit->pCharacterData == NULL)
+        return 0;
+#endif
+
     if (!UNIT_SUPPORT_DATA(unit))
         return 0;
 

@@ -308,11 +308,24 @@ void WriteGameSavePackedUnit(struct Unit *unit, void *sram_dest)
     struct GameSavePackedUnit unitp;
 
 
+#ifdef PLATFORM_PC
+    // Empty slots have NULL data pointers (the GBA reads its BIOS area there)
+    unitp.pid = unit->pCharacterData ? UNIT_CHAR_ID(unit) : 0;
+    unitp.jid = unit->pClassData ? unit->pClassData->number : 0;
+#else
     unitp.pid = UNIT_CHAR_ID(unit);
     unitp.jid = unit->pClassData->number;
+#endif
+
+#ifdef PLATFORM_PC
+    // tmp_unit is used after the block below, so it must outlive it
+    struct Unit tmp_unit;
+#endif
 
     if (NULL == unit->pCharacterData) {
+#ifndef PLATFORM_PC
         struct Unit tmp_unit;
+#endif
         unit = &tmp_unit;
         ClearUnit(&tmp_unit);
         unitp.pid = 0;

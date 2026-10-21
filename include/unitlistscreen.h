@@ -193,7 +193,13 @@ extern struct Text gUnknown_0200E148;
 extern struct Text gUnknown_0200E150;
 extern u8 gUnknown_0200E158[0x1000];
 extern u8 gUnknown_0200F158;
-extern EWRAM_OVERLAY(0) u32 gUnknown_0200F15C[8];
+#ifdef PLATFORM_PC
+// The game clears 20 entries (spilling into the next variable on the GBA)
+#define ICON_SLOTS_0200F15C 20
+#else
+#define ICON_SLOTS_0200F15C 8
+#endif
+extern EWRAM_OVERLAY(0) u32 gUnknown_0200F15C[ICON_SLOTS_0200F15C];
 
 // extern ??? ProcScr_UnitListScreen_Field
 extern struct ProcCmd ProcScr_UnitListScreen_PrepMenu[];

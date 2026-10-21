@@ -81,6 +81,9 @@ void SubtitleHelpDarkenerOnHBlank()
         0, 0, 0, 0, 1, 2, 3, 4, // 136 .. 143
         5, 6, 7, 7, 7, 7, 7, 7, // 144 .. 151
         7, 7, 7, 7, 7, 7, 7, 7, // 152 .. 159
+#ifdef PLATFORM_PC
+        7, // 160: the game reads one past the end (an invisible line)
+#endif
     };
 
     u16 vcount = REG_VCOUNT;

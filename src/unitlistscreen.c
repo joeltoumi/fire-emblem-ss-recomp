@@ -44,7 +44,7 @@ EWRAM_OVERLAY(0) struct Text gUnknown_0200E148 = {};
 EWRAM_OVERLAY(0) struct Text gUnknown_0200E150 = {};
 EWRAM_OVERLAY(0) u8 gUnknown_0200E158[0x1000] = {};
 EWRAM_OVERLAY(0) u8 gUnknown_0200F158 = 0;
-EWRAM_OVERLAY(0) u32 gUnknown_0200F15C[8] = {}; // equipped item icons
+EWRAM_OVERLAY(0) u32 gUnknown_0200F15C[ICON_SLOTS_0200F15C] = {}; // equipped item icons
 
 // clang-format off
 
