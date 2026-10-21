@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef PLATFORM_PC
+#include "port/widescreen.h"
+#endif
 #include "proc.h"
 #include "bm.h"
 #include "ctc.h"
@@ -1038,6 +1041,9 @@ void InitOam(int loSz)
 void SyncHiOam(void)
 {
     CpuFastCopy(sOamHi.buf, sOamHi.oam, sOamHi.count * 8);
+#ifdef PLATFORM_PC
+    Port_WideOamSynced(sOamHi.buf, sOamHi.count);
+#endif
     ClearOAMBuffer(sOamHi.buf, sOamHi.count);
     gOamHiPutIt = (u32 *)sOamHi.buf;
     gOamAffinePutIt = gOam;
@@ -1049,6 +1055,9 @@ void SyncLoOam(void)
     if (sOamLo.count != 0)
     {
         CpuFastCopy(sOamLo.buf, sOamLo.oam, sOamLo.count * 8);
+#ifdef PLATFORM_PC
+        Port_WideOamSynced(sOamLo.buf, sOamLo.count);
+#endif
         ClearOAMBuffer(sOamLo.buf, sOamLo.count);
         gOamLoPutIt = sOamLo.buf;
     }

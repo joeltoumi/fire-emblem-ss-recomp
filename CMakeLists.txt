@@ -117,6 +117,7 @@ add_library(fe8_port STATIC
     port/src/main.c
     port/src/savestate.c
     port/src/second_screen.c
+    port/src/widescreen.c
     port/ppu/src/virtuappu.c
     port/ppu/src/mode1.c)
 target_include_directories(fe8_port PUBLIC port/include PRIVATE port/ppu/include)

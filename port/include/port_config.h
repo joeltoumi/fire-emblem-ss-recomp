@@ -40,6 +40,16 @@ enum {
     PORT_FILTER_COUNT
 };
 
+// Picture width (widescreen: more of the battle map on the sides).
+enum {
+    PORT_WIDE_OFF,  // 240x160, like the GBA
+    PORT_WIDE_AUTO, // as wide as the screen (up to 2:1)
+    PORT_WIDE_16_10,
+    PORT_WIDE_16_9,
+    PORT_WIDE_2_1,
+    PORT_WIDE_COUNT
+};
+
 // On-screen touch buttons.
 enum {
     PORT_TOUCH_UP,
@@ -86,6 +96,7 @@ typedef struct PortConfig {
     bool integerScaling;
     bool smoothScaling;
     int filter; // PORT_FILTER_*
+    int widescreen; // PORT_WIDE_*
     int secondScreen; // PORT_SCREEN2_* (port_screen2.h): AYN Thor's lower screen, a window on PC
     // [audio]
     int volume; // percent, 0 = muted
@@ -107,6 +118,9 @@ const char* PortConfig_InputName(int input);
 void PortConfig_DefaultBindings(PortConfig* cfg);
 void PortConfig_DefaultTouchLayout(PortConfig* cfg);
 const char* PortConfig_FilterName(int filter);
+// Picture width for a widescreen setting on a screen of the given aspect
+// ratio (width / height; only used by PORT_WIDE_AUTO).
+int PortConfig_WideWidth(int widescreen, float screenAspect);
 const char* PortConfig_SecondScreenName(int mode);
 
 #ifdef __cplusplus

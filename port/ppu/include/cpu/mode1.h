@@ -25,8 +25,9 @@ extern virtuappu_mode1_pre_line_fn virtuappu_mode1_pre_line_callback;
 
 /* PORT_WIDESCREEN_SPIKE: MODE1_GBA_WIDTH made overridable via
  * -DMODE1_GBA_WIDTH=N so the PC port can render wider frames. */
+/* fire-emblem-ss-recomp: the widest frame the port renders (2:1, see port/src/widescreen.c). */
 #ifndef MODE1_GBA_WIDTH
-#define MODE1_GBA_WIDTH 240
+#define MODE1_GBA_WIDTH 320
 #endif
 /* OAM and BG clip extents (widescreen Phase 2 — Option A).
  *
@@ -99,6 +100,41 @@ extern int virtuappu_mode1_ws_msg_x0;    /* native box rect, inclusive */
 extern int virtuappu_mode1_ws_msg_x1;    /* native box rect, exclusive */
 extern int virtuappu_mode1_ws_msg_y0;    /* first box line             */
 extern int virtuappu_mode1_ws_msg_y1;    /* one past last box line     */
+
+/* fire-emblem-ss-recomp widescreen. While virtuappu_mode1_ws_active is set and the
+ * frame is wider than 240 px, the GBA screen is placed at display column
+ * ws_origin: text/affine BGs sample GBA column (x - ws_origin), so they show
+ * the scrolled map beyond the 240 px the game expects; windows move with it
+ * (a window touching a GBA screen edge stretches to the frame edge); and each
+ * OAM entry gets its own placement from ws_obj[] (world sprites, HUD anchored
+ * to the frame edges, ...). Zero = the plain GBA path, byte-identical. */
+typedef struct VirtuaPPUMode1WsObj {
+    int16_t shift;  /* display x = GBA x + shift                        */
+    int16_t wrap;   /* raw 9-bit OAM x >= wrap is negative (GBA: 240)    */
+    int16_t clip_l; /* visible display columns [clip_l, clip_r)          */
+    int16_t clip_r;
+    int16_t repeat; /* fire-emblem-ss-recomp: also drawn this far left/right (0: no) */
+} VirtuaPPUMode1WsObj;
+extern int virtuappu_mode1_ws_active;
+extern int virtuappu_mode1_ws_origin;
+extern VirtuaPPUMode1WsObj virtuappu_mode1_ws_obj[128];
+
+/* fire-emblem-ss-recomp: per-BG source for the columns outside the GBA screen.
+ * The game's tilemaps are rings that only hold what the 240 px screen needs,
+ * so the port hands the PPU the whole map instead (screen entries, w x h
+ * tiles, row-major, same char base and palettes as the BG). World pixel
+ * (x, y) is at GBA screen pixel (0, 0) while the BG's scroll registers are
+ * (reg_x, reg_y); other scroll values move it by the (9-bit signed)
+ * difference. Outside the map: transparent. With `map` NULL and the BG's bit
+ * set in ws_bg_clip, the BG is drawn only over the GBA screen. */
+typedef struct VirtuaPPUMode1WsWorld {
+    const uint16_t* map;
+    int w, h;
+    int x, y;
+    int reg_x, reg_y;
+} VirtuaPPUMode1WsWorld;
+extern VirtuaPPUMode1WsWorld virtuappu_mode1_ws_world[4];
+extern int virtuappu_mode1_ws_bg_clip; /* bit n: BGn stays on the GBA screen */
 
 enum {
     MODE1_IO_DISPCNT = 0x00,

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef PLATFORM_PC
+#include "port/widescreen.h"
+#endif
 
 #include "hardware.h"
 #include "unit_icon_data.h"
@@ -927,14 +930,30 @@ struct SMSHandle * AddUnitSprite(int y)
     }
 }
 
+#ifdef PLATFORM_PC
+// The widescreen shows more of the map on the sides: draw the units there too
+// (and tell the port these OAM entries are map objects).
+#define UNIT_OAM_OFF_X(x) ((x) < -16 - Port_WideLeft() || (x) > DISPLAY_WIDTH + Port_WideRight())
+#else
+#define UNIT_OAM_OFF_X(x) ((x) < -16 || (x) > DISPLAY_WIDTH)
+#endif
+
 void PutUnitSpritesOam(void)
 {
     struct SMSHandle * it = gSMSHandleArray->pNext;
 
+#ifdef PLATFORM_PC
+    gPortWideOamTag = PORT_WIDE_OAM_WORLD;
+#endif
     PutUnitSpriteIconsOam();
 
     if (it == NULL)
+    {
+#ifdef PLATFORM_PC
+        gPortWideOamTag = PORT_WIDE_OAM_SCREEN;
+#endif
         return;
+    }
 
     for (; it != NULL; it = it->pNext)
     {
@@ -943,7 +962,7 @@ void PutUnitSpritesOam(void)
         int x = it->xDisplay - gBmSt.camera.x;
         int y = it->yDisplay - gBmSt.camera.y;
 
-        if (x < -16 || x > DISPLAY_WIDTH)
+        if (UNIT_OAM_OFF_X(x))
             continue;
 
         if (y < -32 || y > DISPLAY_HEIGHT)
@@ -981,6 +1000,9 @@ void PutUnitSpritesOam(void)
             break;
         }
     }
+#ifdef PLATFORM_PC
+    gPortWideOamTag = PORT_WIDE_OAM_SCREEN;
+#endif
 }
 
 void PutChapterMarkedTileIconOam(void)
@@ -1011,7 +1033,7 @@ void PutChapterMarkedTileIconOam(void)
     x = xTile * 16 - gBmSt.camera.x;
     y = yTile * 16 - gBmSt.camera.y;
 
-    if (x < -16 || x > DISPLAY_WIDTH)
+    if (UNIT_OAM_OFF_X(x))
         return;
 
     if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1075,7 +1097,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 break;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1088,7 +1110,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 break;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1101,7 +1123,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 break;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1114,7 +1136,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 break;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1133,7 +1155,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 break;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1155,7 +1177,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 continue;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1168,7 +1190,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 continue;
 
             if (y < -16 || y > DISPLAY_HEIGHT)
@@ -1181,7 +1203,7 @@ void PutUnitSpriteIconsOam(void)
             x = unit->xPos * 16 - gBmSt.camera.x;
             y = unit->yPos * 16 - gBmSt.camera.y;
 
-            if (x < -16 || x > DISPLAY_WIDTH)
+            if (UNIT_OAM_OFF_X(x))
                 continue;
 
             if (y < -16 || y > DISPLAY_HEIGHT)

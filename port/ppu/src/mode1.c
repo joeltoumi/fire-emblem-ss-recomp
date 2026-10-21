@@ -37,6 +37,12 @@ int virtuappu_mode1_ws_msg_x0 = 0;
 int virtuappu_mode1_ws_msg_x1 = 0;
 int virtuappu_mode1_ws_msg_y0 = 0;
 int virtuappu_mode1_ws_msg_y1 = 0;
+/* fire-emblem-ss-recomp widescreen placement (see mode1.h). */
+int virtuappu_mode1_ws_active = 0;
+int virtuappu_mode1_ws_origin = 0;
+VirtuaPPUMode1WsObj virtuappu_mode1_ws_obj[128];
+VirtuaPPUMode1WsWorld virtuappu_mode1_ws_world[4];
+int virtuappu_mode1_ws_bg_clip = 0;
 
 typedef struct Mode1OAMAttr {
     uint16_t attr0;
@@ -446,13 +452,16 @@ void virtuappu_mode1_render_text_bg_line(int bg_index, int line, uint32_t* line_
     int pixel_y = src_y % 8;
     int x;
     const int frame_width = mode1_frame_width;
+    /* fire-emblem-ss-recomp widescreen: sample GBA column x - ws_origin (0 = native). */
+    const bool ws = virtuappu_mode1_ws_active && frame_width > MODE1_GBA_BG_CLIP_X;
+    const int ws_origin = ws ? virtuappu_mode1_ws_origin : 0;
     /* Widescreen Option A: 32-tile BGs have valid VRAM tile data only
      * within the native 240 px. Cull the line to the current visible frame
      * width, but keep the fixed framebuffer pitch separate for presentation. */
     int render_max_x = (map_width_tiles >= 64)
                            ? frame_width
                            : ((virtuappu_mode1_ws_shadow[bg_index] != NULL) ? frame_width : MODE1_GBA_BG_CLIP_X);
-    if (render_max_x > frame_width)
+    if (ws || render_max_x > frame_width)
         render_max_x = frame_width;
     const bool ws_shadow_active = (map_width_tiles < 64) && (virtuappu_mode1_ws_shadow[bg_index] != NULL);
     const int ws_shadow_base = virtuappu_mode1_ws_shadow_base_tile[bg_index];
@@ -496,7 +505,7 @@ void virtuappu_mode1_render_text_bg_line(int bg_index, int line, uint32_t* line_
      * destination column (and drives the x>=240 shadow/sentinel guards). */
 #define MODE1_BG_PIXEL(_sx)                                                                                            \
     do {                                                                                                               \
-        int eff_x = (mosaic_h == 1) ? (_sx) : ((_sx) / mosaic_h) * mosaic_h;                                           \
+        int eff_x = (mosaic_h == 1) ? (_sx) : ((_sx) - ((((_sx) % mosaic_h) + mosaic_h) % mosaic_h));                \
         int src_x = (eff_x + scroll_x) & (map_width_tiles * 8 - 1);                                                    \
         int tile_col = src_x / 8;                                                                                      \
         int pixel_x = src_x % 8;                                                                                       \
@@ -539,7 +548,8 @@ void virtuappu_mode1_render_text_bg_line(int bg_index, int line, uint32_t* line_
         }                                                                                                              \
         if (color_index != 0u) {                                                                                       \
             size_t pal_idx = bpp8 ? (size_t)color_index : (bg_pal_bank + color_index);                                 \
-            if (!(x >= MODE1_GBA_BG_CLIP_X && (mode1_memory.bg_palette[pal_idx] & 0x7FFFu) == 0x7C1Fu)) {              \
+            if (!(ws_shadow_active && x >= MODE1_GBA_BG_CLIP_X &&                                                    \
+                  (mode1_memory.bg_palette[pal_idx] & 0x7FFFu) == 0x7C1Fu)) {                                          \
                 line_buffer[x] = mode1_bg_abgr_lut[pal_idx];                                                           \
                 if (priority_buffer != NULL) {                                                                         \
                     priority_buffer[x] = priority;                                                                     \
@@ -552,8 +562,57 @@ void virtuappu_mode1_render_text_bg_line(int bg_index, int line, uint32_t* line_
         /* Fast path: no widescreen column remap, so sample_x == x. Hoists the
          * per-pixel remap dispatch (its two flags are per-line invariants) out
          * of the hot loop entirely — A53 win, zero added per-pixel branch. */
-        for (x = 0; x < render_max_x; ++x) {
-            MODE1_BG_PIXEL(x);
+        /* fire-emblem-ss-recomp: a BG with a world source (or clipped) samples
+         * its ring only over the GBA screen; the rest comes from the world. */
+        const VirtuaPPUMode1WsWorld* world = ws ? &virtuappu_mode1_ws_world[bg_index] : NULL;
+        const bool on_gba_only = ws && (world->map != NULL || (virtuappu_mode1_ws_bg_clip >> bg_index) & 1);
+        const int x_start = on_gba_only ? (ws_origin > 0 ? ws_origin : 0) : 0;
+        const int x_end = on_gba_only ? (ws_origin + MODE1_GBA_BG_CLIP_X < render_max_x ? ws_origin + MODE1_GBA_BG_CLIP_X
+                                                                                         : render_max_x)
+                                      : render_max_x;
+        for (x = x_start; x < x_end; ++x) {
+            MODE1_BG_PIXEL(x - ws_origin);
+        }
+        if (on_gba_only && world->map != NULL) {
+            int dx = (scroll_x - world->reg_x) & 0x1FF;
+            int dy = (scroll_y - world->reg_y) & 0x1FF;
+            if (dx >= 256)
+                dx -= 512;
+            if (dy >= 256)
+                dy -= 512;
+            const int wy = world->y + dy + line;
+            if (wy >= 0 && wy < world->h * 8) {
+                const uint16_t* row = world->map + (size_t)(wy >> 3) * (size_t)world->w;
+                const int py = wy & 7;
+                for (x = 0; x < frame_width; ++x) {
+                    if (x == x_start) {
+                        x = x_end - 1; /* the GBA screen is done */
+                        continue;
+                    }
+                    const int wx = world->x + dx + (x - ws_origin);
+                    if (wx < 0 || wx >= world->w * 8)
+                        continue;
+                    Mode1TilemapEntry e;
+                    e.raw = row[wx >> 3];
+                    const int tpx = mode1_tile_hflip(e) ? 7 - (wx & 7) : (wx & 7);
+                    const int tpy = mode1_tile_vflip(e) ? 7 - py : py;
+                    uint8_t ci;
+                    if (bpp8) {
+                        uint32_t addr = char_base + (uint32_t)mode1_tile_index(e) * 64u + (uint32_t)(tpy * 8 + tpx);
+                        ci = (addr < MODE1_VRAM_SIZE) ? mode1_memory.vram[addr] : 0u;
+                    } else {
+                        uint32_t addr = char_base + (uint32_t)mode1_tile_index(e) * 32u + (uint32_t)(tpy * 4 + tpx / 2);
+                        uint8_t packed = (addr < MODE1_VRAM_SIZE) ? mode1_memory.vram[addr] : 0u;
+                        ci = (tpx & 1) ? (packed >> 4u) : (packed & 0x0Fu);
+                    }
+                    if (ci != 0u) {
+                        size_t pal_idx = bpp8 ? (size_t)ci : ((size_t)mode1_tile_palette(e) * 16u + ci);
+                        line_buffer[x] = mode1_bg_abgr_lut[pal_idx];
+                        if (priority_buffer != NULL)
+                            priority_buffer[x] = priority;
+                    }
+                }
+            }
         }
     } else {
         for (x = 0; x < render_max_x; ++x) {
@@ -627,6 +686,10 @@ void virtuappu_mode1_render_obj_line(int line, bool obj_1d, uint32_t* line_buffe
         int viewport_width;
         bool mosaic_x_on;
         int eff_line;
+        int ws_clip_l = 0;
+        int ws_clip_r = 0;
+        bool ws_alt = false;
+        int ws_alt_x = 0;
 
         attr.attr0 = mode1_memory.oam_mem[i * 4];
         attr.attr1 = mode1_memory.oam_mem[i * 4 + 1];
@@ -664,23 +727,55 @@ void virtuappu_mode1_render_obj_line(int line, bool obj_1d, uint32_t* line_buffe
         }
 
         obj_x = mode1_oam_x(attr);
-        viewport_width = mode1_frame_width;
-        if (viewport_width > MODE1_GBA_VIEWPORT_X) {
-            viewport_width = MODE1_GBA_VIEWPORT_X;
-        }
-        if (obj_x >= mode1_frame_width) {
-            obj_x -= 512;
-        }
-        sx_start = 0;
-        sx_end = bounds_width;
-        if (obj_x + bounds_width <= 0 || obj_x >= viewport_width) {
-            continue;
-        }
-        if (obj_x < 0) {
-            sx_start = -obj_x;
-        }
-        if (obj_x + sx_end > viewport_width) {
-            sx_end = viewport_width - obj_x;
+        if (virtuappu_mode1_ws_active && mode1_frame_width > MODE1_GBA_BG_CLIP_X) {
+            /* fire-emblem-ss-recomp widescreen: per-entry placement chosen by the port. */
+            const VirtuaPPUMode1WsObj* ws = &virtuappu_mode1_ws_obj[i];
+            if (obj_x >= ws->wrap) {
+                obj_x -= 512;
+            }
+            obj_x += ws->shift;
+            /* A repeating entry (weather that wraps every 256 px) is drawn a
+             * second time where the frame needs it. */
+            ws_clip_l = ws->clip_l;
+            ws_clip_r = ws->clip_r;
+            ws_alt = false;
+            if (ws->repeat != 0) {
+                if (obj_x - ws->repeat + bounds_width > ws_clip_l) {
+                    ws_alt = true;
+                    ws_alt_x = obj_x - ws->repeat;
+                } else if (obj_x + ws->repeat < ws_clip_r) {
+                    ws_alt = true;
+                    ws_alt_x = obj_x + ws->repeat;
+                }
+                if (ws_alt && (obj_x + bounds_width <= ws_clip_l || obj_x >= ws_clip_r)) {
+                    obj_x = ws_alt_x;
+                    ws_alt = false;
+                }
+            }
+            if (obj_x + bounds_width <= ws_clip_l || obj_x >= ws_clip_r) {
+                continue;
+            }
+            sx_start = (obj_x < ws_clip_l) ? ws_clip_l - obj_x : 0;
+            sx_end = (obj_x + bounds_width > ws_clip_r) ? ws_clip_r - obj_x : bounds_width;
+        } else {
+            viewport_width = mode1_frame_width;
+            if (viewport_width > MODE1_GBA_VIEWPORT_X) {
+                viewport_width = MODE1_GBA_VIEWPORT_X;
+            }
+            if (obj_x >= mode1_frame_width) {
+                obj_x -= 512;
+            }
+            sx_start = 0;
+            sx_end = bounds_width;
+            if (obj_x + bounds_width <= 0 || obj_x >= viewport_width) {
+                continue;
+            }
+            if (obj_x < 0) {
+                sx_start = -obj_x;
+            }
+            if (obj_x + sx_end > viewport_width) {
+                sx_end = viewport_width - obj_x;
+            }
         }
 
         bpp8 = mode1_oam_bpp8(attr);
@@ -722,6 +817,7 @@ void virtuappu_mode1_render_obj_line(int line, bool obj_1d, uint32_t* line_buffe
         /* Horizontal frustum culling is done once per sprite. Partially visible
          * sprites enter the loop at the first on-screen column, so the hot
          * pixel path has no screen_x bounds branch. */
+    obj_pixels:
         for (sx = sx_start; sx < sx_end; ++sx) {
             int screen_x = obj_x + sx;
             int eff_sx = sx;
@@ -819,6 +915,34 @@ void virtuappu_mode1_render_obj_line(int line, bool obj_1d, uint32_t* line_buffe
             priority_buffer[screen_x] = priority;
             virtuappu_mode1_obj_semitrans[screen_x] = (mode1_oam_mode(attr) == 1u) ? 1u : 0u;
         }
+        if (ws_alt) {
+            /* fire-emblem-ss-recomp: the repeat copy of this entry. */
+            ws_alt = false;
+            obj_x = ws_alt_x;
+            if (obj_x + bounds_width > ws_clip_l && obj_x < ws_clip_r) {
+                sx_start = (obj_x < ws_clip_l) ? ws_clip_l - obj_x : 0;
+                sx_end = (obj_x + bounds_width > ws_clip_r) ? ws_clip_r - obj_x : bounds_width;
+                goto obj_pixels;
+            }
+        }
+    }
+}
+
+/* fire-emblem-ss-recomp widescreen: maps a window's GBA columns [left, right) (wrapping
+ * when left > right, right clamped to 240 like the hardware) to display
+ * columns. Edges on the GBA screen border stretch to the frame border. */
+static void mode1_ws_window_h(int* left, int* right, int origin, int frame_width) {
+    int l = *left;
+    int r = *right > MODE1_GBA_BG_CLIP_X ? MODE1_GBA_BG_CLIP_X : *right;
+    if (l > r) { /* wrapped: [l, 240) + [0, r) */
+        *left = l + origin;
+        *right = (r == 0) ? 0 : r + origin;
+    } else if (l == r) {
+        *left = 0;
+        *right = 0;
+    } else {
+        *left = (l == 0) ? 0 : l + origin;
+        *right = (r >= MODE1_GBA_BG_CLIP_X) ? frame_width : r + origin;
     }
 }
 
@@ -884,6 +1008,14 @@ void virtuappu_mode1_composite_line(int line, uint32_t bg_layers[MODE1_GBA_BG_CO
         evy = 16;
     }
 
+    if (virtuappu_mode1_ws_active && frame_width > MODE1_GBA_BG_CLIP_X) {
+        /* fire-emblem-ss-recomp widescreen: GBA window columns -> display columns. An
+         * edge on the GBA screen border (0 / >= 240) stretches to the frame
+         * border, so full-width windows and effects cover the whole frame. */
+        const int origin = virtuappu_mode1_ws_origin;
+        mode1_ws_window_h(&win0_left, &win0_right, origin, frame_width);
+        mode1_ws_window_h(&win1_left, &win1_right, origin, frame_width);
+    }
     if (win0_right > frame_width) {
         win0_right = frame_width;
     }
@@ -1320,9 +1452,10 @@ static void mode1_render_affine_bg2_line(int frame_width, int32_t ref_x, int32_t
     const int16_t pa = (int16_t)virtuappu_mode1_io_read16(0x20u);
     const int16_t pc = (int16_t)virtuappu_mode1_io_read16(0x24u);
 
+    const int origin = (virtuappu_mode1_ws_active && frame_width > MODE1_GBA_BG_CLIP_X) ? virtuappu_mode1_ws_origin : 0;
     for (int x = 0; x < frame_width; ++x) {
-        int32_t src_x = (ref_x + pa * x) >> 8;
-        int32_t src_y = (ref_y + pc * x) >> 8;
+        int32_t src_x = (ref_x + pa * (x - origin)) >> 8;
+        int32_t src_y = (ref_y + pc * (x - origin)) >> 8;
 
         if (wrap) {
             /* map_size is a power of two (128..1024) — mask instead of the

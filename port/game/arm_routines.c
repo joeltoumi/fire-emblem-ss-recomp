@@ -9,6 +9,7 @@
 #include "hardware.h"
 #include "bmmap.h"
 #include "bmidoten.h"
+#include "port/widescreen.h"
 
 extern u16 gPaletteBuffer[];
 extern const u32 gMsgHuffmanTable[];
@@ -170,6 +171,13 @@ void Port_PutOamHi(int x, int y, const u16 *list, int oam2)
     // address 0, which does nothing.
     if (gOamHiPutIt == NULL)
         return;
+    // With the widescreen more units are drawn: never write past the OAM
+    // buffer (the GBA game never needed to check). Units and weather get
+    // their widescreen tag.
+    if ((u8 *)gOamHiPutIt + list[0] * 8 > (u8 *)gOam + 0x400)
+        return;
+    if (gPortWideOamTag)
+        Port_WideTagOam(gOamHiPutIt, list[0]);
     PutOam((u16 **)&gOamHiPutIt, x, y, list, oam2);
 }
 
@@ -179,6 +187,8 @@ void Port_PutOamLo(int x, int y, const u16 *list, int oam2)
     // address 0, which does nothing.
     if (gOamLoPutIt == NULL)
         return;
+    if (gPortWideOamTag)
+        Port_WideTagOam(gOamLoPutIt, list[0]);
     PutOam((u16 **)&gOamLoPutIt, x, y, list, oam2);
 }
 

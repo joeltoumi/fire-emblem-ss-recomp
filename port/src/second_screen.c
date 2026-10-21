@@ -323,7 +323,7 @@ static void MapView(const struct PortS2State* s, int ax, int ay, int aw, int ah)
         ts = 6;
         viewW = MinI(s->mapW, aw / 6);
         viewH = MinI(s->mapH, ah / 6);
-        vx = ClampI((s->cameraX + 120) / 16 - viewW / 2, 0, s->mapW - viewW);
+        vx = ClampI((s->cameraX + s->cameraW / 2) / 16 - viewW / 2, 0, s->mapW - viewW);
         vy = ClampI((s->cameraY + 80) / 16 - viewH / 2, 0, s->mapH - viewH);
     }
     const int dw = (int)(viewW * ts), dh = (int)(viewH * ts);
@@ -345,9 +345,9 @@ static void MapView(const struct PortS2State* s, int ax, int ay, int aw, int ah)
     }
 
     // What the main screen shows.
-    if (s->mapW > 15 || s->mapH > 10) {
+    if (s->mapW * 16 > s->cameraW || s->mapH > 10) {
         const int cx = ox + (int)((s->cameraX / 16.0f - vx) * ts), cy = oy + (int)((s->cameraY / 16.0f - vy) * ts);
-        Frame(cx, cy, (int)(15 * ts), (int)(10 * ts), 1, Rgb(255, 230, 140));
+        Frame(cx, cy, (int)(s->cameraW / 16.0f * ts), (int)(10 * ts), 1, Rgb(255, 230, 140));
     }
 
     for (int i = 0; i < s->unitCount; i++) {

@@ -1,4 +1,7 @@
 #include "global.h"
+#ifdef PLATFORM_PC
+#include "port/widescreen.h"
+#endif
 
 #include <string.h>
 
@@ -857,6 +860,11 @@ void WfxInit(void) {
 }
 
 void WfxVSync(void) {
+#ifdef PLATFORM_PC
+    // The particles wrap every 256 px: the widescreen repeats them to fill
+    // the wider frame.
+    gPortWideOamTag = PORT_WIDE_OAM_WEATHER;
+#endif
     switch (gPlaySt.chapterWeatherId) {
 
     case WEATHER_SNOW:
@@ -888,6 +896,9 @@ void WfxVSync(void) {
         break;
 
     } // switch (gPlaySt.chapterWeatherId)
+#ifdef PLATFORM_PC
+    gPortWideOamTag = PORT_WIDE_OAM_SCREEN;
+#endif
 }
 
 void WfxUpdate(void) {

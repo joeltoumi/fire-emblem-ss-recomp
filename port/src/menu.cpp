@@ -321,6 +321,11 @@ void PageVideo()
     changed |= ImGui::Checkbox("Integer scaling (even pixels)", &cfg.integerScaling);
     changed |= ImGui::Checkbox("Smooth filter (bilinear)", &cfg.smoothScaling);
     changed |= ImGui::Combo("Effect", &cfg.filter, kFilters, PORT_FILTER_COUNT);
+    static const char* const kWide[PORT_WIDE_COUNT] = { "Off (like the GBA)", "Auto", "16:10", "16:9", "2:1" };
+    changed |= ImGui::Combo("Widescreen", &cfg.widescreen, kWide, PORT_WIDE_COUNT);
+    Hint("Shows more of the battle map on the sides instead of black bars (Auto: as wide as the "
+         "screen). The game doesn't change: you only see more. Menus, battle scenes and cutscenes "
+         "stay 3:2 in the middle, and maps narrower than the screen keep black bars.");
     changed |= ImGui::Checkbox("Vertical sync (VSync)", &cfg.vsync);
     Hint("VSync stops tearing, but can add a little latency.");
     if (changed)

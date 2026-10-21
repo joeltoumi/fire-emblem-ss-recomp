@@ -85,6 +85,7 @@ struct PortS2State {
     unsigned int mapVersion;     /* changes when mapPx changes */
     int cursorX, cursorY;        /* tiles */
     int cameraX, cameraY;        /* pixels: the top-left of the main screen */
+    int cameraW;                 /* pixels: its width (wider with the widescreen) */
 
     char terrain[PORT_S2_NAME_LEN];
 

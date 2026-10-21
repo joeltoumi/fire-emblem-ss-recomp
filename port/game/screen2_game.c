@@ -19,6 +19,7 @@
 #include "playerphase.h"
 #include "unit_icon_data.h"
 #include "port/screen2.h"
+#include "port/widescreen.h"
 
 // The snapshot and the picture caches are not machine state: keep them out of
 // save states and soft resets (include/port/native.h).
@@ -395,7 +396,15 @@ const struct PortS2State *Port_S2Snapshot(void)
     s->mapH = gBmMapSize.y;
     s->cursorX = gBmSt.playerCursor.x;
     s->cursorY = gBmSt.playerCursor.y;
-    s->cameraX = gBmSt.camera.x;
+    // With the widescreen the main screen shows more on the sides.
+    s->cameraX = gBmSt.camera.x - Port_WideLeft();
+    s->cameraW = DISPLAY_WIDTH + Port_WideLeft() + Port_WideRight();
+    if (s->cameraX < 0) {
+        s->cameraW += s->cameraX;
+        s->cameraX = 0;
+    }
+    if (s->cameraX + s->cameraW > s->mapW * 16)
+        s->cameraW = s->mapW * 16 - s->cameraX;
     s->cameraY = gBmSt.camera.y;
     UpdateMapPicture();
 

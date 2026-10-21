@@ -6,6 +6,7 @@
 //   [video]
 //   window_scale = 4
 //   integer_scaling = true
+//   widescreen = auto            ; off | auto | 16:10 | 16:9 | 2:1
 //   [audio]
 //   volume = 100                 ; percent, 0 = muted
 //   [input]
@@ -36,6 +37,8 @@ static const char* const sAnchorNames[] = { "left", "center", "right" };
 
 static const char* const sFilterNames[PORT_FILTER_COUNT] = { "none", "lcd", "crt" };
 
+static const char* const sWideNames[PORT_WIDE_COUNT] = { "off", "auto", "16:10", "16:9", "2:1" };
+
 static const char* const sScreen2Names[PORT_SCREEN2_COUNT] = { "off", "map", "unit", "army" };
 
 const char* PortConfig_InputName(int input)
@@ -46,6 +49,26 @@ const char* PortConfig_InputName(int input)
 const char* PortConfig_FilterName(int filter)
 {
     return (filter >= 0 && filter < PORT_FILTER_COUNT) ? sFilterNames[filter] : "none";
+}
+
+int PortConfig_WideWidth(int widescreen, float screenAspect)
+{
+    int width;
+
+    switch (widescreen) {
+    case PORT_WIDE_AUTO:
+        width = (int)(160.0f * screenAspect + 0.5f);
+        break;
+    case PORT_WIDE_16_10: width = 256; break;
+    case PORT_WIDE_16_9: width = 284; break; // 160 * 16 / 9 = 284.4
+    case PORT_WIDE_2_1: width = 320; break;
+    default: width = 240; break;
+    }
+    if (width < 240)
+        width = 240;
+    if (width > 320)
+        width = 320;
+    return width & ~1;
 }
 
 const char* PortConfig_SecondScreenName(int mode)
@@ -107,6 +130,7 @@ void PortConfig_Defaults(PortConfig* cfg)
     cfg->fastForwardSpeed = 3;
     cfg->fastForwardToggle = false;
     cfg->filter = PORT_FILTER_NONE;
+    cfg->widescreen = PORT_WIDE_AUTO;
     cfg->secondScreen = PORT_SCREEN2_OFF;
     PortConfig_DefaultBindings(cfg);
     PortConfig_DefaultTouchLayout(cfg);
@@ -256,6 +280,12 @@ bool PortConfig_Load(PortConfig* cfg, const char* path)
                 const int f = FindName(sFilterNames, PORT_FILTER_COUNT, value);
                 if (f >= 0)
                     cfg->filter = f;
+            } else if (strcmp(key, "widescreen") == 0) {
+                const int w = FindName(sWideNames, PORT_WIDE_COUNT, value);
+                if (w >= 0)
+                    cfg->widescreen = w;
+                else if (ParseBool(value))
+                    cfg->widescreen = PORT_WIDE_16_9;
             } else if (strcmp(key, "second_screen") == 0) {
                 const int m = FindName(sScreen2Names, PORT_SCREEN2_COUNT, value);
                 if (m >= 0)
@@ -317,6 +347,7 @@ bool PortConfig_Save(const PortConfig* cfg, const char* path)
     fprintf(f, "integer_scaling = %s\n", cfg->integerScaling ? "true" : "false");
     fprintf(f, "smooth_scaling = %s\n", cfg->smoothScaling ? "true" : "false");
     fprintf(f, "filter = %s ; none | lcd | crt\n", sFilterNames[cfg->filter]);
+    fprintf(f, "widescreen = %s ; off | auto | 16:10 | 16:9 | 2:1\n", sWideNames[cfg->widescreen]);
     fprintf(f, "second_screen = %s ; off | map | unit | army\n\n", sScreen2Names[cfg->secondScreen]);
 
     fprintf(f, "[audio]\n");

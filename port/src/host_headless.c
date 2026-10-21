@@ -5,7 +5,7 @@
 //   fe8_headless [--rom FILE] [--frames N] [--dump-every K] [--out DIR] [--save FILE]
 //                [--press FRAME:KEYS:LEN ...] [--wav FILE]
 //                [--state-save FRAME:FILE] [--state-load FRAME:FILE] [--dump-mem FRAME:FILE]
-//                [--screen2 MODE] [--touch2 FRAME:X:Y[:LEN] ...]
+//                [--screen2 MODE] [--touch2 FRAME:X:Y[:LEN] ...] [--width W]
 //
 // Frames are written as PPM images (no dependencies). KEYS is a combination
 // of the letters A B s(elect) S(tart) R(ight) L(eft) U(p) D(own) r l.
@@ -15,6 +15,7 @@
 // comparing with an emulator.
 // --screen2 also dumps the second screen (1 map, 2 unit, 3 army) next to each
 // frame, 256x224; --touch2 touches it at X,Y for LEN frames (default 2).
+// --width renders a wider picture (widescreen option, e.g. 284 = 16:9).
 #include "port.h"
 #include "port_screen2.h"
 #include "../../include/port/screen2.h"
@@ -124,6 +125,9 @@ bool Port_HostInit(const PortHostConfig* cfg)
             op->frame = strtoull(v, &end, 10);
             op->path = (*end == ':') ? end + 1 : "";
             op->load = strcmp(a, "--state-load") == 0;
+            i++;
+        } else if (strcmp(a, "--width") == 0 && v) {
+            Port_WideSetWidth(atoi(v));
             i++;
         } else if (strcmp(a, "--screen2") == 0 && v) {
             sScreen2Mode = atoi(v);

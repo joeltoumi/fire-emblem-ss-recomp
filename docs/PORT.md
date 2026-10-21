@@ -70,6 +70,27 @@ secondary display as a `Presentation`; its JNI functions are registered by
 `fe8_headless --screen2 MODE` dumps the second screen next to each frame and
 `--touch2 FRAME:X:Y` taps it, so this can be tested without a device.
 
+## Widescreen
+
+With the widescreen option the picture is wider than 240 pixels (up to 320)
+on the battle map. The game still runs at 240x160: its camera, its logic and
+its tilemaps don't change. The terrain (BG3) and movement range (BG2)
+tilemaps are 256-pixel rings that only hold what the GBA screen needs, so
+before each frame `port/game/widescreen_game.c` rebuilds the whole map the
+way `DisplayBmTile` and `DisplayMovementViewTile` draw it and hands it to the
+PPU, which uses it for the columns outside the GBA screen
+(`virtuappu_mode1_ws_world`). It is only used when it matches what the game's
+own tilemap shows on the GBA screen; otherwise (battle scenes, the status
+screen, cutscenes) the frame is drawn at 240 pixels in the middle. Unit
+sprites are drawn further out (`PutUnitSpritesOam`), their OAM entries are
+tagged as map objects, and weather particles, which wrap every 256 pixels,
+are repeated across the frame; every other sprite and the window/menu layers
+stay on the GBA screen. `port/src/widescreen.c` places the GBA screen inside
+the frame (centered, sliding off-center near the map edges, with black beyond
+the map on narrow maps).
+
+`fe8_headless --width W` renders at that width (284 = 16:9).
+
 ## Differences from the GBA that need code changes
 
 Most fixes in `src/` are under `#ifdef PLATFORM_PC`:
