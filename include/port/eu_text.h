@@ -15,6 +15,12 @@ extern const u32 gEuTextGlyphs_Talk[0x100];
 extern const u32 gEuTextGlyphsTable_Special[EU_LANG_COUNT];
 #define EU_SPECIAL_GLYPH_COUNT 64
 
+/* The chapter table as the EU ROM has it (GetROMChapterStruct, EU 0x080349d8):
+ * 0x94 bytes per chapter, laid out like struct ROMChapterData. Its message
+ * ids (chapter titles, goals) differ from the US ones the port's table holds. */
+extern const u8 gEuChapterDataTable[];
+#define EU_CHAPTER_DATA_SIZE 0x94
+
 /* French indefinite articles: "un ", "Un ", "une ", "Une " (EU 0x0800a28c). */
 extern const u32 gEuStrPrefix_French[4];
 

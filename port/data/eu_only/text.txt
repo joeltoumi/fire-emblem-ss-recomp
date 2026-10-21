@@ -24,3 +24,4 @@ gEuImgTable_085AD80C           087c0340
 gEuImgTable_085AAE0C           087c0c78
 gEuImgTable_085AE7EC           087c0e70
 gEuLAPhaseIntroNames           080daf00
+gEuChapterDataTable            08facb2c
