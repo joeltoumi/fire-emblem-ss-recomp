@@ -14,6 +14,7 @@
 //   4. Present the frame, read input, wait for the next tick.
 #include "port.h"
 #include "port_game.h"
+#include "port_screen2.h"
 
 #include "../ppu/include/cpu/mode1.h"
 #include "../ppu/include/virtuappu.h"
@@ -153,7 +154,7 @@ const uint32_t* Port_PpuRenderFrame(void)
 
 static void UpdateKeys(void)
 {
-    uint16_t pressed = (Port_HostPollKeys()) & PORT_KEY_MASK;
+    uint16_t pressed = (Port_HostPollKeys() | Port_SecondScreenKeys()) & PORT_KEY_MASK;
     // KEYINPUT is active-low.
     Port_IoWrite16(IO_KEYINPUT, (uint16_t)(~pressed & PORT_KEY_MASK));
 }

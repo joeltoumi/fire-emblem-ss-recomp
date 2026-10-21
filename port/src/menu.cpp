@@ -3,6 +3,7 @@
 // game. Works with a gamepad (d-pad + south button, Start closes), keyboard
 // (arrows + Enter, Esc closes), mouse and touch.
 #include "port_menu.h"
+#include "port_screen2.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
@@ -16,6 +17,7 @@ enum Page {
     PAGE_STATES,
     PAGE_CONTROLS,
     PAGE_VIDEO,
+    PAGE_SCREEN2,
     PAGE_SOUND_SPEED,
     PAGE_TOUCH,
     PAGE_COUNT
@@ -25,6 +27,7 @@ const char* const kPageNames[PAGE_COUNT] = {
     "Quick saves",
     "Controls",
     "Video",
+    "Second screen",
     "Sound and speed",
     "Touch controls",
 };
@@ -324,6 +327,40 @@ void PageVideo()
         sHost.applyConfig();
 }
 
+void PageSecondScreen()
+{
+    PortConfig& cfg = Config();
+    static const struct {
+        const char* name;
+        const char* help;
+    } kModes[PORT_SCREEN2_COUNT] = {
+        { "Off", "Nothing on the second screen." },
+        { "Battle map", "The whole map with every unit. Tap a tile to move the cursor there; tap the cursor to select." },
+        { "Unit and battle forecast",
+          "The stats and items of the unit under the cursor, and the full forecast when you pick a target." },
+        { "Army list", "Your units, the enemies and the other armies with their HP. Tap one to put the cursor on it." },
+    };
+
+#ifdef __ANDROID__
+    Hint("On devices with two screens, like the AYN Thor, this shows on the lower one.");
+#else
+    Hint("Opens in a second window (on another monitor if there is one).");
+#endif
+    ImGui::Spacing();
+    for (int m = 0; m < PORT_SCREEN2_COUNT; m++) {
+        if (ImGui::RadioButton(kModes[m].name, cfg.secondScreen == m)) {
+            cfg.secondScreen = m;
+            sHost.applyConfig();
+        }
+        ImGui::Indent();
+        Hint(kModes[m].help);
+        ImGui::Unindent();
+    }
+    ImGui::Spacing();
+    Hint("The tabs at the top of the second screen switch between the views while you play, and its buttons "
+         "press A, B, L, R, Select and Start.");
+}
+
 void PageSoundSpeed()
 {
     PortConfig& cfg = Config();
@@ -532,6 +569,7 @@ void MainWindow()
     case PAGE_STATES: PageStates(); break;
     case PAGE_CONTROLS: PageControls(); break;
     case PAGE_VIDEO: PageVideo(); break;
+    case PAGE_SCREEN2: PageSecondScreen(); break;
     case PAGE_SOUND_SPEED: PageSoundSpeed(); break;
     case PAGE_TOUCH: PageTouch(); break;
     default: break;

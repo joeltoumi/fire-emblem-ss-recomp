@@ -86,6 +86,7 @@ typedef struct PortConfig {
     bool integerScaling;
     bool smoothScaling;
     int filter; // PORT_FILTER_*
+    int secondScreen; // PORT_SCREEN2_* (port_screen2.h): AYN Thor's lower screen, a window on PC
     // [audio]
     int volume; // percent, 0 = muted
     // [input]
@@ -106,6 +107,7 @@ const char* PortConfig_InputName(int input);
 void PortConfig_DefaultBindings(PortConfig* cfg);
 void PortConfig_DefaultTouchLayout(PortConfig* cfg);
 const char* PortConfig_FilterName(int filter);
+const char* PortConfig_SecondScreenName(int mode);
 
 #ifdef __cplusplus
 }

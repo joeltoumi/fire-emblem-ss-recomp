@@ -1,4 +1,5 @@
 #include "global.h"
+#include "port/screen2.h"
 #ifdef REGION_EU
 #include "port/eu.h"
 #endif
@@ -87,6 +88,7 @@ void AgbMain()
         ExecMainUpdate();
         SoftResetIfKeyComboPressed();
 #ifdef PLATFORM_PC
+        Port_S2Frame();
         Port_HostFrameBoundary();
 #endif
     };

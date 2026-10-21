@@ -474,7 +474,7 @@ void GmapUnitContainer_Destruct(struct GMapUnitContainerProc * proc)
 //! FE8U = 0x080BB1C8
 void GmapUnitContainer_Init(struct GMapUnitContainerProc * proc)
 {
-    CpuFill32(0, proc->pMapUnitProcs, 0x1c);
+    CpuFill32(0, proc->pMapUnitProcs, sizeof(proc->pMapUnitProcs)); // 0x1C on the GBA
     return;
 }
 

@@ -48,6 +48,10 @@ so the repository and the APKs contain no game data.
 ## 🎮 Features
 
 - 📱 **Native Android app**, with a touch gamepad you can rearrange and resize.
+- 🖥️ **Second screen** for dual-screen devices like the AYN Thor (a second
+  window on PC): the whole battle map, the unit under the cursor with the
+  battle forecast, or the army list. Tap the map to move the cursor and select
+  units; pick what it shows in the options menu or with its tabs.
 - 💾 **Quick saves:** 4 slots with thumbnail (`F5` / `F8`), on top of the normal in-game save.
 - 🎨 **Video options:** LCD grid or CRT scanlines filter, smooth or integer scaling, VSync.
 - ⏩ **Fast-forward** (x2 to x10, hold or toggle).
@@ -65,8 +69,9 @@ so the repository and the APKs contain no game data.
     started directly and played with random input to find crashes;
   - menus, saving, battle animations and quick saves.
 - The US build compiles, but has not been tested with a US ROM yet.
-- 🚧 It still needs a full playthrough by hand, testing on Android devices,
-  and widescreen support.
+- 🚧 It still needs a full playthrough by hand, testing on Android devices
+  (the second screen has not been tried on a real AYN Thor yet), and
+  widescreen support.
 
 ## 💽 You need your own ROM
 

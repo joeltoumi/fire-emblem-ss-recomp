@@ -5,6 +5,7 @@
 //   fe8_headless [--rom FILE] [--frames N] [--dump-every K] [--out DIR] [--save FILE]
 //                [--press FRAME:KEYS:LEN ...] [--wav FILE]
 //                [--state-save FRAME:FILE] [--state-load FRAME:FILE] [--dump-mem FRAME:FILE]
+//                [--screen2 MODE] [--touch2 FRAME:X:Y[:LEN] ...]
 //
 // Frames are written as PPM images (no dependencies). KEYS is a combination
 // of the letters A B s(elect) S(tart) R(ight) L(eft) U(p) D(own) r l.
@@ -12,7 +13,11 @@
 // --state-save / --state-load write or restore a save state after FRAME.
 // --dump-mem writes the I/O registers, palette, VRAM and OAM at FRAME, raw, for
 // comparing with an emulator.
+// --screen2 also dumps the second screen (1 map, 2 unit, 3 army) next to each
+// frame, 256x224; --touch2 touches it at X,Y for LEN frames (default 2).
 #include "port.h"
+#include "port_screen2.h"
+#include "../../include/port/screen2.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -45,6 +50,13 @@ typedef struct StateOp {
 } StateOp;
 static StateOp sStateOps[8];
 static int sStateOpCount;
+
+#define SCREEN2_W 256
+#define SCREEN2_H 224
+static int sScreen2Mode;
+static uint32_t sScreen2Px[SCREEN2_W * SCREEN2_H];
+static struct { uint64_t frame, length; int x, y; } sTouches[256];
+static int sTouchCount;
 
 static uint16_t ParseKeys(const char* s)
 {
@@ -113,6 +125,20 @@ bool Port_HostInit(const PortHostConfig* cfg)
             op->path = (*end == ':') ? end + 1 : "";
             op->load = strcmp(a, "--state-load") == 0;
             i++;
+        } else if (strcmp(a, "--screen2") == 0 && v) {
+            sScreen2Mode = atoi(v);
+            i++;
+        } else if (strcmp(a, "--touch2") == 0 && v && sTouchCount < (int)(sizeof(sTouches) / sizeof(sTouches[0]))) {
+            unsigned long long frame, length = 2;
+            int x, y;
+            if (sscanf(v, "%llu:%d:%d:%llu", &frame, &x, &y, &length) >= 3) {
+                sTouches[sTouchCount].frame = frame;
+                sTouches[sTouchCount].length = length;
+                sTouches[sTouchCount].x = x;
+                sTouches[sTouchCount].y = y;
+                sTouchCount++;
+            }
+            i++;
         } else {
             Port_Log("unknown argument: %s", a);
             return false;
@@ -172,12 +198,12 @@ void Port_HostShutdown(void)
     Port_Log("headless: stopped after %llu frames", (unsigned long long)Port_FrameCount());
 }
 
-static void WritePpm(const uint32_t* abgr, int width, int height, uint64_t frame)
+static void WritePpm(const uint32_t* abgr, int width, int height, uint64_t frame, const char* name)
 {
     char path[512];
     FILE* f;
 
-    snprintf(path, sizeof(path), "%s/frame_%06llu.ppm", sOutDir, (unsigned long long)frame);
+    snprintf(path, sizeof(path), "%s/%s_%06llu.ppm", sOutDir, name, (unsigned long long)frame);
     f = fopen(path, "wb");
     if (!f)
         return;
@@ -208,8 +234,40 @@ bool Port_HostPresent(const uint32_t* abgr, int width, int height)
         }
     }
 
-    if (sDumpEvery != 0 && frame % sDumpEvery == 0)
-        WritePpm(abgr, width, height, frame);
+    if (sScreen2Mode) {
+        // Touches go in before the picture, as the SDL host does.
+        for (int i = 0; i < sTouchCount; i++) {
+            if (frame == sTouches[i].frame) {
+                const int mode = Port_SecondScreenTouch(sTouches[i].x, sTouches[i].y, PORT_TOUCH2_DOWN);
+                if (mode > 0)
+                    sScreen2Mode = mode;
+            }
+            if (frame == sTouches[i].frame + sTouches[i].length)
+                Port_SecondScreenTouch(sTouches[i].x, sTouches[i].y, PORT_TOUCH2_UP);
+        }
+        Port_SecondScreenRender(sScreen2Px, SCREEN2_W, SCREEN2_H, sScreen2Mode);
+        // Log where the map cursor goes, for scripting touches.
+        static int lastX = -1, lastY = -1, lastControl = -1, lastForecast;
+        const struct PortS2State* s2 = Port_S2Snapshot();
+        if (s2->forecast.valid != lastForecast) {
+            lastForecast = s2->forecast.valid;
+            if (lastForecast)
+                Port_Log("screen2: frame %llu forecast %s vs %s", (unsigned long long)frame,
+                         s2->forecast.attacker.name, s2->forecast.defender.name);
+        }
+        if (s2->onMap && (s2->cursorX != lastX || s2->cursorY != lastY || s2->canControl != lastControl)) {
+            lastX = s2->cursorX;
+            lastY = s2->cursorY;
+            lastControl = s2->canControl;
+            Port_Log("screen2: frame %llu cursor %d,%d%s", (unsigned long long)frame, lastX, lastY,
+                     lastControl ? " (player)" : "");
+        }
+    }
+    if (sDumpEvery != 0 && frame % sDumpEvery == 0) {
+        WritePpm(abgr, width, height, frame, "frame");
+        if (sScreen2Mode)
+            WritePpm(sScreen2Px, SCREEN2_W, SCREEN2_H, frame, "screen2");
+    }
     return frame + 1 < sMaxFrames;
 }
 

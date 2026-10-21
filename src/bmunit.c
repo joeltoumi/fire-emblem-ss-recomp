@@ -391,6 +391,13 @@ void SetUnitStatusExt(struct Unit* unit, int status, int duration) {
     unit->statusDuration = duration;
 }
 
+#ifdef PLATFORM_PC
+// For the second screen (port/game/screen2_game.c).
+int Port_StatusNameTextId(int status) {
+    return sStatusNameTextIdLookup[status];
+}
+#endif
+
 inline char* GetUnitStatusName(struct Unit* unit) {
     return GetStringFromIndex(sStatusNameTextIdLookup[unit->statusIndex]);
 }

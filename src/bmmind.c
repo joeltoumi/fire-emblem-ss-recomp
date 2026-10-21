@@ -512,6 +512,11 @@ void DropRescueOnDeath(ProcPtr proc, struct Unit* unit) {
 
 //! FE8U = 0x08032728
 void KillUnitOnCombatDeath(struct Unit* unitA, struct Unit* unitB) {
+#ifdef PLATFORM_PC
+    // No unit when attacking a wall or a snag (a BIOS read on the GBA).
+    if (!unitA || !unitB)
+        return;
+#endif
     if (GetUnitCurrentHp(unitA) != 0) {
         return;
     }

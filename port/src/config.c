@@ -18,6 +18,7 @@
 //   [touch]
 //   a = right 0.205 0.620 0.085 a ; anchor, x, y, radius (window heights), input
 #include "port_config.h"
+#include "port_screen2.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +36,8 @@ static const char* const sAnchorNames[] = { "left", "center", "right" };
 
 static const char* const sFilterNames[PORT_FILTER_COUNT] = { "none", "lcd", "crt" };
 
+static const char* const sScreen2Names[PORT_SCREEN2_COUNT] = { "off", "map", "unit", "army" };
+
 const char* PortConfig_InputName(int input)
 {
     return (input >= 0 && input < PORT_INPUT_COUNT) ? sInputNames[input] : "?";
@@ -43,6 +46,11 @@ const char* PortConfig_InputName(int input)
 const char* PortConfig_FilterName(int filter)
 {
     return (filter >= 0 && filter < PORT_FILTER_COUNT) ? sFilterNames[filter] : "none";
+}
+
+const char* PortConfig_SecondScreenName(int mode)
+{
+    return (mode >= 0 && mode < PORT_SCREEN2_COUNT) ? sScreen2Names[mode] : "off";
 }
 
 void PortConfig_DefaultTouchLayout(PortConfig* cfg)
@@ -99,10 +107,13 @@ void PortConfig_Defaults(PortConfig* cfg)
     cfg->fastForwardSpeed = 3;
     cfg->fastForwardToggle = false;
     cfg->filter = PORT_FILTER_NONE;
+    cfg->secondScreen = PORT_SCREEN2_OFF;
     PortConfig_DefaultBindings(cfg);
     PortConfig_DefaultTouchLayout(cfg);
 #ifdef __ANDROID__
     cfg->fullscreen = true;
+    // Only shows on devices with a second display.
+    cfg->secondScreen = PORT_SCREEN2_MAP;
 #endif
 }
 
@@ -245,6 +256,10 @@ bool PortConfig_Load(PortConfig* cfg, const char* path)
                 const int f = FindName(sFilterNames, PORT_FILTER_COUNT, value);
                 if (f >= 0)
                     cfg->filter = f;
+            } else if (strcmp(key, "second_screen") == 0) {
+                const int m = FindName(sScreen2Names, PORT_SCREEN2_COUNT, value);
+                if (m >= 0)
+                    cfg->secondScreen = m;
             }
         } else if (strcmp(section, "audio") == 0) {
             if (strcmp(key, "volume") == 0)
@@ -301,7 +316,8 @@ bool PortConfig_Save(const PortConfig* cfg, const char* path)
     fprintf(f, "vsync = %s\n", cfg->vsync ? "true" : "false");
     fprintf(f, "integer_scaling = %s\n", cfg->integerScaling ? "true" : "false");
     fprintf(f, "smooth_scaling = %s\n", cfg->smoothScaling ? "true" : "false");
-    fprintf(f, "filter = %s ; none | lcd | crt\n\n", sFilterNames[cfg->filter]);
+    fprintf(f, "filter = %s ; none | lcd | crt\n", sFilterNames[cfg->filter]);
+    fprintf(f, "second_screen = %s ; off | map | unit | army\n\n", sScreen2Names[cfg->secondScreen]);
 
     fprintf(f, "[audio]\n");
     fprintf(f, "volume = %d ; percent, 0 = muted\n\n", cfg->volume);

@@ -52,6 +52,24 @@ A state is the GBA RAM, VRAM, palette, OAM and I/O, every game global (the
 own hardware state (`fe8_state`). It is taken and restored only at the end of
 an iteration of `AgbMain`'s loop, where the C stack is always the same.
 
+## Second screen
+
+On devices with two displays (AYN Thor) the lower one shows, as the player
+chooses in the options menu, the whole battle map, the unit under the cursor
+(or the battle forecast) or the army list; on PC it opens in a second window.
+`port/game/screen2_game.c` reads the game state into the plain structure of
+`include/port/screen2.h` (the map is drawn from the chapter's own tileset and
+palettes, the units with their standing sprites), and
+`port/src/second_screen.c` draws it into a 256-pixel-wide canvas and turns
+touches into cursor moves and GBA button presses. The cursor is only moved
+between two frames, while the player phase is waiting for input, the same way
+the game moves it with L. On Android, `Fe8Activity` shows the canvas on the
+secondary display as a `Presentation`; its JNI functions are registered by
+`host_sdl.c` because `libgame.so` is loaded by the launcher.
+
+`fe8_headless --screen2 MODE` dumps the second screen next to each frame and
+`--touch2 FRAME:X:Y` taps it, so this can be tested without a device.
+
 ## Differences from the GBA that need code changes
 
 Most fixes in `src/` are under `#ifdef PLATFORM_PC`:

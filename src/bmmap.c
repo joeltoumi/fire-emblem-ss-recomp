@@ -661,6 +661,13 @@ void RefreshEntityBmMaps(void) {
     RefreshMinesOnBmMap();
 }
 
+#ifdef PLATFORM_PC
+// The second screen draws the map itself (port/game/screen2_game.c).
+const u16 * Port_BmTilesetConfig(void) {
+    return sTilesetConfig;
+}
+#endif
+
 char* GetTerrainName(int terrainId) {
     return GetStringFromIndex(gUnknown_0880D374[terrainId]);
 }
