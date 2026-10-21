@@ -225,7 +225,15 @@ void UnpackUiFrameBuffered(int id)
         id = gPlaySt.config.windowColor;
 
     bufSize = GetDataSize(sUiFrameImageLookup[id]);
+#ifdef PLATFORM_PC
+    // The GBA borrows the EWRAM just below gFadeComponentStep; use a buffer of our own
+    {
+        static s8 sFrameBuf[0x2000] __attribute__((aligned(4)));
+        bufAddr = sFrameBuf;
+    }
+#else
     bufAddr = gFadeComponentStep - bufSize;
+#endif
 
     Decompress(sUiFrameImageLookup[id], bufAddr);
     RegisterDataMove(bufAddr, BG_CHAR_ADDR(0), bufSize);
