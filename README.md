@@ -1,131 +1,103 @@
-# Fire Emblem: The Sacred Stones — native PC/Android port
+# fire-emblem-ss-recomp
 
-**fire-emblem-ss-recomp** builds Fire Emblem: The Sacred Stones as a native
-program for Linux and Android, from the
-[fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u) decompilation.
-It is not an emulator: the game's C code is compiled for your machine, and its
-data (graphics, text, maps, music) is read from your own ROM at startup.
+Native port of **Fire Emblem: The Sacred Stones** (GBA) to Android and PC, built
+from the [fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u)
+decompilation. It is not an emulator: the game code is compiled as C for the
+device, with an SDL3 platform layer (the same approach as
+[mzm-android](https://github.com/joeltoumi/mzm-android) and
+[mf-android](https://github.com/joeltoumi/mf-android)).
 
-**You need your own legally obtained ROM.** None of the game's data is in this
-repository or in the builds.
+The repository **contains no game data**. On launch, the app asks for your own
+copy of the ROM and reads the graphics, maps, text and music from it.
 
-| ROM | Status |
-| --- | --- |
-| Europe (En, Fr, De, Es, It) | Prologue and first battle play through (tested in English) |
-| USA | Builds; not tested in play yet |
+## Status
 
-What the port adds: an options menu (Esc / F1, Select+Start, or the menu button
-on touch screens) with 4 quick-save slots with thumbnails (F5 / F8), remappable
-keyboard and gamepad controls, on-screen touch controls, fast forward, and LCD/CRT filters.
+- European (EU) and American (US) versions. Each build accepts only its own ROM:
 
-## Playing
+  | Region | File | SHA-1 |
+  |---|---|---|
+  | EU | Fire Emblem - The Sacred Stones (Europe) (En,Fr,De,Es,It) | `51b166dcca231369d7f98000766746dd4b98839c` |
+  | US | Fire Emblem - The Sacred Stones (USA) | `c25b145e37456171ada4b0d440bf88a19f4d509f` |
 
-- **Android:** install the APK for your ROM's region (eu or us, from the
-  [build workflow](../../actions/workflows/build.yml) artifacts) and
-  pick your ROM the first time.
-- **PC:** build it (below) and run `fe8`. It asks for the ROM the first time
-  and remembers it.
+- Tested on PC with the EU ROM:
+  - the whole prologue, compared frame by frame with mGBA (same dialogue,
+    combat, damage and level-ups);
+  - every chapter of both routes, the Tower of Valni and the Lagdou Ruins,
+    started directly and played with random input to find crashes;
+  - menus, saving, the combat animations and save states.
+- The US build compiles, but has not been tested with a US ROM yet.
+- Still to do: a full playthrough by hand, testing on Android devices, and
+  widescreen.
+
+## What the port adds
+
+- **Options menu** (Esc / F1, Select+Start on a gamepad, or the menu button on
+  touch screens).
+- **Save states**: 4 quick slots with thumbnails (F5 saves, F8 loads).
+- **Controls**: remappable keyboard and gamepad, on-screen touch controls on
+  Android.
+- **Fast forward** (Tab, or the right stick on a gamepad).
+- **Screen filters**: LCD and CRT.
+- Fullscreen with F11.
+
+Default keyboard controls:
+
+| GBA | Key |
+|---|---|
+| A / B | X / Z |
+| L / R | A / S |
+| Start / Select | Enter / Backspace |
+| D-pad | Arrow keys |
+
+## Downloading the APK
+
+GitHub Actions builds one APK per region on every change to `main`. Download
+it from the **Actions** tab: open the latest
+[`build`](../../actions/workflows/build.yml) run and grab the
+`fe8-android-apk` artifact. Install the one for your region and pick your ROM
+when you open it.
 
 ## Building
 
-```bash
-cmake -B build -G Ninja -DFE8_REGION=eu        # or us
-cmake --build build
-./build/fe8
-```
+### Android
 
-Needs CMake 3.22+, Ninja, clang (or GCC) and lld. SDL3 and Dear ImGui are
-downloaded when they are not installed. `-DFE8_HOST=headless` builds
-`fe8_headless`, a windowless version for tests (`--press`, `--dump-every`,
-`--dump-mem`, `--state-save`/`--state-load`).
-
-Android: `cd android && ./gradlew assembleEuRelease` (or `assembleUsRelease`).
-
-How the port works is in [docs/PORT.md](docs/PORT.md).
-
----
-
-# The decompilation
-
-
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-
-[FE Decomp Portal](https://laqieer.github.io/fe-decomp-portal/)
-
-This is a disassembly of Fire Emblem: The Sacred Stones (U)[!]
-
-It builds the following ROM:
-* fireemblem8.gba `sha1: c25b145e37456171ada4b0d440bf88a19f4d509f`
-
-### Quick Start
-
-If you just want to get the repo building quickly (Ubuntu/WSL, Arch Linux, or macOS/Homebrew), drop your legally obtained ROM at the repo root as `baserom.gba` and run:
+You need JDK 17 and the Android SDK with NDK 27.2.12479018:
 
 ```
-./scripts/quickstart.sh [--rom /path/to/baserom.gba] [--refresh-agbcc]
+cd android
+./gradlew assembleEuRelease   # or assembleUsRelease
 ```
 
-See [`docs/quickstart.md`](docs/quickstart.md) for full details, flags, and troubleshooting tips.
+### PC (Linux)
 
-### Building
+You need CMake 3.22+, Ninja, clang (or GCC) with lld, and Python 3. SDL3 and
+Dear ImGui are downloaded automatically if they are not installed.
 
-To build the ROM:
-```bash
-make fireemblem8.gba -j$(nproc)
 ```
-To clean all build artifacts:
-```bash
-make clean
-```
-To clean all build artifacts **except** the extremely slow battle animation compression outputs:
-```bash
-make clean_fast
+cmake -B build -G Ninja -DFE8_REGION=eu    # or us
+ninja -C build
+./build/fe8 [path/to/rom.gba]
 ```
 
-### Setting up the repository manually
+Without a path, the program looks for `fe8_eu.gba` / `fe8_us.gba` next to the
+executable or opens a file picker, and remembers the ROM afterwards.
 
-1. You must have a copy of the Fire Emblem: The Sacred Stones ROM named `baserom.gba` in the repository directory.
-2. Install [devkitPro](https://devkitpro.org/wiki/Getting_Started) or [GNU Arm Embedded Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm).
-```
-# for Ubuntu/WSL users
-apt install binutils-arm-none-eabi
-```
-3. Install [agbcc](https://github.com/pret/agbcc) to this project.
-```
-cd /path/to/agbcc
-./build.sh
-./install.sh /path/to/fireemblem8u
-```
-4. Build tools.
-```
-cd /path/to/fireemblem8u
-./build_tools.sh
-```
-5. Build the project.
-```
-make
-```
-6. You will see this for success.
-```
-fireemblem8.gba: OK
-```
+### Testing
 
-Q: `fatal error: png.h: No such file or directory`
+`-DFE8_HOST=headless` builds `fe8_headless`, a windowless version that takes
+scripted input and dumps screenshots, memory and save states. The `FE8_WARP`
+variable starts a new game on any chapter. Both are described in
+[docs/PORT.md](docs/PORT.md), along with how the port works.
 
-A: Install [libpng](http://www.libpng.org/pub/png/libpng.html) to build `tools/gbagfx`.
+## GBA ROM (decompilation)
 
-Q: `make: *** No rule to make target 'baserom.gba', needed by 'xxx'.  Stop.`
+The tree is still the fireemblem8u decompilation, and the port's changes to
+the game code are under `#ifdef PLATFORM_PC`. The instructions for building
+the original GBA ROM are in [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md).
 
-A: You must place a copy of the Fire Emblem: The Sacred Stones ROM named `baserom.gba` in the repository directory.
+## Credits
 
-Q: `unrecognized option '--add-symbol'`
-
-A: Update your devkitPro or embedded toolchain. Read [this](https://github.com/bminor/binutils-gdb/blob/3451a2d7a3501e9c3fc344cbc4950c495f30c16d/binutils/ChangeLog-2015#L120) for more info.
-
-Q: `.dep/src/xxx.d:2: *** missing separator.  Stop.`
-
-A: `rm -rf .dep` or disable [VSCode Extension: Makefile Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.makefile-tools) if installed.
-
-Check [INSTALL.md](https://github.com/pret/pokeruby/blob/master/INSTALL.md) and [INSTALL.md](https://github.com/pret/pokeemerald/blob/master/INSTALL.md) if you have trouble in setting up.
-
-Check [remove_tools](https://github.com/laqieer/fireemblem8u/tree/remove_tools) branch if you don't want to build agbcc and other tools by yourself. It uses docker to make setting up easier. Follow its [README.md](https://github.com/laqieer/fireemblem8u/blob/remove_tools/README.md) instead.
+- Decompilation: [FireEmblemUniverse/fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u)
+  and its contributors ([FE Decomp Portal](https://laqieer.github.io/fe-decomp-portal/)).
+- Fire Emblem is a trademark of Nintendo and Intelligent Systems. This project
+  is not affiliated with them and does not distribute any game data.
