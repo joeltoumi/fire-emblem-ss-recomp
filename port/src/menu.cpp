@@ -480,7 +480,7 @@ void CaptureWindow()
     if (ImGui::Button("Cancel"))
         sCapture = CAPTURE_NONE;
     ImGui::SameLine();
-    if (ImGui::Button("Quitar")) {
+    if (ImGui::Button("Clear")) {
         PortBinding& b = Config().bindings[sCaptureInput];
         if (sCapture == CAPTURE_KEYBOARD) {
             b.key = SDL_SCANCODE_UNKNOWN;

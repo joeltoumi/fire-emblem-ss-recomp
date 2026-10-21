@@ -1,5 +1,5 @@
-fire-emblem-ss-recomp — native PC/Android port layer for the Metroid: Zero Mission
-decompilation.
+fire-emblem-ss-recomp — native PC/Android port layer for the Fire Emblem: The
+Sacred Stones decompilation.
 
 The files under port/ (and the build/Android glue added by this project) are
 free software: you can redistribute them and/or modify them under the terms of
@@ -9,11 +9,11 @@ either version 3 of the License, or (at your option) any later version.
 port/ppu/ is derived from Project Picori (https://github.com/999sian/tmc),
 itself derived from VirtuaPPU by Mathéo Vignaud; GPL-3.0-or-later.
 
-The game code under src/, include/, asm/, sound/ and tools/ is the
-metroidret/mzm decompilation, MIT-licensed (see /LICENSE). Combined builds
-of the port are distributed under the GPL-3.0. Nothing here grants any right
-to Nintendo's intellectual property; a legally obtained copy of the game is
-required to build or play.
+The game code under src/, include/, asm/, data/, sound/ and tools/ is the
+FireEmblemUniverse/fireemblem8u decompilation, which belongs to its authors.
+Combined builds of the port are distributed under the GPL-3.0. Nothing here
+grants any right to Nintendo's intellectual property; a legally obtained copy
+of the game is required to build or play.
 
 ----------------------------------------------------------------------------
 

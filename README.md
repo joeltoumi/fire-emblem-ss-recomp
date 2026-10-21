@@ -1,79 +1,123 @@
-# fire-emblem-ss-recomp
+<p align="center">
+  <img src="docs/images/title.png" alt="Fire Emblem: The Sacred Stones title screen" width="60%">
+</p>
 
-Native port of **Fire Emblem: The Sacred Stones** (GBA) to Android and PC, built
-from the [fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u)
-decompilation. It is not an emulator: the game code is compiled as C for the
-device, with an SDL3 platform layer (the same approach as
-[mzm-android](https://github.com/joeltoumi/mzm-android) and
-[mf-android](https://github.com/joeltoumi/mf-android)).
+<h1 align="center">fire-emblem-ss-recomp</h1>
 
-The repository **contains no game data**. On launch, the app asks for your own
-copy of the ROM and reads the graphics, maps, text and music from it.
+<p align="center">
+  <b>Fire Emblem: The Sacred Stones, running natively on Android and PC.</b><br>
+  No emulator: the game's own C code, compiled for your device, with save states, touch controls and video options.
+</p>
 
-## Status
+<p align="center">
+  <a href="https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml"><img src="https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <img src="https://img.shields.io/badge/platform-Android%20%7C%20Linux-blue" alt="Platforms">
+  <img src="https://img.shields.io/badge/region-EU%20%7C%20US-green" alt="Regions">
+  <img src="https://img.shields.io/badge/built%20with-C%20%2B%20SDL3-orange" alt="C + SDL3">
+  <img src="https://img.shields.io/badge/license-GPL--3.0-lightgrey" alt="License">
+</p>
 
-- European (EU) and American (US) versions. Each build accepts only its own ROM:
+---
 
-  | Region | File | SHA-1 |
-  |---|---|---|
-  | EU | Fire Emblem - The Sacred Stones (Europe) (En,Fr,De,Es,It) | `51b166dcca231369d7f98000766746dd4b98839c` |
-  | US | Fire Emblem - The Sacred Stones (USA) | `c25b145e37456171ada4b0d440bf88a19f4d509f` |
+## ✨ What is this?
 
-- Tested on PC with the EU ROM:
+**fire-emblem-ss-recomp** turns *Fire Emblem: The Sacred Stones* (GBA) into a
+native app for Android and PC. It is built from the
+[fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u)
+decompilation: the game code is compiled as C for the device, with an SDL3
+platform layer shared with its sister projects,
+[metroid-zm-recomp](https://github.com/joeltoumi/metroid-zm-recomp) and
+[metroid-fs-recomp](https://github.com/joeltoumi/metroid-fs-recomp).
+
+The graphics, maps, text and music are read from **your own ROM** at startup,
+so the repository and the APKs contain no game data.
+
+> 🤖 **AI notice:** this project was developed with the help of AI tools
+> (Anthropic's Claude), which wrote most of the code and documentation under
+> my direction and review.
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="docs/images/gameplay-1.png" width="49%" alt="Battle animation">
+  <img src="docs/images/gameplay-2.png" width="49%" alt="Level up">
+  <img src="docs/images/gameplay-3.png" width="49%" alt="Combat forecast">
+  <img src="docs/images/gameplay-4.png" width="49%" alt="Dialogue">
+</p>
+
+## 🎮 Features
+
+- 📱 **Native Android app**, with a touch gamepad you can rearrange and resize.
+- 💾 **Quick saves:** 4 slots with thumbnail (`F5` / `F8`), on top of the normal in-game save.
+- 🎨 **Video options:** LCD grid or CRT scanlines filter, smooth or integer scaling, VSync.
+- ⏩ **Fast-forward** (x2 to x10, hold or toggle).
+- 🎮 **Keyboard and gamepad** with remappable buttons.
+- 🌍 **Europe and USA** builds. The European version keeps its five languages.
+- 🔊 **The original sound engine**, compiled from the decompilation.
+- 🚫 **No BIOS and no emulator needed.**
+
+## 📊 Status
+
+- Tested on PC with the European ROM:
   - the whole prologue, compared frame by frame with mGBA (same dialogue,
     combat, damage and level-ups);
   - every chapter of both routes, the Tower of Valni and the Lagdou Ruins,
     started directly and played with random input to find crashes;
-  - menus, saving, the combat animations and save states.
+  - menus, saving, battle animations and quick saves.
 - The US build compiles, but has not been tested with a US ROM yet.
-- Still to do: a full playthrough by hand, testing on Android devices, and
-  widescreen.
+- 🚧 It still needs a full playthrough by hand, testing on Android devices,
+  and widescreen support.
 
-## What the port adds
+## 💽 You need your own ROM
 
-- **Options menu** (Esc / F1, Select+Start on a gamepad, or the menu button on
-  touch screens).
-- **Save states**: 4 quick slots with thumbnails (F5 saves, F8 loads).
-- **Controls**: remappable keyboard and gamepad, on-screen touch controls on
-  Android.
-- **Fast forward** (Tab, or the right stick on a gamepad).
-- **Screen filters**: LCD and CRT.
-- Fullscreen with F11.
+Each build only accepts its own region's ROM:
 
-Default keyboard controls:
+| Region | File | SHA-1 |
+|---|---|---|
+| EU | Fire Emblem - The Sacred Stones (Europe) (En,Fr,De,Es,It) | `51b166dcca231369d7f98000766746dd4b98839c` |
+| US | Fire Emblem - The Sacred Stones (USA) | `c25b145e37456171ada4b0d440bf88a19f4d509f` |
 
-| GBA | Key |
-|---|---|
+## 🚀 Installation (Android)
+
+GitHub Actions builds one APK per region on every change to `main`. Open
+**[Actions → build](https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml)**,
+pick the latest run and download the `fe8-android-apk` artifact. Install the
+one for your region and pick your ROM when you open it. ▶️
+
+## 🕹️ Controls
+
+> 💡 The **options menu** pauses the game and opens with **Esc** (or **F1**,
+> **Select+Start** on a gamepad, the menu button on touch screens). From there
+> you can remap every button, manage quick saves, change the video filter,
+> set the fast-forward speed and edit the touch controls.
+
+| GBA | Keyboard |
+| --- | --- |
 | A / B | X / Z |
 | L / R | A / S |
 | Start / Select | Enter / Backspace |
-| D-pad | Arrow keys |
+| D-pad | arrow keys |
+| Fast-forward | Tab |
+| Quick save / load | F5 / F8 |
+| Fullscreen | F11 |
 
-## Downloading the APK
-
-GitHub Actions builds one APK per region on every change to `main`. Download
-it from the **Actions** tab: open the latest
-[`build`](../../actions/workflows/build.yml) run and grab the
-`fe8-android-apk` artifact. Install the one for your region and pick your ROM
-when you open it.
-
-## Building
+## 🔨 Building from source
 
 ### Android
 
 You need JDK 17 and the Android SDK with NDK 27.2.12479018:
 
-```
+```sh
 cd android
 ./gradlew assembleEuRelease   # or assembleUsRelease
 ```
 
 ### PC (Linux)
 
-You need CMake 3.22+, Ninja, clang (or GCC) with lld, and Python 3. SDL3 and
+You need CMake 3.22+, Ninja, clang (or gcc) with lld, and Python 3. SDL3 and
 Dear ImGui are downloaded automatically if they are not installed.
 
-```
+```sh
 cmake -B build -G Ninja -DFE8_REGION=eu    # or us
 ninja -C build
 ./build/fe8 [path/to/rom.gba]
@@ -81,23 +125,30 @@ ninja -C build
 
 Without a path, the program looks for `fe8_eu.gba` / `fe8_us.gba` next to the
 executable or opens a file picker, and remembers the ROM afterwards.
+`-DFE8_HOST=headless` builds `fe8_headless`, a windowless version for testing
+that dumps screenshots.
 
 ### Testing
 
-`-DFE8_HOST=headless` builds `fe8_headless`, a windowless version that takes
-scripted input and dumps screenshots, memory and save states. The `FE8_WARP`
-variable starts a new game on any chapter. Both are described in
-[docs/PORT.md](docs/PORT.md), along with how the port works.
+[docs/PORT.md](docs/PORT.md) explains how the port works and the `FE8_WARP`
+mode, which starts a new game on any chapter. That is how every chapter has
+been tested without playing up to it.
 
-## GBA ROM (decompilation)
+### GBA ROM (decompilation)
 
 The tree is still the fireemblem8u decompilation, and the port's changes to
 the game code are under `#ifdef PLATFORM_PC`. The instructions for building
 the original GBA ROM are in [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md).
 
-## Credits
+## 🙏 Credits and licenses
 
 - Decompilation: [FireEmblemUniverse/fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u)
   and its contributors ([FE Decomp Portal](https://laqieer.github.io/fe-decomp-portal/)).
-- Fire Emblem is a trademark of Nintendo and Intelligent Systems. This project
-  is not affiliated with them and does not distribute any game data.
+- Port layer: GPL-3.0 ([port/LICENSE](port/LICENSE)).
+- Software PPU: [Project Picori](https://github.com/999sian/tmc).
+- Sister projects: [metroid-zm-recomp](https://github.com/joeltoumi/metroid-zm-recomp)
+  (Metroid: Zero Mission) and [metroid-fs-recomp](https://github.com/joeltoumi/metroid-fs-recomp)
+  (Metroid Fusion).
+
+Fire Emblem is a trademark of Nintendo and Intelligent Systems. This project is
+not affiliated with them and does not distribute any game data.
