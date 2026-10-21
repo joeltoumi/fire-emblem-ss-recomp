@@ -68,3 +68,8 @@ Most fixes in `src/` are under `#ifdef PLATFORM_PC`:
 `fe8_headless` takes scripted input (`--press FRAME:KEYS:LEN`) and writes
 frames (`--dump-every`) and raw video memory (`--dump-mem FRAME:FILE`), so a
 run can be compared with the same input in an emulator such as mGBA.
+
+To test later chapters without playing up to them, set `FE8_WARP` to a chapter
+index (see `include/constants/chapters.h`): a new game then starts on that
+chapter, skipping the world map. Units from earlier chapters are missing, so
+events that expect them may not behave as in a real playthrough.
