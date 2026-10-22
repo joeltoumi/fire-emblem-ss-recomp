@@ -10,8 +10,9 @@ embedded: it is read in place from the player's ROM.
   are mapped at their GBA addresses (`port/src/gba_mem.c`), so a GBA pointer
   is also a valid native pointer.
 - The game image is linked below 4 GiB (`FE8_IMAGE_BASE`, `0x10000000`): the
-  game keeps pointers in 32-bit fields. On Android, `libmain.so` reserves the
-  address range and loads `libgame.so` into it with `android_dlopen_ext`.
+  game keeps pointers in 32-bit fields. On Android, `libmain.so` reserves a free
+  range below 4 GiB (ART keeps its heap there too, so the address varies)
+  and loads `libgame.so` into it with `android_dlopen_ext`.
 - The ROM is loaded at `0x08000000`. Every data symbol the code reads from it
   is an absolute symbol at its ROM address, listed per region in
   `port/data/rom_symbols_{us,eu}.txt` and turned into an assembly file of

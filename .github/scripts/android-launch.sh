@@ -11,8 +11,9 @@ pid=$(adb shell pidof $pkg | tr -d '\r')
 echo "pid after 20 s: '${pid}'"
 adb logcat -d > logcat.txt
 grep -E "fe8|SDL|linker|DEBUG|AndroidRuntime|libc|$pkg" logcat.txt | tail -150
-if [ -z "$pid" ]; then
-    echo "::error title=Android launch::the app is not running 20 s after launch"
+if [ -z "$pid" ] || grep -q "Finished main function" logcat.txt; then
+    echo "::error title=Android launch::the game is not running 20 s after launch"
+    grep -E " (E|F) (fe8|SDL|DEBUG|libc|linker) " logcat.txt | tail -20
     exit 1
 fi
 echo "the app is running"
