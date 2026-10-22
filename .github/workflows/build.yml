@@ -170,7 +170,9 @@ jobs:
           fi
           mkdir dist
           # app-eu-release.apk -> Fire_Emblem_Sacred_Stones-eu.apk
-          for apk in artifacts/fe8-android-apk/*/release/*.apk; do
+          # With a single artifact, download-artifact extracts it straight into
+          # artifacts/ (no folder named after it), so search the whole tree.
+          for apk in $(find artifacts -path '*/release/*.apk'); do
             region=$(basename "$(dirname "$(dirname "$apk")")")
             cp "$apk" "dist/Fire_Emblem_Sacred_Stones-$region.apk"
           done
