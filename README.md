@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/title.png" alt="Fire Emblem: The Sacred Stones title screen" width="60%">
+  <img src="docs/images/logo.png" alt="Fire Emblem: The Sacred Stones Recomp" width="70%">
 </p>
 
 <h1 align="center">fire-emblem-ss-recomp</h1>
