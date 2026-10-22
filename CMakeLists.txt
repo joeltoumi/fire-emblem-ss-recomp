@@ -100,6 +100,13 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
         -Werror=int-conversion -Werror=incompatible-pointer-types
         -Wno-error=incompatible-function-pointer-types)
 endif()
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|amd64")
+    # The game's globals and ROM tables sit at their GBA addresses, which are
+    # only 4-byte aligned, but on x86-64 the compiler assumes 16 for arrays of
+    # 16+ bytes and uses aligned SSE loads on them (a crash in optimized
+    # builds). The GBA code needs no floating point or vectors: no SSE.
+    list(APPEND FE8_GAME_FLAGS -mno-sse)
+endif()
 target_compile_options(fe8_game PRIVATE
     $<$<COMPILE_LANGUAGE:C>:-include port/native.h ${FE8_GAME_FLAGS}>)
 
