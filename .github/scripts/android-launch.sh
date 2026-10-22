@@ -4,6 +4,9 @@ set -u
 pkg=dev.fe8.android.eu
 apk=$(ls android/app/build/outputs/apk/eu/release/*.apk | head -1)
 adb install -r "$apk"
+# Let the system finish registering the package: a launch right after the
+# install can be killed by the package-change handling.
+sleep 15
 adb logcat -c
 adb shell am start -W -n $pkg/dev.fe8.android.Fe8Activity
 sleep 20
