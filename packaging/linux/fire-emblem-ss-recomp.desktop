@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Fire Emblem: The Sacred Stones
+Comment=Native port of Fire Emblem: The Sacred Stones (needs your own ROM)
+Exec=fe8
+Icon=fire-emblem-ss-recomp
+Categories=Game;StrategyGame;
+Terminal=false

@@ -1294,6 +1294,40 @@ static uint8_t* LoadWholeFile(const char* path, size_t* size)
     return copy;
 }
 
+// The first .gba file in the AppImage's folder that is this build's ROM.
+static uint8_t* FindRomNextToAppImage(size_t* size)
+{
+    const char* appImage = SDL_getenv("APPIMAGE");
+    char dir[1024];
+    int count = 0;
+    uint8_t* found = NULL;
+
+    if (!appImage || !*appImage)
+        return NULL;
+    SDL_strlcpy(dir, appImage, sizeof(dir));
+    char* slash = SDL_strrchr(dir, '/');
+    if (!slash)
+        return NULL;
+    slash[1] = '\0';
+
+    char** files = SDL_GlobDirectory(dir, "*.gba", SDL_GLOB_CASEINSENSITIVE, &count);
+    for (int i = 0; files && i < count && !found; i++) {
+        char path[2048];
+        SDL_snprintf(path, sizeof(path), "%s%s", dir, files[i]);
+        uint8_t* data = LoadWholeFile(path, size);
+        if (!data)
+            continue;
+        if (Port_CheckRom(data, *size) == PORT_ROM_OK) {
+            Port_Log("ROM: %s", path);
+            found = data;
+        } else {
+            free(data);
+        }
+    }
+    SDL_free(files);
+    return found;
+}
+
 static void DrawRomScreen(const char* error)
 {
     float scale;
@@ -1315,6 +1349,8 @@ static void DrawRomScreen(const char* error)
     SDL_RenderDebugTextFormat(sRenderer, 8, 40, "Fire Emblem: The Sacred Stones (%s)", Port_RomRegionName());
     SDL_RenderDebugText(sRenderer, 8, 60, "Press A / Enter or tap to browse.");
     SDL_RenderDebugText(sRenderer, 8, 72, "Press B / Esc to quit.");
+    if (SDL_getenv("APPIMAGE"))
+        SDL_RenderDebugText(sRenderer, 8, 92, "Or put the .gba next to the AppImage and restart.");
     if (error) {
         SDL_SetRenderDrawColor(sRenderer, 255, 120, 120, 255);
         SDL_RenderDebugText(sRenderer, 8, 96, error);
@@ -1361,6 +1397,11 @@ uint8_t* Port_HostLoadRom(size_t* size, const char* error)
                 return data;
             }
         }
+        // Linux AppImage: any matching .gba next to the .AppImage file (the
+        // executable itself runs from a temporary mount).
+        uint8_t* data = FindRomNextToAppImage(size);
+        if (data)
+            return data;
     }
 
     // Nothing found (or it was rejected): ask the player.

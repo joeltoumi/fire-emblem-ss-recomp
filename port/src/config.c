@@ -138,6 +138,11 @@ void PortConfig_Defaults(PortConfig* cfg)
     cfg->fullscreen = true;
     // Only shows on devices with a second display.
     cfg->secondScreen = PORT_SCREEN2_MAP;
+#else
+    // Steam Deck (Steam sets SteamDeck=1 there): full screen, like a console.
+    const char* deck = getenv("SteamDeck");
+    if (deck && strcmp(deck, "1") == 0)
+        cfg->fullscreen = true;
 #endif
 }
 

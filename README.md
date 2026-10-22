@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml"><img src="https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml/badge.svg" alt="Build"></a>
-  <img src="https://img.shields.io/badge/platform-Android%20%7C%20Linux-blue" alt="Platforms">
+  <img src="https://img.shields.io/badge/platform-Android%20%7C%20Linux%20%7C%20Steam%20Deck-blue" alt="Platforms">
   <img src="https://img.shields.io/badge/region-EU%20%7C%20US-green" alt="Regions">
   <img src="https://img.shields.io/badge/built%20with-C%20%2B%20SDL3-orange" alt="C + SDL3">
   <img src="https://img.shields.io/badge/license-GPL--3.0-lightgrey" alt="License">
@@ -91,6 +91,23 @@ GitHub Actions builds one APK per region on every change to `main`. Open
 pick the latest run and download the `fe8-android-apk` artifact. Install the
 one for your region and pick your ROM when you open it. ▶️
 
+## 🐧 Installation (Linux and Steam Deck)
+
+GitHub Actions also builds a native AppImage per region (the
+`fe8-linux-appimage-eu` / `-us` artifacts of the same runs). It contains no
+game data.
+
+1. Put the `.AppImage` in a folder and copy your `.gba` ROM next to it (any
+   file name). Make the AppImage executable (`chmod +x`, or *Properties →
+   Permissions* in the file manager).
+2. Run it. It finds the ROM, checks it and keeps its own copy, so it never
+   asks again (without a ROM next to it, it opens a file picker once).
+3. **Steam Deck:** do steps 1-2 in Desktop Mode, then *Add a Non-Steam Game*
+   in Steam and pick the AppImage. In Game Mode it starts full screen and the
+   Deck's controls work as a gamepad (Select+Start opens the options menu).
+
+Settings, saves and quick saves live in `~/.local/share/fire-emblem-ss-recomp/fe8/`.
+
 ## 🕹️ Controls
 
 > 💡 The **options menu** pauses the game and opens with **Esc** (or **F1**,
@@ -131,7 +148,10 @@ ninja -C build
 ```
 
 Without a path, the program looks for `fe8_eu.gba` / `fe8_us.gba` next to the
-executable or opens a file picker, and remembers the ROM afterwards.
+executable (or any matching `.gba` next to the AppImage) or opens a file
+picker, and remembers the ROM afterwards.
+`packaging/linux/build-appimage.sh` packs a build made with
+`-DSDL_STATIC=ON -DSDL_SHARED=OFF` into an AppImage.
 `-DFE8_HOST=headless` builds `fe8_headless`, a windowless version for testing
 that dumps screenshots.
 

@@ -1,0 +1,5 @@
+#!/bin/sh
+# AppImage entry point. The game finds the ROM next to the .AppImage file
+# ($APPIMAGE) or asks for it once, and keeps its own copy afterwards.
+HERE="$(dirname "$(readlink -f "$0")")"
+exec "$HERE/usr/bin/fe8" "$@"

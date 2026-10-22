@@ -34,6 +34,46 @@ jobs:
           cat out.txt
           grep -q "ROM rejected" out.txt
 
+  appimage:
+    name: Linux / Steam Deck AppImage (${{ matrix.region }})
+    # The oldest supported runner, so the AppImage runs on older glibc too.
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        region: [eu, us]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install tools
+        # SDL3's headers for X11, Wayland, audio and gamepads (it loads the
+        # libraries themselves at run time, from the player's system).
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build lld clang \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev \
+            libxss-dev libxtst-dev libxkbcommon-dev libwayland-dev wayland-protocols \
+            libdecor-0-dev libegl1-mesa-dev libgles2-mesa-dev libgl1-mesa-dev libdrm-dev \
+            libgbm-dev libdbus-1-dev libibus-1.0-dev libudev-dev libasound2-dev \
+            libpulse-dev libpipewire-0.3-dev libusb-1.0-0-dev
+      - name: Configure
+        run: >
+          cmake -B build -G Ninja -DFE8_HOST=sdl -DFE8_REGION=${{ matrix.region }}
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+          -DSDL_STATIC=ON -DSDL_SHARED=OFF
+      - name: Build
+        run: cmake --build build
+      - name: Package
+        run: |
+          curl -sSL -o appimagetool https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+          APPIMAGE_EXTRACT_AND_RUN=1 APPIMAGETOOL=$PWD/appimagetool \
+            packaging/linux/build-appimage.sh build "Fire_Emblem_Sacred_Stones-${{ matrix.region }}-x86_64.AppImage"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: fe8-linux-appimage-${{ matrix.region }}
+          path: Fire_Emblem_Sacred_Stones-*.AppImage
+          if-no-files-found: error
+
   android:
     name: Android APK
     runs-on: ubuntu-24.04
