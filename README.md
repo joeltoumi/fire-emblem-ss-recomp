@@ -5,7 +5,7 @@
 <h1 align="center">fire-emblem-ss-recomp</h1>
 
 <p align="center">
-  <b>Fire Emblem: The Sacred Stones, running natively on Android and PC.</b><br>
+  <b>Fire Emblem: The Sacred Stones, running natively on Android and PC / SteamOS.</b><br>
   No emulator: the game's own C code, compiled for your device, with save states, touch controls and video options.
 </p>
 
@@ -72,8 +72,6 @@ so the repository and the APKs contain no game data.
     started directly and played with random input to find crashes;
   - menus, saving, battle animations and quick saves.
 - The US build compiles, but has not been tested with a US ROM yet.
-- 🚧 It still needs a full playthrough by hand and testing on Android
-  devices (the second screen has not been tried on a real AYN Thor yet).
 
 ## 💽 You need your own ROM
 
