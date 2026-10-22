@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml"><img src="https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <a href="https://github.com/kalasyan/fire-emblem-ss-recomp/actions/workflows/build.yml"><img src="https://github.com/kalasyan/fire-emblem-ss-recomp/actions/workflows/build.yml/badge.svg" alt="Build"></a>
   <img src="https://img.shields.io/badge/platform-Android%20%7C%20Linux%20%7C%20Steam%20Deck-blue" alt="Platforms">
   <img src="https://img.shields.io/badge/region-EU%20%7C%20US-green" alt="Regions">
   <img src="https://img.shields.io/badge/built%20with-C%20%2B%20SDL3-orange" alt="C + SDL3">
@@ -26,8 +26,8 @@ native app for Android and PC. It is built from the
 [fireemblem8u](https://github.com/FireEmblemUniverse/fireemblem8u)
 decompilation: the game code is compiled as C for the device, with an SDL3
 platform layer shared with its sister projects,
-[metroid-zm-recomp](https://github.com/joeltoumi/metroid-zm-recomp) and
-[metroid-fs-recomp](https://github.com/joeltoumi/metroid-fs-recomp).
+[metroid-zm-recomp](https://github.com/kalasyan/metroid-zm-recomp) and
+[metroid-fs-recomp](https://github.com/kalasyan/metroid-fs-recomp).
 
 The graphics, maps, text and music are read from **your own ROM** at startup,
 so the repository and the APKs contain no game data.
@@ -84,16 +84,20 @@ Each build only accepts its own region's ROM:
 
 ## 🚀 Installation (Android)
 
-GitHub Actions builds one APK per region on every change to `main`. Open
-**[Actions → build](https://github.com/joeltoumi/fire-emblem-ss-recomp/actions/workflows/build.yml)**,
-pick the latest run and download the `fe8-android-apk` artifact. Install the
-one for your region and pick your ROM when you open it. ▶️
+Download `Fire_Emblem_Sacred_Stones-eu.apk` or `Fire_Emblem_Sacred_Stones-us.apk`
+from the **[latest release](https://github.com/kalasyan/fire-emblem-ss-recomp/releases/latest)**,
+install the one for your region and pick your ROM when you open it. ▶️
+
+Builds of every change to `main` are also in
+**[Actions → build](https://github.com/kalasyan/fire-emblem-ss-recomp/actions/workflows/build.yml)**
+(the `fe8-android-apk` artifact of the latest run).
 
 ## 🐧 Installation (Linux and Steam Deck)
 
-GitHub Actions also builds a native AppImage per region (the
-`fe8-linux-appimage-eu` / `-us` artifacts of the same runs). It contains no
-game data.
+Each release also has a native AppImage per region
+(`Fire_Emblem_Sacred_Stones-eu-x86_64.AppImage` / `-us-`; the
+`fe8-linux-appimage-*` artifacts of the Actions runs have the same files). It
+contains no game data.
 
 1. Put the `.AppImage` in a folder and copy your `.gba` ROM next to it (any
    file name). Make the AppImage executable (`chmod +x`, or *Properties →
@@ -171,8 +175,8 @@ the original GBA ROM are in [docs/UPSTREAM_README.md](docs/UPSTREAM_README.md).
   and its contributors ([FE Decomp Portal](https://laqieer.github.io/fe-decomp-portal/)).
 - Port layer: GPL-3.0 ([port/LICENSE](port/LICENSE)).
 - Software PPU: [Project Picori](https://github.com/999sian/tmc).
-- Sister projects: [metroid-zm-recomp](https://github.com/joeltoumi/metroid-zm-recomp)
-  (Metroid: Zero Mission) and [metroid-fs-recomp](https://github.com/joeltoumi/metroid-fs-recomp)
+- Sister projects: [metroid-zm-recomp](https://github.com/kalasyan/metroid-zm-recomp)
+  (Metroid: Zero Mission) and [metroid-fs-recomp](https://github.com/kalasyan/metroid-fs-recomp)
   (Metroid Fusion).
 
 Fire Emblem is a trademark of Nintendo and Intelligent Systems. This project is
