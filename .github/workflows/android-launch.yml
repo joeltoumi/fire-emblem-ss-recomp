@@ -6,7 +6,7 @@ name: android-launch
 on:
   push:
     branches: [main]
-    paths: ['android/**', 'port/**', 'CMakeLists.txt', '.github/workflows/android-launch.yml']
+    paths: ['android/**', 'port/**', 'CMakeLists.txt', '.github/workflows/android-launch.yml', '.github/scripts/android-launch.sh']
   workflow_dispatch:
 
 jobs:
