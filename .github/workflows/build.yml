@@ -156,11 +156,11 @@ jobs:
     # A release made on the page with a new tag can also fire the tag push.
     concurrency: release-${{ inputs.release || github.ref_name }}
     steps:
-      # Only for the release notes in docs/releases/<tag>.md, if there are any.
+      # Only for the release notes in docs/release-notes/<tag>.md, if there are any.
       - uses: actions/checkout@v5
         with:
           path: src
-          sparse-checkout: docs/releases
+          sparse-checkout: docs/release-notes
       - uses: actions/download-artifact@v6
         with:
           path: artifacts
@@ -169,11 +169,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.event.release.tag_name || inputs.release || github.ref_name }}
         run: |
+          notes="src/docs/release-notes/$TAG.md"
           if ! gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
             pre=; case "$TAG" in *-*) pre=--prerelease ;; esac
-            notes=--generate-notes
-            [ -f "src/docs/releases/$TAG.md" ] && notes="--notes-file src/docs/releases/$TAG.md"
-            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$TAG" $notes $pre
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$TAG" --generate-notes $pre
+          fi
+          if [ -f "$notes" ]; then
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --notes-file "$notes"
           fi
           mkdir dist
           # app-eu-release.apk -> Fire_Emblem_Sacred_Stones-eu.apk
