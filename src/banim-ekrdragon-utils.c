@@ -95,6 +95,9 @@ u16 * GetEkrDragonPalette(void)
     /**
      * return NULL;
      */
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 void SetEkrDragonPaletteBack(int pos)

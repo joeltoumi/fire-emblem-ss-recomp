@@ -175,7 +175,7 @@ ProcPtr NewTargetSelection_Specialized(const struct SelectInfo* selectInfo, u8(*
 
     proc->onAPress = onSelect;
 
-#if 0
+#if defined(PLATFORM_PC)
     return proc; // BUG
 #endif
 }

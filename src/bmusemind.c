@@ -246,6 +246,9 @@ int sub_802EF80() {
     ForceSyncUnitSpriteSheet();
 
     // return; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void ExecWarpStaff(ProcPtr proc) {

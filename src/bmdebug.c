@@ -207,6 +207,9 @@ int sub_801BB98(struct MenuProc* menuProc, struct MenuItemProc* menuItemProc) {
     PutText(&menuItemProc->text,  gBG0TilemapBuffer + TILEMAP_INDEX(menuItemProc->xTile, menuItemProc->yTile));
 
     // return 0; // BUG
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0801BC1C
@@ -443,6 +446,9 @@ u8 DebugClearMenu_ClearFile(struct MenuProc* menuProc, struct MenuItemProc* menu
     SoftReset(0xff);
 
     // return 0; // BUG
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0801C05C
@@ -453,6 +459,9 @@ int DebugMenuInit(void) {
     BG_EnableSyncByMask(1);
 
     // return; // BUG - Should be void
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0801C090
@@ -517,6 +526,9 @@ int DebugContinueMenuEnd(struct MenuProc* menuProc) {
     EnablePaletteSync();
 
     // return 0; // BUG
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0801C1DC

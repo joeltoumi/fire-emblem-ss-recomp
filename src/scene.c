@@ -2106,6 +2106,9 @@ int GetTalkChoiceResult(void) {
 int SetTalkChoiceResult(int result) {
     sTalkChoiceResult = result;
     // return; // BUG
+#ifdef PLATFORM_PC
+    return result; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x08008A18
@@ -2470,7 +2473,7 @@ bool sub_8008F3C(void) {
     if (Proc_Find(ProcScr_08591624))
         return true;
 
-#if BUGFIX
+#if BUGFIX || defined(PLATFORM_PC)
     return false;
 #endif
 }

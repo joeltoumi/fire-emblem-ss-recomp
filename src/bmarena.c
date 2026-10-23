@@ -328,6 +328,9 @@ s8 IsWeaponMagic(int weaponType) {
             return 1;
     }
 
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int ArenaGetOpposingLevel(int level) {
@@ -479,7 +482,7 @@ u16 ArenaGetUpgradedWeapon(u16 item)
         return item;
     }
 
-#if BUGFIX
+#if BUGFIX || defined(PLATFORM_PC)
     return item;
 #endif // BUGFIX
 }

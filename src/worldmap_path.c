@@ -1032,6 +1032,9 @@ int WMMenu_OnGuideDraw(struct MenuProc * menuProc, struct MenuItemProc * menuIte
     }
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080BC56C

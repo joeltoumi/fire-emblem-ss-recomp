@@ -161,6 +161,9 @@ int MapMenu_GuideCommandDraw(struct MenuProc* menu, struct MenuItemProc* menuIte
     PutText(&menuItem->text, BG_GetMapBuffer(menu->frontBg) + TILEMAP_INDEX(menuItem->xTile, menuItem->yTile));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 MapMenu_GuideCommand(struct MenuProc* menu, struct MenuItemProc* menuItem) {
@@ -943,6 +946,9 @@ int ItemSelectMenu_TextDraw(struct MenuProc* menu, struct MenuItemProc* menuItem
     BG_EnableSyncByMask(BG0_SYNC_BIT);
 
     //return 0; BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 ItemSelectMenu_Usability(const struct MenuItemDef* def, int number) {
@@ -982,10 +988,16 @@ int Menu_SwitchIn(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     UpdateMenuItemPanel(menuItem->itemNumber);
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int Menu_SwitchOut_DoNothing(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void sub_80234AC(int x, int y) {
@@ -1223,6 +1235,9 @@ int BallistaRangeMenu_Draw(struct MenuProc* menu, struct MenuItemProc* menuItem)
     );
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 BallistaRangeMenu_Select(struct MenuProc* menu, struct MenuItemProc* menuItem) {
@@ -1803,6 +1818,9 @@ u8 StealMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitStealInventoryInfoWindow(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 StealMapSelect_Select(ProcPtr proc, struct SelectTarget* target) {
@@ -1846,7 +1864,11 @@ int StealItemMenuCommand_Draw(struct MenuProc* menu, struct MenuItemProc* menuIt
 
     DrawItemMenuLine(&menuItem->text, item, isStealable, gBG0TilemapBuffer + TILEMAP_INDEX(menuItem->xTile, menuItem->yTile));
 
+#ifdef PLATFORM_PC
+    return 0;
+#else
     return;
+#endif
 }
 
 u8 StealItemMenuCommand_Effect(struct MenuProc* menu, struct MenuItemProc* menuItem) {
@@ -1996,6 +2018,9 @@ u8 ConvoyMenu_HelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     StartItemHelpBox(menuItem->xTile << 3, menuItem->yTile << 3, gActiveUnit->items[menuItem->itemNumber]);
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 ItemMenu_HelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem) {
@@ -2005,6 +2030,9 @@ u8 ItemMenu_HelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     unit->items[menuItem->itemNumber]);
 
     //return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 BallistaRangeMenuHelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem) {
@@ -2016,6 +2044,9 @@ u8 BallistaRangeMenuHelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem
     StartItemHelpBox(x, y, item);
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void HealMapSelect_Init(ProcPtr proc) {
@@ -2031,6 +2062,9 @@ u8 HealMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitHpInfoWindow(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void RescueSelection_OnConstruction(ProcPtr proc) {
@@ -2046,6 +2080,9 @@ u8 RescueSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitRescueInfoWindows(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void DropSelection_OnConstruction(ProcPtr menu) {
@@ -2071,6 +2108,9 @@ u8 GiveSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitGiveInfoWindows(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void TakeSelection_OnInit(ProcPtr menu) {
@@ -2086,6 +2126,9 @@ u8 TakeSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitTakeInfoWindows(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void TradeTargetSelection_OnInit(ProcPtr menu) {
@@ -2101,6 +2144,9 @@ u8 TradeSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitInventoryInfoWindow(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void TalkSupportSelection_OnInit(ProcPtr menu) {
@@ -2115,6 +2161,9 @@ u8 TalkSupportSelection_OnChange(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitHpInfoWindow(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void RefreshMapSelect_Init(ProcPtr menu) {
@@ -2129,6 +2178,9 @@ u8 RefreshMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitHpInfoWindow(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void WarpUnitMapSelect_Init(ProcPtr menu) {
@@ -2143,6 +2195,9 @@ u8 WarpUnitMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target) {
     RefreshUnitHpInfoWindow(GetUnit(target->uid));
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void SummonSelection_OnInit(ProcPtr menu) {
@@ -2152,6 +2207,9 @@ void SummonSelection_OnInit(ProcPtr menu) {
 }
 
 u8 SummonSelection_OnChange(ProcPtr proc, struct SelectTarget * target) {
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void sub_8024888(ProcPtr menu) {
@@ -2372,10 +2430,17 @@ int ItemMenu_SwitchIn(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     }
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int ItemMenu_SwitchOut_DoNothing(struct MenuProc* menu, struct MenuItemProc* menuItem) {
+#ifdef PLATFORM_PC
+    return 0;
+#else
     return;
+#endif
 }
 
 u8 ItemMenuHelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem) {
@@ -2390,6 +2455,9 @@ u8 ItemMenuHelpBox(struct MenuProc* menu, struct MenuItemProc* menuItem) {
     StartItemHelpBox(menuItem->xTile << 3, menuItem->yTile << 3, item);
 
     // return 0; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 MapMenu_IsRecordsCommandAvailable(const struct MenuItemDef* def, int number) {

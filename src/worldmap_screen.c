@@ -45,6 +45,9 @@ u32 sub_80BA458(void)
     }
 
     // return; BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080BA490

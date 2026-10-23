@@ -261,6 +261,9 @@ u8 GetDirectionOfPathBeforeIndex(u8 i) {
         return 4;
     if (gpPathArrowProc->pathY[i - 1] > gpPathArrowProc->pathY[i])
         return 2;
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 GetDirectionOfPathAfterIndex(u8 i) {
@@ -274,6 +277,9 @@ u8 GetDirectionOfPathAfterIndex(u8 i) {
         return 2;
     if (gpPathArrowProc->pathY[i] > gpPathArrowProc->pathY[i + 1])
         return 4;
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 PointInCameraBounds(s16 x, s16 y, u8 xBound, u8 yBound) {

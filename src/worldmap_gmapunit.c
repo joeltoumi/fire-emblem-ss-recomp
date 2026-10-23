@@ -677,6 +677,9 @@ ProcPtr StartGmapUnitFade(int index, int palA, int palB, int arg3, ProcPtr paren
     proc->unk_37 = 1;
 
     // return proc; // BUG
+#ifdef PLATFORM_PC
+    return proc; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080BB47C

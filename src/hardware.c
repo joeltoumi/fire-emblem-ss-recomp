@@ -117,6 +117,9 @@ struct BgCnt *BG_GetControlBuffer(u16 bg)
     case 2: return &gLCDControlBuffer.bg2cnt;
     case 3: return &gLCDControlBuffer.bg3cnt;
     }
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 int GetBackgroundTileDataOffset(int bg)

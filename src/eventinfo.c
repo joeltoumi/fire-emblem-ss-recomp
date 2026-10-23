@@ -417,6 +417,9 @@ const void * GetChapterAllyUnitDataPointer(void)
                 return GBA_GET(const void *, evGroup->playerUnitsChoice3InEncounter);
         }
     }
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080833B0
@@ -878,8 +881,15 @@ int EvCheck05_LOCA(struct EventInfo* info) {
 
 //! FE8U = 0x08083978
 int EvCheck06_VILL(struct EventInfo* info) {
+#ifdef PLATFORM_PC
+    // The original falls off the end, returning EvCheck05_LOCA's result.
+    int ret = EvCheck05_LOCA(info);
+    info->givenMoney = 3;
+    return ret;
+#else
     EvCheck05_LOCA(info);
     info->givenMoney = 3;
+#endif
 
     // return 1; // BUG?
 }

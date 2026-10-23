@@ -552,6 +552,9 @@ u8 MenuCancelSelect(struct MenuProc* menu, struct MenuItemProc* item)
 u8 MenuStdHelpBox(struct MenuProc* menu, struct MenuItemProc* item)
 {
     StartHelpBox(item->xTile*8, item->yTile*8, item->def->helpMsgId);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void Menu_AutoHelpBox_OnInit(struct MenuProc* proc)
@@ -588,6 +591,9 @@ void Menu_AutoHelpBox_OnLoop(struct MenuProc* proc)
 u8 MenuAutoHelpBoxSelect(struct MenuProc* menu)
 {
     Proc_GotoScript(menu, sProc_MenuAutoHelpBox);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void Menu_FrozenHelpBox_OnLoop(struct MenuProc* proc)
@@ -612,6 +618,9 @@ u8 MenuFrozenHelpBox(struct MenuProc* proc, int msgid)
 
     LoadHelpBoxGfx(NULL, -1); // TODO: default constants?
     StartHelpBox(GetUiHandPrevDisplayX(), GetUiHandPrevDisplayY(), msgid);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void Menu_Frozen_OnLoop(struct MenuProc* proc)
@@ -630,6 +639,9 @@ void Menu_Frozen_OnLoop(struct MenuProc* proc)
 u8 MenuFrozen(struct MenuProc* proc)
 {
     Proc_GotoScript(proc, sProc_MenuFrozen);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void FreezeMenu(void)

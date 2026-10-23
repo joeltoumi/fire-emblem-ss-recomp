@@ -363,6 +363,9 @@ int ChapterIntro_8020010(ProcPtr proc, void * vramDst, int palId)
     Proc_Start(ProcScr_ChapterIntro_Bg1And3Scroll, proc);
 
     // return; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0802009C

@@ -1202,6 +1202,9 @@ ProcPtr StartSioMenuBurstFx(ProcPtr parent, int x, int y)
     proc->glowPalIdx = 0;
 
     // return proc; // BUG
+#ifdef PLATFORM_PC
+    return proc; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0804CFE0

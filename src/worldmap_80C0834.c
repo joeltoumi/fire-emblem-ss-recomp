@@ -97,6 +97,9 @@ int sub_80C089C(int a, int b, int c, int d)
     {
         return 3;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080C0960

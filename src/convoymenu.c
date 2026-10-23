@@ -128,6 +128,9 @@ int MenuCommand_DrawExtraItem(struct MenuProc* proc_menu, struct MenuItemProc* p
     DrawItemMenuLineNoColor(text, item,
             TILEMAP_LOCATED(gBG0TilemapBuffer, proc_cmd->xTile, proc_cmd->yTile));
     BG_EnableSyncByMask(BG0_SYNC_BIT);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 SendToConvoyMenu_NormalEffect(struct MenuProc* proc_menu, struct MenuItemProc* proc_cmd)

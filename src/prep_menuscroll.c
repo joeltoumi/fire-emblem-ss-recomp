@@ -370,7 +370,7 @@ ProcPtr StartMenuScrollBarExt(ProcPtr parent, int x, int y, int chr, int pal) {
     proc->oam2Chr = chr >> 5;
     proc->oam2Pal = pal << 0xc;
 
-#if BUGFIX
+#if BUGFIX || defined(PLATFORM_PC)
     return proc;
 #endif
 }

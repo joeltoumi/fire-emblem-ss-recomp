@@ -305,6 +305,9 @@ s8 sub_8040C5C() {
             return 0;
         }
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void AiSetMovCostTableWithPassableWalls(const s8* cost) {
@@ -627,6 +630,9 @@ s8 AiTryUseNightmareStaff(struct UnknownAiInputA* input) {
     }
 
     // return 0; BUG? No explicit return if foundItem is false
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 s8 AiDecideNightmareStaff() {

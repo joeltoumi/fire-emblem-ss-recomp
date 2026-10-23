@@ -1316,6 +1316,9 @@ int FaceBlinkProc_GenBlinkInterval(struct FaceBlinkProc* proc) {
         case 5:
             return INT32_MAX;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080064D4

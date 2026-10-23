@@ -161,6 +161,9 @@ int sub_80493A8(u8 target)
     }
 
     // BUG -- no return if > 20
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080493D0

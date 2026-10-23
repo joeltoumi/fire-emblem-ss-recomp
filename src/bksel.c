@@ -359,6 +359,9 @@ const u16 * GetFactionBattleForecastFramePalette(int faction)
         case FACTION_PURPLE:
             return gUiFramePaletteD;
     }
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 void InitBattleForecastFramePalettes(void)

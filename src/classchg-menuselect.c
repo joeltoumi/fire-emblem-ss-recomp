@@ -127,6 +127,9 @@ int ClassChgMenuItem_OnTextDraw(struct MenuProc *pmenu, struct MenuItemProc *pmi
     parent = pmenu->proc_parent;
     gparent = parent->proc_parent;
     ClassChgMenuOnDrawCore(pmenu, pmitem, GetStringFromIndex(GetClassData(gparent->jid[pmitem->itemNumber])->nameTextId));
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int ClassChgMenuItem_OnChange(struct MenuProc *pmenu, struct MenuItemProc *pmitem)
@@ -140,6 +143,9 @@ int ClassChgMenuItem_OnChange(struct MenuProc *pmenu, struct MenuItemProc *pmite
     gparent->main_select = pmitem->itemNumber;
     ChangeClassDescription(gparent->msg_desc[gparent->main_select]);
     SetTalkPrintDelay(-1);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 ClassChgMenuItem_3rdUsability(const struct MenuItemDef * _def, int _number)

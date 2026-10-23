@@ -312,6 +312,9 @@ int GetCursorQuadrant(void)
     {
         return 3;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0808BC10

@@ -259,6 +259,9 @@ ProcPtr StartGmBaseEntry(int a, int b, ProcPtr parent)
     proc->unk_2a = b;
 
     // return proc; // BUG
+#ifdef PLATFORM_PC
+    return proc; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080BFB24
@@ -400,6 +403,9 @@ ProcPtr sub_80BFCC8(int a, int b, ProcPtr parent)
     proc->unk_2a = b;
 
     // return proc; // BUG
+#ifdef PLATFORM_PC
+    return proc; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080BFD00
@@ -661,6 +667,9 @@ ProcPtr StartGmapMuEntry(ProcPtr parent)
     }
 
     // return proc; // BUG
+#ifdef PLATFORM_PC
+    return proc; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080C0200

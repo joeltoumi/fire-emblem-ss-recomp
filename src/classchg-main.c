@@ -68,7 +68,12 @@ void MakePromotionScreen(struct ProcPromoHandler *proc, u8 pid, u8 terrain)
 
 struct ProcPromoMain *Make6C_PromotionMain(ProcPtr proc)
 {
+#ifdef PLATFORM_PC
+    // The original falls off the end, returning the new proc.
+    return Proc_StartBlocking(ProcScr_PromoMain, proc);
+#else
     Proc_StartBlocking(ProcScr_PromoMain, proc);
+#endif
 }
 
 void PromoMain_InitScreen(struct ProcPromoMain *proc)

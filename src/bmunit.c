@@ -953,6 +953,9 @@ s8 UnitGive(struct Unit* actor, struct Unit* target) {
     UnitRescue(target, rescuee);
 
     // return couldGive; // devs probably forgot to add this
+#ifdef PLATFORM_PC
+    return couldGive; // falls off the end in the original
+#endif
 }
 
 inline char* GetUnitRescueName(struct Unit* unit) {

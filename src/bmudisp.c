@@ -813,6 +813,9 @@ int GetUnitSpritePalette(const struct Unit * unit)
     case FACTION_PURPLE:
         return 0xB;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void RefreshUnitSprites(void)

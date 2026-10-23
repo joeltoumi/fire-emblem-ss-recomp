@@ -131,7 +131,7 @@ try_ballist_combat:
             TryRemoveUnitFromBallista(gActiveUnit);
     }
 
-#if BUGFIX
+#if BUGFIX || defined(PLATFORM_PC)
     return ret;
 #endif
 }
@@ -231,6 +231,9 @@ else_stmt:
             TryRemoveUnitFromBallista(gActiveUnit);
         }
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0803D880

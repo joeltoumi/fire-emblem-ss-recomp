@@ -1613,6 +1613,9 @@ int GetBgXOffset(int bg)
     case BG_3:
         return gLCDControlBuffer.bgoffset[BG_3].x;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int GetBgYOffset(int bg)
@@ -1630,6 +1633,9 @@ int GetBgYOffset(int bg)
     case BG_3:
         return gLCDControlBuffer.bgoffset[BG_3].y;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 char * AppendString(const char * src, char * dst)

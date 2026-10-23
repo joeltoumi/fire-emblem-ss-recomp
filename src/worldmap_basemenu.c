@@ -179,6 +179,9 @@ ProcPtr StartGMapBaseMenu(int kind, ProcPtr parent)
     proc->kind = kind;
 
     // return; BUG
+#ifdef PLATFORM_PC
+    return proc; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080C4038

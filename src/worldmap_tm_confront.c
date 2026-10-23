@@ -251,7 +251,7 @@ ProcPtr StartWorldmapSkirmishAnim(int a, int b, ProcPtr parent)
     proc->unk_2e[1] = a;
     proc->unk_2e[0] = b;
 
-#if BUGFIX
+#if BUGFIX || defined(PLATFORM_PC)
     return proc;
 #endif
 }

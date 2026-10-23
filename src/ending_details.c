@@ -1882,6 +1882,9 @@ int TurnRecord_End(void)
 {
     sub_80AB77C();
     // return; // BUG
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 // clang-format off

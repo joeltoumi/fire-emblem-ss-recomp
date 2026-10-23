@@ -1026,6 +1026,9 @@ int GetGuideAction(ProcPtr proc)
     {
         return GUIDE_ACTION_1;
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 // clang-format off

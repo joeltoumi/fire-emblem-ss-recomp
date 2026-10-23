@@ -848,6 +848,9 @@ u8 RepairSelectOnChange(ProcPtr proc, struct SelectTarget* target)
 {
     ChangeActiveUnitFacing(target->x, target->y);
     RefreshHammerneUnitInfoWindow(GetUnit(target->uid));
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void RepairSelectOnInit(ProcPtr proc)
@@ -858,10 +861,16 @@ void RepairSelectOnInit(ProcPtr proc)
 int RepairMenuItemOnChange(struct MenuProc* menu, struct MenuItemProc* item)
 {
     UpdateMenuItemPanel(item->itemNumber);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int RepairMenuItemOnChangeOut(struct MenuProc* menu, struct MenuItemProc* item)
 {
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 RepairMenuItemIsAvailable(const struct MenuItemDef* def, int number)
@@ -943,12 +952,18 @@ void DoUseRestoreStaff(struct Unit* unit, void(*func)(struct Unit*))
 int RestoreMapSelect_Init(ProcPtr proc)
 {
     StartUnitHpStatusInfoWindow(proc);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 RestoreMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target)
 {
     ChangeActiveUnitFacing(target->x, target->y);
     RefreshUnitHpStatusInfoWindow(GetUnit(target->uid));
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void DoUseBarrierStaff(struct Unit* unit)
@@ -965,12 +980,18 @@ void DoUseBarrierStaff(struct Unit* unit)
 int BarrierMapSelect_Init(ProcPtr proc)
 {
     StartUnitResChangeInfoWindow(proc);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 BarrierMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target)
 {
     ChangeActiveUnitFacing(target->x, target->y);
     RefreshUnitResChangeInfoWindow(GetUnit(target->uid));
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void DoUseAttackStaff(struct Unit* unit, void(*func)(struct Unit*))
@@ -987,6 +1008,9 @@ void DoUseAttackStaff(struct Unit* unit, void(*func)(struct Unit*))
 int AttackStaffMapSelect_Init(ProcPtr proc)
 {
     StartUnitStaffOffenseInfoWindow(proc);
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 u8 AttackStaffMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target)
@@ -996,6 +1020,9 @@ u8 AttackStaffMapSelect_SwitchIn(ProcPtr proc, struct SelectTarget* target)
     RefreshUnitStaffOffenseInfoWindow(
         GetUnit(target->uid),
         GetOffensiveStaffAccuracy(gActiveUnit, GetUnit(target->uid)));
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 void SubtitleMapSelect_End(ProcPtr proc)

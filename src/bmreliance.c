@@ -252,6 +252,9 @@ static const struct SupportBonuses* GetAffinityBonuses(int affinity)
     }
 
     // return NULL; // BUG?
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 static void ApplyAffinitySupportBonuses(struct SupportBonuses* bonuses, int affinity, int level)

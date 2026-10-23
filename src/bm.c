@@ -1204,6 +1204,9 @@ int GetCurrentMapMusicIndex(void) {
 
             return GetROMChapterStruct(gPlaySt.chapterIndex)->mapBgmIds[blueBgmIdx];
     }
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080160D0

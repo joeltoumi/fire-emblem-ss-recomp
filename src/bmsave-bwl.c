@@ -560,6 +560,9 @@ int GetNewPlaythroughId(void)
     for (i = 1; i < 0x100; i++)
         if (IsPlaythroughIdUnique(i))
             return i;
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 int GetGlobalCompletionCntByInfo(struct GlobalSaveInfo *info)

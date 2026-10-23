@@ -145,6 +145,9 @@ struct Trap* RemoveTrap(struct Trap* trap)
     }
 
     // return trap; // BUG
+#ifdef PLATFORM_PC
+    return trap; // falls off the end in the original
+#endif
 }
 
 void AddFireTile(int x, int y, int turnCountdown, int turnInterval)
@@ -681,6 +684,9 @@ struct Trap* AddLightRune(int x, int y)
     gBmMapTerrain[y][x] = TERRAIN_NONE;
 
     // return trap; // BUG
+#ifdef PLATFORM_PC
+    return trap; // falls off the end in the original
+#endif
 }
 
 struct Trap* RemoveLightRune(struct Trap* trap)

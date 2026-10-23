@@ -38,6 +38,9 @@ struct REDA * CopyEventMoveREDAs(const struct REDA * redas, u8 count)
             return gEventREDAs.buf[i];
         }
     }
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x08079D40

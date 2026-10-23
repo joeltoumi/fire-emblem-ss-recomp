@@ -207,6 +207,9 @@ int sub_80321C8(void) {
     ForceSyncUnitSpriteSheet();
 
     // return; // BUG?
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080321E0

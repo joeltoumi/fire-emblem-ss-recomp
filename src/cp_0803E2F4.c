@@ -406,6 +406,9 @@ s8 AiEquipGetFlags(u16 * out)
 
         out[i] |= (GetItemMight(item) << 8);
     }
+#ifdef PLATFORM_PC
+    return 1; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0803EA58

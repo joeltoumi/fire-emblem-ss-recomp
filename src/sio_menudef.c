@@ -67,6 +67,9 @@ int sub_804D8DC(struct MenuProc * menu, struct MenuItemProc * menuItem)
     BG_EnableSyncByMask(BG0_SYNC_BIT);
 
     // return;
+#ifdef PLATFORM_PC
+    return 0; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x0804D940

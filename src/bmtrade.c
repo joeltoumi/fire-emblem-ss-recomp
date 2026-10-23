@@ -621,6 +621,9 @@ struct Proc * StartTradeMenu(struct Unit* lUnit, struct Unit* rUnit, int unused)
     {
         proc->hoverColumn = POS_R;
     }
+#ifdef PLATFORM_PC
+    return (void *)proc; // falls off the end in the original
+#endif
 }
 
 void TradeMenu_TutorialHandCursor_Update(void)

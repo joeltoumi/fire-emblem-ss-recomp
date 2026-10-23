@@ -983,6 +983,9 @@ ProcPtr StartWmDotPalAnim(ProcPtr parent)
     }
 
     // return; // BUG
+#ifdef PLATFORM_PC
+    return NULL; // falls off the end in the original
+#endif
 }
 
 //! FE8U = 0x080C2E28
